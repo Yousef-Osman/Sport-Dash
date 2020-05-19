@@ -22,9 +22,9 @@ namespace SportDash.Models
         [Key]
         public int Review_Id { get; set; }
 
-        [ForeignKey(nameof(ApplicationUser))]
+        [ForeignKey(nameof(User))]
         public int Reviewer_Id { get; set; }
-        [ForeignKey(nameof(ApplicationUser))]
+        [ForeignKey(nameof(Target))]
         public int Reviewee_Id { get; set; }
 
         public Rating Rating { get; set; }
@@ -32,5 +32,6 @@ namespace SportDash.Models
         public DateTime Review_Date { get; set; }
         public string Comment { get; set; }
         public ApplicationUser User { get; set; }
+        public ApplicationUser Target { get; set; }
     }
 }
