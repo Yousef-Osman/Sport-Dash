@@ -23,9 +23,9 @@ namespace SportDash.Models
         public int Review_Id { get; set; }
 
         [ForeignKey(nameof(User))]
-        public int Reviewer_Id { get; set; }
+        public String Reviewer_Id { get; set; }
         [ForeignKey(nameof(Target))]
-        public int Reviewee_Id { get; set; }
+        public String Reviewee_Id { get; set; }
 
         public Rating Rating { get; set; }
 

@@ -14,9 +14,9 @@ namespace SportDash.Models
         public int Message_Id { get; set; }
 
         [ForeignKey (nameof(User)) ]
-        public int Sender_Id { get; set; }
+        public String Sender_Id { get; set; }
         [ForeignKey(nameof(Target))]
-        public int Receiver_Id { get; set; }
+        public String Receiver_Id { get; set; }
 
         public DateTime Message_Date { get; set; }
         public string Message_Body { get; set; }
