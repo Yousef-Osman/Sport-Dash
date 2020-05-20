@@ -34,7 +34,7 @@ namespace SportDash.Models
         public bool ForLadies { get; set; }
 
         [ForeignKey(nameof(Club))]
-        public int ClubId { get; set; }
+        public string ClubId { get; set; }
         public ApplicationUser Club { get; set; }
     }
 
