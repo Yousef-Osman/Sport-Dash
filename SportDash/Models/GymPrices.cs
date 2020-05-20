@@ -23,7 +23,7 @@ namespace SportDash.Models
         public int Id { get; set; }
 
         [ForeignKey(nameof(Gym))]
-        public int GymId { get; set; }
+        public string GymId { get; set; }
         public double Subscribtion_Price { get; set; }
         public Subscribtion_type Subscribtion_Type { get; set; }
         public ApplicationUser Gym { get; set; }

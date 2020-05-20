@@ -9,6 +9,9 @@ namespace SportDash.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<TrainingProgram> TrainingPrograms { get; set; }
+        public DbSet<GymPrices> GymPrices { get; set; }        
+
          public DbSet<Message> Messages { get; set; }
          public DbSet<Review> Reviews { get; set; }
 

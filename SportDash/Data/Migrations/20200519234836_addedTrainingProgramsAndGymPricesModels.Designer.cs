@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportDash.Data;
 
 namespace SportDash.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200519234836_addedTrainingProgramsAndGymPricesModels")]
+    partial class addedTrainingProgramsAndGymPricesModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,66 +283,6 @@ namespace SportDash.Data.Migrations
                     b.ToTable("TrainingPrograms");
                 });
 
-            modelBuilder.Entity("SportDash.Models.Message", b =>
-                {
-                    b.Property<int>("Message_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Message_Body")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Message_Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Receiver_Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Sender_Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Message_Id");
-
-                    b.HasIndex("Receiver_Id");
-
-                    b.HasIndex("Sender_Id");
-
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("SportDash.Models.Review", b =>
-                {
-                    b.Property<int>("Review_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Review_Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Reviewee_Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Reviewer_Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Review_Id");
-
-                    b.HasIndex("Reviewee_Id");
-
-                    b.HasIndex("Reviewer_Id");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -390,6 +332,20 @@ namespace SportDash.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SportDash.Models.GymPrices", b =>
+                {
+                    b.HasOne("SportDash.Data.ApplicationUser", "Gym")
+                        .WithMany()
+                        .HasForeignKey("GymId");
+                });
+
+            modelBuilder.Entity("SportDash.Models.TrainingProgram", b =>
+                {
+                    b.HasOne("SportDash.Data.ApplicationUser", "Club")
+                        .WithMany()
+                        .HasForeignKey("ClubId");
                 });
 #pragma warning restore 612, 618
         }

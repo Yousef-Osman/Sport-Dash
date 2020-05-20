@@ -12,6 +12,7 @@ using SportDash.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SportDash.Repository;
 
 namespace SportDash
 {
@@ -35,6 +36,8 @@ namespace SportDash
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddTransient<ITrainingProgramRepository, TrainingProgramRepository>();
+            services.AddTransient<IGymPricesRepository, GymPricesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
