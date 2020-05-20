@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace SportDash.Repository
 {
-    public class MessageRepo : IMessage
+    public class MessageRepository : IMessageRepository
     {
 
         ApplicationDbContext _context;
 
-        public MessageRepo(ApplicationDbContext context)
+        public MessageRepository(ApplicationDbContext context)
         {
             _context = context;
         }

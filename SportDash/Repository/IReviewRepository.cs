@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SportDash.Repository
 {
-   public interface IReview
+   public interface IReviewRepository
     {
         public IEnumerable<Review> GetReviewsOfReviewee(String User_Id);
         public Review GetReview(int id);

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace SportDash.Repository
 {
-    public class ReviewRepo : IReview
+    public class ReviewRepository : IReviewRepository
     {
         ApplicationDbContext _context;
 
-        public ReviewRepo(ApplicationDbContext context)
+        public ReviewRepository(ApplicationDbContext context)
         {
             _context = context;    
         }

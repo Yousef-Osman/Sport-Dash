@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SportDash.Repository
 {
-    public interface IMessage
+    public interface IMessageRepository
     {
         public IEnumerable<Message> GetMessagesR(string User_Id);
         public IEnumerable<Message> GetMessagesS(string User_Id);
