@@ -27,6 +27,7 @@ namespace SportDash.Models
         [ForeignKey(nameof(Target))]
         public String Reviewee_Id { get; set; }
 
+        [Required]
         public Rating Rating { get; set; }
 
         public DateTime Review_Date { get; set; }
