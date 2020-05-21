@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SportDash.Data;
@@ -22,23 +23,39 @@ namespace SportDash.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+
+            roles = _roleManager.Roles.Select(a => new SelectListItem
+            {
+                Value = a.Name.ToString(),
+                Text = a.Name
+            }).ToList();
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
+
+        [BindProperty]
+        [Required]
+        [Display(Name="Select a Role")]
+        public string SelectedRole { get; set; }
+
+        public List<SelectListItem> roles { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -83,8 +100,10 @@ namespace SportDash.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    System.Diagnostics.Debug.WriteLine(SelectedRole);
+
                     var createdUser = await _userManager.FindByNameAsync(user.UserName);
-                    await _userManager.AddToRoleAsync(createdUser, "NormalUser");
+                    await _userManager.AddToRoleAsync(createdUser, SelectedRole);
 
                     _logger.LogInformation("User created a new account with password.");
 
