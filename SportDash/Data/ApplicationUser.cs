@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace SportDash.Data
 {
-    public class ApplicationUser: IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         public List<Question> Questions { get; set; }
         public List<Comment> Comments { get; set; }
+        [PersonalData]
+        public string FullName { get; set; }
     }
 }

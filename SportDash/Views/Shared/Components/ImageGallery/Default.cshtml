@@ -1,0 +1,13 @@
+﻿@model IEnumerable<SportDash.Models.Image>
+@*@model IEnumerable<string>*@
+
+<div class="card-group">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            @*<div>@item</div>*@
+            <img class="card-img-top" src="@("~/images/" + item.Title)" asp-append-version="true">
+            @*<img src="@("~/images/" + item.Title)" asp-append-version="true" width="300" height="300"/>*@
+        </div>
+    }
+</div>
