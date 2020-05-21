@@ -29,6 +29,12 @@ namespace SportDash
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepoitory>();
+            services.AddScoped<ITrainingProgramRepository, TrainingProgramRepository>();
+            services.AddScoped<IGymPricesRepository, GymPricesRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -49,8 +55,7 @@ namespace SportDash
                 options.AddPolicy("NormalUserPolicy", policy => {policy.RequireRole("NormalUser");});
             });
 
-            services.AddScoped<ICommentRepository, CommentRepository>();
-            services.AddScoped<IQuestionRepository, QuestionRepoitory>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -14,14 +14,8 @@ namespace SportDash.Data
             : base(options)
         {
         }
-        public DbSet<Question> Questions;
-        public DbSet<Comment> Comments;
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-        }
-
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Image> Images { get; set; }
