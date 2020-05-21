@@ -20,9 +20,9 @@ namespace SportDash.Repository
             _hostEnvironment = hostEnvironment;
         }
 
-        public IEnumerable<Image> GetImages(int num)
+        public IEnumerable<Image> GetImages(string id)
         {
-            var images = _context.Images.Where(i => i.Id < num).ToList();
+            var images = _context.Images.Where(i => i.UserId == id).ToList();
             return images;
         }
 

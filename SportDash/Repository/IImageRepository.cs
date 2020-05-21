@@ -8,7 +8,7 @@ namespace SportDash.Repository
 {
     public interface IImageRepository
     {
-        IEnumerable<Image> GetImages(int num);
+        IEnumerable<Image> GetImages(string id);
 
         Image GetImageById(int pieId);
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportDash.Data;
 using SportDash.Repository;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SportDash.Components
 {
-    public class ImageGallery: ViewComponent
+    public class ImageGallery : ViewComponent
     {
         private readonly IImageRepository _imageRepository;
 
@@ -17,10 +16,10 @@ namespace SportDash.Components
             _imageRepository = imageRepository;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(string id)
         {
-            var images = _imageRepository.GetImages(9);
-            return View(images);
+            var images = _imageRepository.GetImages(id);
+            return View();
         }
     }
 }

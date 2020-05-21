@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SportDash.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,5 +19,8 @@ namespace SportDash.Models
         [NotMapped]
         [DisplayName("Upload an Image")]
         public IFormFile ImageFile { get; set; }
+
+        public string UserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
