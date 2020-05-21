@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace SportDash.Data
 {
-    public class ApplicationUser: IdentityUser
+    public class ApplicationUser : IdentityUser
     {
+        [PersonalData]
+        public string FullName { get; set; }
     }
 }

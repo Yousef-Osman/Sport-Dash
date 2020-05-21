@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-SportDash-986536D9-6811-4C10-90FA-FE1A3D8E5458</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20200521001203_images-and-seeding-roles.cs" />
+    <Compile Remove="Data\Migrations\20200521001203_images-and-seeding-roles.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
