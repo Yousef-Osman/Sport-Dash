@@ -15,7 +15,7 @@ namespace SportDash.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -48,36 +48,36 @@ namespace SportDash.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ac134b06-b307-49f8-9fc9-f10e5e2c7a20",
-                            ConcurrencyStamp = "bb704452-d1f8-4ce2-bdfe-bf461381021e",
+                            Id = "0fc69c54-32c7-449f-820e-412a1b05ab53",
+                            ConcurrencyStamp = "d24fbf92-eece-471e-844d-cf9134d611ac",
                             Name = "ClubManager",
                             NormalizedName = "CLUBMANAGER"
                         },
                         new
                         {
-                            Id = "3f8b9251-d8cc-4a18-8cf3-d20097df263a",
-                            ConcurrencyStamp = "1bc5538e-a455-4391-90a2-82b88c2c8ea9",
+                            Id = "5dec7130-e101-4376-9884-70ce5efb94e2",
+                            ConcurrencyStamp = "2aec2597-3941-4c2c-9a09-b46ddc481291",
                             Name = "PlaygroundManager",
                             NormalizedName = "PLAYGROUNDMANAGER"
                         },
                         new
                         {
-                            Id = "c50c3dec-57c2-4db3-8b11-44e985627308",
-                            ConcurrencyStamp = "55ea1fca-c30e-4e73-89ca-d2e50fa2f959",
+                            Id = "de0b13e1-53bf-43b1-a802-4096c8b75b26",
+                            ConcurrencyStamp = "5a162f04-bea9-4ca4-b821-3f426ff3aa56",
                             Name = "GymManager",
                             NormalizedName = "GYMMANAGER"
                         },
                         new
                         {
-                            Id = "0b3969d5-39cb-4b58-bb33-7be02104aba5",
-                            ConcurrencyStamp = "63450a4a-7305-4cd4-9920-99558c19e124",
+                            Id = "1802dc20-92db-4da6-879e-400c99359645",
+                            ConcurrencyStamp = "3212e68f-ec5f-4823-9467-98b31d892c0b",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "73e56cb5-832e-44fc-8730-0d71c1980b63",
-                            ConcurrencyStamp = "88b66d81-0927-4128-9dad-ad6e8a27ee44",
+                            Id = "117ca178-29d0-49ff-91ab-77f554365a3d",
+                            ConcurrencyStamp = "91f887f6-104c-48fc-b0c8-f17bedbda323",
                             Name = "NormalUser",
                             NormalizedName = "NORMALUSER"
                         });
@@ -293,9 +293,6 @@ namespace SportDash.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

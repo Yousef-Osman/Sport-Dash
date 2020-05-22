@@ -22,7 +22,7 @@ namespace SportDash.Repository
 
         public IEnumerable<Image> GetImages(string id)
         {
-            var images = _context.Images.Where(i => i.UserId == id).ToList();
+            var images = _context.Images.Where(i => i.ApplicationUserId == id).ToList();
             return images;
         }
 
