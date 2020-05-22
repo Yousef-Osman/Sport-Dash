@@ -20,7 +20,7 @@ namespace SportDash.Models
         [DisplayName("Upload an Image")]
         public IFormFile ImageFile { get; set; }
 
-        public string ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

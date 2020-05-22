@@ -20,13 +20,13 @@ namespace SportDash.Repository
         // get specific Review 
         public Review GetReview(int Id)
         {
-            return _context.Reviews.FirstOrDefault(r => r.Review_Id == Id);
+            return _context.Reviews.FirstOrDefault(r => r.Id == Id);
         }
 
         // get all reviews of this user ex: Trainer's Reviews
         public IEnumerable<Review> GetReviewsOfReviewee(string User_Id)
         {
-            return _context.Reviews.Where(r => r.Reviewee_Id == User_Id ).ToList();
+            return _context.Reviews.Where(r => r.TargetId == User_Id ).ToList();
         }
 
         public Review PostReview(Review r)

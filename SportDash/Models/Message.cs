@@ -11,19 +11,16 @@ namespace SportDash.Models
     public class Message
     {
         [Key]
-        public int Message_Id { get; set; }
-
-        [ForeignKey (nameof(User)) ]
-        public String Sender_Id { get; set; }
-        [ForeignKey(nameof(Target))]
-        public String Receiver_Id { get; set; }
-
+        public int Id { get; set; }
         [Required]
-        public DateTime Message_Date { get; set; }
+        public DateTime MessageDate { get; set; }
         [Required]
-        public string Message_Body { get; set; }
+        public string Body { get; set; }
 
-        public ApplicationUser User { get; set; }
-        public ApplicationUser Target { get; set; }
+        public string SenderId { get; set; }
+        [InverseProperty("SenderMessages")]
+        public virtual ApplicationUser Sender { get; set; }
+        public string ReceiverId { get; set; }
+        public virtual ApplicationUser Receiver { get; set; }
     }
 }

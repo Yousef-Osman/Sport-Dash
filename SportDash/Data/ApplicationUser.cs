@@ -15,8 +15,10 @@ namespace SportDash.Data
 
         public List<Question> Questions { get; set; }
         public List<Comment> Comments { get; set; }
-        public List<Message> Messages { get; set; }
-        public List<Review> Reviews { get; set; }
+        public List<Message> SenderMessages { get; set; }
+        public List<Message> ReceiverMessages { get; set; }
+        public List<Review> ReviewerReviews { get; set; }
+        public List<Review> TargetReviews { get; set; }
         public List<TrainingProgram> TrainingPrograms { get; set; }
         public List<GymPrices> GymPrices { get; set; }
         public List<Image> Images { get; set; }

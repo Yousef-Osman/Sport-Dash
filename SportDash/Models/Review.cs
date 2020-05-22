@@ -20,19 +20,16 @@ namespace SportDash.Models
     public class Review
     {
         [Key]
-        public int Review_Id { get; set; }
-
-        [ForeignKey(nameof(User))]
-        public String Reviewer_Id { get; set; }
-        [ForeignKey(nameof(Target))]
-        public String Reviewee_Id { get; set; }
-
+        public int Id { get; set; }
         [Required]
         public Rating Rating { get; set; }
-
         public DateTime Review_Date { get; set; }
         public string Comment { get; set; }
-        public ApplicationUser User { get; set; }
+
+        public string ReviewerId { get; set; }
+        public string TargetId { get; set; }
+        [InverseProperty("ReviewerReviews")]
+        public ApplicationUser Reviewer { get; set; }
         public ApplicationUser Target { get; set; }
     }
 }

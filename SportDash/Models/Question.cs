@@ -19,14 +19,16 @@ namespace SportDash.Models
     }
     public class Question
     {
+        [Key]
         public int Id { get; set; }
-        [ForeignKey("User")]
-        public string UserId { get; set; }
         //Ask about (Category ex..Clubs , Playgrounds , etc..)
         public QuestionAbout Category { get; set; }
         public string Body { get; set; }
         public DateTime DateTime { get; set; }
-        
+        public List<Comment> Comments { get; set; }
+
+        [ForeignKey("User")]
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
     }
 }

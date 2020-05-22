@@ -10,15 +10,17 @@ namespace SportDash.Models
 {
     public class Comment
     {
+        [Key]
         public int Id { get; set; }
-        [ForeignKey("Question")]
-        public int QuestionId { get; set; }
-        [ForeignKey("User")]
-        public string UserId { get; set; }
+
         public string Body { get; set; }
         public DateTime DateTime { get; set; }
 
+        [ForeignKey("User")]
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
+
+        public int QuestionId { get; set; }
         public Question Question { get; set; }
 
     }
