@@ -3,19 +3,21 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportDash.Data;
 
 namespace SportDash.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200521195323_CreateQuestionAndCommentTables")]
+    partial class CreateQuestionAndCommentTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.4")
+                .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -44,43 +46,6 @@ namespace SportDash.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "4d952a4e-584b-485e-b16c-6b34f414b9af",
-                            ConcurrencyStamp = "bcbfc403-fcac-428d-aa5c-be91c0726895",
-                            Name = "ClubManager",
-                            NormalizedName = "CLUBMANAGER"
-                        },
-                        new
-                        {
-                            Id = "3b17f803-a076-41f9-919a-577fd57d9d78",
-                            ConcurrencyStamp = "399b2c43-c555-4518-9c99-73abf0749851",
-                            Name = "PlaygroundManager",
-                            NormalizedName = "PLAYGROUNDMANAGER"
-                        },
-                        new
-                        {
-                            Id = "648f200c-f647-4545-89e6-1cc74139ab41",
-                            ConcurrencyStamp = "0bee5b72-8108-47f5-aa76-8c8b973ac6f0",
-                            Name = "GymManager",
-                            NormalizedName = "GYMMANAGER"
-                        },
-                        new
-                        {
-                            Id = "1ae46a30-13e9-4062-b36c-0b9e7bc3751a",
-                            ConcurrencyStamp = "20d88051-065c-483a-9d06-079ae39b9273",
-                            Name = "Coach",
-                            NormalizedName = "COACH"
-                        },
-                        new
-                        {
-                            Id = "9296ee86-6920-4fc0-84a1-a5bc46a11aad",
-                            ConcurrencyStamp = "3c9c3684-2fbc-4671-9923-db35d7e246c2",
-                            Name = "NormalUser",
-                            NormalizedName = "NORMALUSER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -210,9 +175,6 @@ namespace SportDash.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -257,186 +219,6 @@ namespace SportDash.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("SportDash.Models.GymPrices", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("GymId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Subscribtion_Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Subscribtion_Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GymId");
-
-                    b.ToTable("GymPrices");
-                });
-
-            modelBuilder.Entity("SportDash.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("SportDash.Models.Message", b =>
-                {
-                    b.Property<int>("Message_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Message_Body")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Message_Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Receiver_Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Sender_Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Message_Id");
-
-                    b.HasIndex("Receiver_Id");
-
-                    b.HasIndex("Sender_Id");
-
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("SportDash.Models.PlaygroundPrice", b =>
-                {
-                    b.Property<string>("PlaygroundId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<TimeSpan>("Start")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("End")
-                        .HasColumnType("time");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.HasKey("PlaygroundId", "Start", "End");
-
-                    b.ToTable("playgroundPrices");
-                });
-
-            modelBuilder.Entity("SportDash.Models.PlaygroundReservation", b =>
-                {
-                    b.Property<string>("PlaygroundReservationId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsOccubied")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlaygroundId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("PlaygroundReservationId");
-
-                    b.HasIndex("PlaygroundId");
-
-                    b.ToTable("playgroundReservations");
-                });
-
-            modelBuilder.Entity("SportDash.Models.Review", b =>
-                {
-                    b.Property<int>("Review_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Review_Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Reviewee_Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Reviewer_Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Review_Id");
-
-                    b.HasIndex("Reviewee_Id");
-
-                    b.HasIndex("Reviewer_Id");
-
-                    b.ToTable("Reviews");
-                });
-
-            modelBuilder.Entity("SportDash.Models.TrainingProgram", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Category")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClubId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("ForLadies")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Trainer_Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TrainingDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClubId");
-
-                    b.ToTable("TrainingPrograms");
                 });
 
             modelBuilder.Entity("SportDash.Models.Comment", b =>
@@ -562,58 +344,6 @@ namespace SportDash.Data.Migrations
                     b.HasOne("SportDash.Data.ApplicationUser", "User")
                         .WithMany("Questions")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("SportDash.Models.GymPrices", b =>
-                {
-                    b.HasOne("SportDash.Data.ApplicationUser", "Gym")
-                        .WithMany()
-                        .HasForeignKey("GymId");
-                });
-
-            modelBuilder.Entity("SportDash.Models.Message", b =>
-                {
-                    b.HasOne("SportDash.Data.ApplicationUser", "Target")
-                        .WithMany()
-                        .HasForeignKey("Receiver_Id");
-
-                    b.HasOne("SportDash.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("Sender_Id");
-                });
-
-            modelBuilder.Entity("SportDash.Models.PlaygroundPrice", b =>
-                {
-                    b.HasOne("SportDash.Data.ApplicationUser", "Playground")
-                        .WithMany()
-                        .HasForeignKey("PlaygroundId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SportDash.Models.PlaygroundReservation", b =>
-                {
-                    b.HasOne("SportDash.Data.ApplicationUser", "Playground")
-                        .WithMany()
-                        .HasForeignKey("PlaygroundId");
-                });
-
-            modelBuilder.Entity("SportDash.Models.Review", b =>
-                {
-                    b.HasOne("SportDash.Data.ApplicationUser", "Target")
-                        .WithMany()
-                        .HasForeignKey("Reviewee_Id");
-
-                    b.HasOne("SportDash.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("Reviewer_Id");
-                });
-
-            modelBuilder.Entity("SportDash.Models.TrainingProgram", b =>
-                {
-                    b.HasOne("SportDash.Data.ApplicationUser", "Club")
-                        .WithMany()
-                        .HasForeignKey("ClubId");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200522082209_adding_ramy_enities.cs" />
     <Compile Remove="Data\Migrations\20200522082209_adding_ramy_enities.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200521001203_images-and-seeding-roles.cs" />
+    <Compile Remove="Data\Migrations\20200521001203_images-and-seeding-roles.Designer.cs" />
   </ItemGroup>
 
 

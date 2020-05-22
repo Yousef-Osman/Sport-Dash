@@ -28,16 +28,34 @@ namespace SportDash
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepoitory>();
+            services.AddScoped<ITrainingProgramRepository, TrainingProgramRepository>();
+            services.AddScoped<IGymPricesRepository, GymPricesRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddTransient<ITrainingProgramRepository, TrainingProgramRepository>();
-            services.AddTransient<IGymPricesRepository, GymPricesRepository>();
+
+            services.AddAuthorization(options => {
+                options.AddPolicy("ClubPolicy", policy => {policy.RequireRole("ClubManager");});
+                options.AddPolicy("PlaygroundPolicy", policy => {policy.RequireRole("PlaygroundManager");});
+                options.AddPolicy("GymPolicy", policy => {policy.RequireRole("GymManager");});
+                options.AddPolicy("CoachPolicy", policy => {policy.RequireRole("Coach");});
+                options.AddPolicy("NormalUserPolicy", policy => {policy.RequireRole("NormalUser");});
+            });
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
