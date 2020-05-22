@@ -25,14 +25,7 @@ namespace SportDash.Data
 
         public DbSet<PlaygroundPrice> playgroundPrices { get; set; }
         public DbSet<PlaygroundReservation> playgroundReservations { get; set; }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-
-        }
-       
-
-        }
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
