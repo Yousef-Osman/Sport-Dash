@@ -35,6 +35,7 @@ namespace SportDash
             services.AddScoped<IGymPricesRepository, GymPricesRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

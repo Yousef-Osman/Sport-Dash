@@ -52,7 +52,7 @@ namespace SportDash.Areas.Identity.Pages.Account
 
         [BindProperty]
         [Required]
-        [Display(Name="Select a Role")]
+        [Display(Name="Create an account as")]
         public string SelectedRole { get; set; }
 
         public List<SelectListItem> roles { get; set; }
