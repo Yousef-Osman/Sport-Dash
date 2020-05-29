@@ -1,0 +1,117 @@
+﻿@model SportDash.ViewModels.ClubViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@*<div class="mt-4">
+    <h2 style="text-align: center;">Available Playgrounds</h2>
+    <div class="gallery js-flickity">
+        @foreach (var playground in Model.PlaygroundsOfClub)
+        {
+            <div class="gallery-cell">
+                <a asp-controller="Playground" asp-action="Index" asp-route-id="@playground.Id">@playground.FullName</a>
+                <button class="btn btn-danger" onclick="sendData('@playground.Id')" data-toggle="modal" data-target="#delSportModal">Delete</button>
+                <div style="font-size: 16px;">@playground.SportType</div>
+            </div>
+        }
+    </div>
+    <button class="btn btn-primary mb-5 mt-4" data-toggle="modal" data-target="#addSportModal">Add New</button>
+</div>*@
+
+<!-- Add New Playground to the current club Modal-->
+<div class="modal" id="addSportModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add New Playground</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <label>Select Playground</label>
+                @*<select id="playgrounds" class="form-control" asp-items="Model.AllPlaygrounds">
+                    @if(Model.AllPlaygrounds.Count() == 0)
+                    {
+                        <option value="">No Playgrounds Available</option>
+                    }
+                </select>*@                
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button onclick="assign()" class="btn btn-primary">Assign To My Club</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Delete Playground Modal -->
+<div class="modal" id="delSportModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Sport</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h3>Are you sure you want to Delete ?</h3>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button onclick="del()" class="btn btn-primary">Delete</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $('.gallery').flickity({
+        // options
+        cellAlign: 'left',
+        contain: true
+    });
+    var playgroundId = "";
+    // function to pass data from the view to the modal
+    function assign() {
+        const playgroundsDropdown = document.querySelector("#playgrounds");
+        const url = "/Club/AssignPlayground";
+        let playgroundId = playgroundsDropdown.value;
+        console.log(playgroundId);
+        if (playgroundId != "") {
+            $.ajax({
+                url: `${url}?playgroundId=${playgroundId}`,
+                method: 'POST',
+                success: function () {
+                    location.reload();
+                }
+            })
+        }
+        else {
+            alert("Currently There are no playgrounds");
+        }
+    }
+    function sendData(data)
+    {        
+        playgroundId = data;
+    }
+    function del() {
+        $.ajax({
+            url: `/Club/RemovePlayground?playgroundId=${playgroundId}`,
+            method: 'POST',
+            success: function () {
+                location.reload();
+            }
+        })
+    }
+</script>
