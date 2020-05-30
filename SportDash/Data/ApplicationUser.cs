@@ -12,6 +12,8 @@ namespace SportDash.Data
     {
         [PersonalData]
         public string FullName { get; set; }
+        public string Category { get; set; }
+        public string Address { get; set; }
 
         public List<Question> Questions { get; set; }
         public List<Comment> Comments { get; set; }
@@ -21,6 +23,7 @@ namespace SportDash.Data
         public List<Review> TargetReviews { get; set; }
         public List<TrainingProgram> TrainingPrograms { get; set; }
         public List<GymPrices> GymPrices { get; set; }
+        public List<PlaygroundPrice> PlaygroundPrices { get; set; }
         public List<Image> Images { get; set; }
     }
 }

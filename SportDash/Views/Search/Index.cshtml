@@ -1,0 +1,94 @@
+﻿@model SportDash.ViewModels.SearchViewModel
+@{
+    ViewData["Title"] = "Search";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h2>What are you looking for ?</h2>
+            <p>You can search for Playground or Club or Trainer or Gym with filters option </p>
+            <input type="button" class="btn btn-lg btn-primary" />
+            <div class="row">
+                <div class="col-md-3">
+                    <select asp-for="MovieGenre" asp-items="Model.Category">
+                        <option value="">All</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select asp-for="MovieGenre" asp-items="Model.Price">
+                        <option value="">All</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select asp-for="MovieGenre" asp-items="Model.Location">
+                        <option value="">All</option>
+                    </select>
+                </div>
+                @*<div class="col-md-3">
+                    <select asp-for="MovieGenre" asp-items="Model.Genres">
+                        <option value="">All</option>
+                    </select>
+                </div>*@
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var item in Model.Clubs)
+            {
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="..." class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            @foreach (var item in Model.Playgrounds)
+            {
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="..." class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title"></h5>
+                            <p class="card-text"></p>
+                        </div>
+                    </div>
+                </div>
+            }
+            @foreach (var item in Model.Gyms)
+            {
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="..." class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            @foreach (var item in Model.Trainers)
+            {
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="..." class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
