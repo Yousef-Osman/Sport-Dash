@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
 using SportDash.Data;
 using SportDash.Models;
@@ -15,7 +16,7 @@ namespace SportDash.Controllers
     {
         private readonly IImageRepository _imageRepository;
         private readonly IUserRepository _userRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;        
 
         public ClubController(IImageRepository imageRepository,
                               IUserRepository userRepository,
@@ -23,7 +24,7 @@ namespace SportDash.Controllers
         {
             _imageRepository = imageRepository;
             _userRepository = userRepository;
-            _userManager = userManager;
+            _userManager = userManager;            
         }
 
         public IActionResult Index()
@@ -58,5 +59,21 @@ namespace SportDash.Controllers
             //return ViewComponent("ImageGallery", new { controllerName = "Club" });
             return Ok();
         }
+
+        // Club Actions
+        //[HttpPost]
+        //public async Task<IActionResult> AssignPlayground(string playgroundId)
+        //{
+        //    string clubId = _userManager.GetUserId(HttpContext.User);
+        //    await _playgroundRepository.AssignPlaygroundToClub(playgroundId, clubId);
+        //    return Ok("Done");
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> RemovePlayground(string playgroundId)
+        //{
+        //    await _playgroundRepository.RemovePlaygroundFromClub(playgroundId);
+        //    return Ok("Done");
+        //}
     }
 }

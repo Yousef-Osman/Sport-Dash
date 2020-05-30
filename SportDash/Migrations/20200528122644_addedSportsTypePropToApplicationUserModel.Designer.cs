@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportDash.Data;
 
 namespace SportDash.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200528122644_addedSportsTypePropToApplicationUserModel")]
+    partial class addedSportsTypePropToApplicationUserModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,36 +50,36 @@ namespace SportDash.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6ee32c63-e97e-42e0-ae95-a9a4619a6fd4",
-                            ConcurrencyStamp = "650783dd-fea1-4379-9012-5946516dfc59",
+                            Id = "d8e86f47-bba0-45a1-baf9-8159b085a148",
+                            ConcurrencyStamp = "1f917e9c-82c2-4b7a-9b89-514e5e5b9405",
                             Name = "ClubManager",
                             NormalizedName = "CLUBMANAGER"
                         },
                         new
                         {
-                            Id = "0ec5f45d-214c-4ccf-8727-0a7f4b95ed3c",
-                            ConcurrencyStamp = "04b76a34-da78-4ddb-aa83-9b8212e880f7",
+                            Id = "d735127e-dad0-4f89-b3c5-a1267ac4cf21",
+                            ConcurrencyStamp = "81bb697e-2644-4723-af08-c9083e379b68",
                             Name = "PlaygroundManager",
                             NormalizedName = "PLAYGROUNDMANAGER"
                         },
                         new
                         {
-                            Id = "153ccfbe-96b0-419d-84dc-50d881495c4f",
-                            ConcurrencyStamp = "36809ab3-2045-4c49-9d59-d1cc8f631f1f",
+                            Id = "5b5bf132-9a4b-4fe9-8663-f53caa6bd23c",
+                            ConcurrencyStamp = "2e86b059-d579-412c-9ce1-df037a55d3ad",
                             Name = "GymManager",
                             NormalizedName = "GYMMANAGER"
                         },
                         new
                         {
-                            Id = "a60b1ed7-6933-4e9c-a822-58de8a71be5b",
-                            ConcurrencyStamp = "d42537ad-a7db-4a41-9030-59beac7b652e",
+                            Id = "27385aff-5a6f-4d68-a682-ae9a9c9bea1a",
+                            ConcurrencyStamp = "f6861d94-689c-4914-9897-d70a0875654f",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "b4ca9f60-81d7-43d2-81ab-a4fc7ba88ae1",
-                            ConcurrencyStamp = "ba3ac75d-7455-44a3-8299-8439ee88b752",
+                            Id = "cdba519f-2a70-47b5-8d74-524437d61b12",
+                            ConcurrencyStamp = "14df1192-500e-406b-975d-957812ca8252",
                             Name = "NormalUser",
                             NormalizedName = "NORMALUSER"
                         });
@@ -199,6 +201,9 @@ namespace SportDash.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("ClubId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -250,6 +255,8 @@ namespace SportDash.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -550,6 +557,13 @@ namespace SportDash.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SportDash.Data.ApplicationUser", b =>
+                {
+                    b.HasOne("SportDash.Data.ApplicationUser", "Club")
+                        .WithMany()
+                        .HasForeignKey("ClubId");
                 });
 
             modelBuilder.Entity("SportDash.Models.Comment", b =>
