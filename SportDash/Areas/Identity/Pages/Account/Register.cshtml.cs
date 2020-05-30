@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SportDash.Data;
+using SportDash.Models;
 
 namespace SportDash.Areas.Identity.Pages.Account
 {
@@ -52,7 +53,7 @@ namespace SportDash.Areas.Identity.Pages.Account
 
         [BindProperty]
         [Required]
-        [Display(Name="Select a Role")]
+        [Display(Name="Create an account as")]
         public string SelectedRole { get; set; }
 
         public List<SelectListItem> roles { get; set; }
@@ -66,6 +67,8 @@ namespace SportDash.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Full Name")]
             public string FullName { get; set; }
+
+            public GamesCategory SportType { get; set; }
 
             [Required]
             [EmailAddress]
@@ -96,7 +99,7 @@ namespace SportDash.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FullName = Input.FullName };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FullName = Input.FullName, SportType = Input.SportType};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -136,6 +139,6 @@ namespace SportDash.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
+        }        
     }
 }

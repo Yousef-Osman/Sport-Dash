@@ -12,7 +12,7 @@ namespace SportDash.Repository
 
         Image GetImageById(int pieId);
 
-        Task CreateImage(Image image);
+        Task CreateImage(Image image, string id);
 
         Task DeleteImage(int id);
     }

@@ -1,0 +1,106 @@
+﻿@model SportDash.ViewModels.ClubViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!-- Display Section -->
+<div class="card-group mt-3">
+    @foreach (var item in Model.Images)
+    {
+        <div class="card">
+            <img class="card-img-top" src="@("/images/" + item.Title)" asp-append-version="true">
+            <button type="button" class="btn btn-danger mt-1" data-toggle="modal" data-target="#delete-Modal" onclick="deleteImage(@item.Id)">Delete</button>
+        </div>
+    }
+</div>
+<button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#addModal">Add Image</button>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="delete-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you want to delete this image</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="delete-btn">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @*<form asp-controller="Profile" asp-action="Create" enctype="multipart/form-data" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="custom-file">
+                            <input asp-for="Image.ImageFile" class="custom-file-input" accept="image/*" id="new-image"/>
+                            <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                            <span asp-validation-for="Image.ImageFile" class="text-danger"></span>
+                        </div>
+                    </form>*@
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" accept="image/*" id="new-image" required>
+                    <label class="custom-file-label" for="validatedCustomFile">Upload an Image...</label>
+                    <div class="invalid-feedback">Required</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="add-btn">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" on-content-loaded="true">
+    $('#add-btn').click(function (e) {
+        e.preventDefault();
+        let newImage = document.getElementById('new-image').value;
+        let imageObj = { ImageFile: newImage, Title: "Hamra" }
+        console.log(imageObj);
+        $.ajax({
+            url: '/@Model.ControllerName/AddNewImage',
+            type: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify({ image: imageObj }),
+            success: function () {
+                //document.getElementById('entity-Name').innerHTML = newImage;
+            }
+        });
+    });
+
+    function deleteImage (ImageId){
+        $.ajax({
+            url: '/@Model.ControllerName/DeleteImage',
+            type: 'POST',
+            datatype: 'text',
+            data: { id: ImageId },
+            success: function () {
+                //document.getElementById('entity-Name').innerHTML = newImage;
+            }
+        });
+    }
+
+    $('#delete-btn').click(function (e) {
+        e.preventDefault();
+        let newImage = document.getElementById('new-image').value;
+
+        
+    });
+</script>
+

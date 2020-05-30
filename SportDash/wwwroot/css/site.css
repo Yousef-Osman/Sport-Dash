@@ -123,3 +123,66 @@ body {
         top: 2px;
         left: 2px;
     }
+
+/* Available Sports Styling */
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.gallery {
+    background: #EEE;
+}
+
+.gallery-cell {
+    width: 100%;
+    height: 200px;
+    padding-top: 60px;
+    margin-right: 10px;
+    background: #343a40;
+    display: block;
+    text-align: center;
+    line-height: 40px;
+    font-size: 40px;
+    color: white;
+}
+
+/* big buttons, no circle */
+.flickity-prev-next-button {
+    width: 100px;
+    height: 100px;
+    background: transparent;
+}
+    /* arrow color */
+    .flickity-prev-next-button .arrow {
+        fill: white;
+    }
+
+    .flickity-prev-next-button.no-svg {
+        color: white;
+    }
+
+    .flickity-prev-next-button:hover {
+        background: transparent;
+    }
+    /* hide disabled button */
+    .flickity-prev-next-button:disabled {
+        display: none;
+    }
+
+/* position dots in gallery */
+.flickity-page-dots {
+    bottom: 0px;
+}
+    /* white circles */
+    .flickity-page-dots .dot {
+        width: 12px;
+        height: 12px;
+        opacity: 1;
+        background: transparent;
+        border: 2px solid white;
+    }
+        /* fill-in selected dot */
+        .flickity-page-dots .dot.is-selected {
+            background: white;
+        }
