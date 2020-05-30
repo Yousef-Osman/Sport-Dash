@@ -45,23 +45,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                @*<form asp-controller="Profile" asp-action="Create" enctype="multipart/form-data" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="custom-file">
-                            <input asp-for="Image.ImageFile" class="custom-file-input" accept="image/*" id="new-image"/>
-                            <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-                            <span asp-validation-for="Image.ImageFile" class="text-danger"></span>
-                        </div>
-                    </form>*@
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" accept="image/*" id="new-image" required>
                     <label class="custom-file-label" for="validatedCustomFile">Upload an Image...</label>
-                    <div class="invalid-feedback">Required</div>
+                    @*<div class="invalid-feedback">Required</div>*@
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal" id="add-btn">Confirm</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-btn">Close</button>
             </div>
         </div>
     </div>
@@ -70,37 +62,39 @@
 <script type="text/javascript" on-content-loaded="true">
     $('#add-btn').click(function (e) {
         e.preventDefault();
-        let newImage = document.getElementById('new-image').value;
-        let imageObj = { ImageFile: newImage, Title: "Hamra" }
-        console.log(imageObj);
+
+        var formData = new FormData();
+        let newImage = $('#new-image')[0].files[0];
+        formData.append('file', newImage);
+
         $.ajax({
             url: '/@Model.ControllerName/AddNewImage',
             type: 'POST',
-            contentType: "application/json",
-            data: JSON.stringify({ image: imageObj }),
-            success: function () {
-                //document.getElementById('entity-Name').innerHTML = newImage;
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                console.log("working");
+                //$("#display-images").html(result);
+                location.reload(true);
             }
         });
     });
 
-    function deleteImage (ImageId){
-        $.ajax({
-            url: '/@Model.ControllerName/DeleteImage',
-            type: 'POST',
-            datatype: 'text',
-            data: { id: ImageId },
-            success: function () {
-                //document.getElementById('entity-Name').innerHTML = newImage;
-            }
-        });
+    function deleteImage(imageId) {
+
+        var deleteBtn = document.getElementById('delete-btn');
+        deleteBtn.onclick = function remove() {
+            $.ajax({
+                url: '/@Model.ControllerName/DeleteImage',
+                type: 'POST',
+                datatype: 'text',
+                data: { id: imageId },
+                success: function () {
+                    location.reload(true);
+                }
+            });
+        }
     }
-
-    $('#delete-btn').click(function (e) {
-        e.preventDefault();
-        let newImage = document.getElementById('new-image').value;
-
-        
-    });
 </script>
 
