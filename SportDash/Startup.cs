@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SportDash.Repository;
+using SportDash.Hubs;
 
 namespace SportDash
 {
@@ -35,7 +36,8 @@ namespace SportDash
             services.AddScoped<IGymPricesRepository, GymPricesRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();            
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPlaygroundRepository, PlaygroundRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -56,7 +58,7 @@ namespace SportDash
                 options.AddPolicy("NormalUserPolicy", policy => {policy.RequireRole("NormalUser");});
             });
 
-            
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,6 +89,7 @@ namespace SportDash
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chathub");
             });
         }
     }

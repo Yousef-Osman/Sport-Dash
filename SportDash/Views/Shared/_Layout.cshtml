@@ -24,7 +24,13 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>                        
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a id="newMsg" class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">Messages</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -41,10 +47,28 @@
             &copy; 2020 - SportDash - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+    <div class="popup" style="width: 300px;"></div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
     @RenderSection("Scripts", required: false)
+    <script>        
+        const newMsg = document.querySelector("#newMsg");
+        connection.on("recMsg", function (res, sender) {
+            if (!location.pathname.includes("Message")) {
+                const popup = document.querySelector(".popup");
+                popup.style.display = "block"
+                popup.innerHTML = `${sender.fullName}: ${res}`;
+                setTimeout(() => {
+                    popup.style.display = "none";
+                }, 5000);
+            }            
+        });        
+    </script>
 </body>
 </html>

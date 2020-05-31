@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SportDash.Repository
 {
-    public class PlaygroundRepository
+    public class PlaygroundRepository : IPlaygroundRepository
     {
         private readonly ApplicationDbContext dbContext;
 
@@ -15,6 +15,12 @@ namespace SportDash.Repository
         {
             this.dbContext = dbContext;
         }
+
+        public async Task<ApplicationUser> GetPlayground(string id)
+        {
+            return await dbContext.Users.FindAsync(id);
+        }
+
         #region Old Code
         //public IEnumerable<ApplicationUser> GetAll()
         //{

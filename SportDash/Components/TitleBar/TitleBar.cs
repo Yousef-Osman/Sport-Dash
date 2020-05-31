@@ -22,14 +22,9 @@ namespace SportDash.Components.TitleBar
             _userManager = userManager;
         }
 
-        public IViewComponentResult Invoke(string controllerName)
+        public IViewComponentResult Invoke(ClubViewModel clubViewModel)
         {
-            var userId = _userManager.GetUserId(HttpContext.User);
-            var dataModel = new ClubViewModel();
-            dataModel.EntityName = _userRepository.GetFullName(userId);
-            dataModel.ControllerName = controllerName;
-
-            return View("/Components/TitleBar/TitleBar.cshtml", dataModel);
+            return View("/Components/TitleBar/TitleBar.cshtml", clubViewModel);
         }
     }
 }

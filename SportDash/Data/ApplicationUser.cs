@@ -23,6 +23,7 @@ namespace SportDash.Data
         public List<Review> TargetReviews { get; set; }
         public List<TrainingProgram> TrainingPrograms { get; set; }
         public List<GymPrices> GymPrices { get; set; }
-        public List<Image> Images { get; set; }        
+        public List<Image> Images { get; set; }
+        public List<ConnectedUser> ConnectedUsers { get; set; }
     }
 }

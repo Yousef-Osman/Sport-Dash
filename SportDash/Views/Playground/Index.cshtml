@@ -1,0 +1,13 @@
+﻿@model SportDash.Data.ApplicationUser
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    @await Component.InvokeAsync("TitleBar", new SportDash.ViewModels.ClubViewModel
+    {
+        EntityId = Model.Id,
+        ControllerName = "Playground",
+        EntityName = Model.FullName
+    });
+</div>

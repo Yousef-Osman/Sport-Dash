@@ -1,4 +1,5 @@
-﻿using SportDash.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SportDash.Data;
 using SportDash.Models;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,13 @@ namespace SportDash.Repository
         // get all messages send to this specific user 
         public IEnumerable<Message> GetMessagesR(string User_Id)
         {
-            return _context.Messages.Where(m => m.ReceiverId == User_Id).ToList();
+            return _context.Messages.Include("Sender").Where(m => m.ReceiverId == User_Id).ToList();
+        }
+
+        // get all messages between User A and B
+        public IEnumerable<Message> GetMessages(string senderId, string receiverId)
+        {
+            return _context.Messages.Include("Sender").Include("Receiver").Where(m => (m.ReceiverId == receiverId && m.SenderId == senderId) || (m.ReceiverId == senderId && m.SenderId == receiverId)).ToList();
         }
 
         public Message PostMessage(Message m)

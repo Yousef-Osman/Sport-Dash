@@ -24,7 +24,8 @@ namespace SportDash.Data
         public DbSet<GymPrices> GymPrices { get; set; }
         public DbSet<PlaygroundPrice> playgroundPrices { get; set; }
         public DbSet<PlaygroundReservation> playgroundReservations { get; set; }
-        
+        public DbSet<ConnectedUser> ConnectedUsers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
