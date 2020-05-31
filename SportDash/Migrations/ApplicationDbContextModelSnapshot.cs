@@ -48,36 +48,36 @@ namespace SportDash.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6ee32c63-e97e-42e0-ae95-a9a4619a6fd4",
-                            ConcurrencyStamp = "650783dd-fea1-4379-9012-5946516dfc59",
+                            Id = "fd583ff9-b116-4ef6-94f2-b2b44e3cbe90",
+                            ConcurrencyStamp = "717c0fa7-e01c-4063-b486-3ab85d4652ec",
                             Name = "ClubManager",
                             NormalizedName = "CLUBMANAGER"
                         },
                         new
                         {
-                            Id = "0ec5f45d-214c-4ccf-8727-0a7f4b95ed3c",
-                            ConcurrencyStamp = "04b76a34-da78-4ddb-aa83-9b8212e880f7",
+                            Id = "729ac482-25fa-499c-97b5-3133a92986c7",
+                            ConcurrencyStamp = "f91ddf78-3264-44e4-a8ea-00f3397460cd",
                             Name = "PlaygroundManager",
                             NormalizedName = "PLAYGROUNDMANAGER"
                         },
                         new
                         {
-                            Id = "153ccfbe-96b0-419d-84dc-50d881495c4f",
-                            ConcurrencyStamp = "36809ab3-2045-4c49-9d59-d1cc8f631f1f",
+                            Id = "96462a58-5e3d-4f93-97f9-658fd0a022f4",
+                            ConcurrencyStamp = "8621c9ef-4ffb-4525-a0e9-eabdb70211e1",
                             Name = "GymManager",
                             NormalizedName = "GYMMANAGER"
                         },
                         new
                         {
-                            Id = "a60b1ed7-6933-4e9c-a822-58de8a71be5b",
-                            ConcurrencyStamp = "d42537ad-a7db-4a41-9030-59beac7b652e",
+                            Id = "0beb3e2e-276e-4049-a835-812214958d68",
+                            ConcurrencyStamp = "d510ba8f-087e-4b28-a310-08bc6e3c11de",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "b4ca9f60-81d7-43d2-81ab-a4fc7ba88ae1",
-                            ConcurrencyStamp = "ba3ac75d-7455-44a3-8299-8439ee88b752",
+                            Id = "f4ac22d9-06c9-46e5-bd5d-dce96d8891a6",
+                            ConcurrencyStamp = "8e4f1ac4-0fbe-445a-bafa-0fe2407a6291",
                             Name = "NormalUser",
                             NormalizedName = "NORMALUSER"
                         });
@@ -199,6 +199,9 @@ namespace SportDash.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<bool>("BallRenting")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -210,8 +213,17 @@ namespace SportDash.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("ForLadies")
+                        .HasColumnType("bit");
+
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LockerRoom")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -236,11 +248,20 @@ namespace SportDash.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("Safe")
+                        .HasColumnType("bit");
+
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SportType")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Toilet")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");

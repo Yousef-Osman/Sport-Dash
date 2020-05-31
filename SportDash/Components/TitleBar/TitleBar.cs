@@ -12,22 +12,28 @@ namespace SportDash.Components.TitleBar
 {
     public class TitleBar : ViewComponent
     {
-        private readonly IUserRepository _userRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IImageRepository _imageRepository;
 
-        public TitleBar(IUserRepository userRepository,
-                            UserManager<ApplicationUser> userManager)
+        public TitleBar(IImageRepository imageRepository)
         {
-            _userRepository = userRepository;
-            _userManager = userManager;
+            _imageRepository = imageRepository;
         }
 
-        public IViewComponentResult Invoke(string controllerName)
+        public IViewComponentResult Invoke(DataViewModel dataModel)
         {
-            var userId = _userManager.GetUserId(HttpContext.User);
-            var dataModel = new ClubViewModel();
-            dataModel.EntityName = _userRepository.GetFullName(userId);
-            dataModel.ControllerName = controllerName;
+            string userId = null;
+
+            if (dataModel.Entity != null)
+            {
+                userId = dataModel.Entity.Id;
+            }
+            else if (dataModel.Entity == null)
+            {
+                userId = dataModel.CurrentUser.Id;
+                dataModel.Entity = dataModel.CurrentUser;
+            }
+
+            dataModel.Images = _imageRepository.GetImages(userId);
 
             return View("/Components/TitleBar/TitleBar.cshtml", dataModel);
         }

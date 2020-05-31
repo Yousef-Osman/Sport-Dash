@@ -55,8 +55,6 @@ namespace SportDash
                 options.AddPolicy("CoachPolicy", policy => {policy.RequireRole("Coach");});
                 options.AddPolicy("NormalUserPolicy", policy => {policy.RequireRole("NormalUser");});
             });
-
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -14,23 +14,27 @@ namespace SportDash.Components.TitleBar
     public class ImageGallery:ViewComponent
     {
         private readonly IImageRepository _imageRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ImageGallery(IImageRepository imageRepository,
-                            UserManager<ApplicationUser> userManager)
+        public ImageGallery(IImageRepository imageRepository)
         {
             _imageRepository = imageRepository;
-            _userManager = userManager;
         }
 
-        public IViewComponentResult Invoke(string controllerName)
+        public IViewComponentResult Invoke(DataViewModel dataModel)
         {
-            var userId = _userManager.GetUserId(HttpContext.User);
-            var dataModel = new ClubViewModel();
-            var newImage = new Image();
+            string userId = null;
+
+            if (dataModel.Entity != null)
+            {
+                userId = dataModel.Entity.Id;
+            }
+            else if (dataModel.Entity == null)
+            {
+                userId = dataModel.CurrentUser.Id;
+                dataModel.Entity = dataModel.CurrentUser;
+            }
+
             dataModel.Images = _imageRepository.GetImages(userId);
-            dataModel.ControllerName = controllerName;
-            dataModel.Image = newImage;
             return View("/Components/ImageGallery/ImageGallery.cshtml", dataModel);
         }
     }
