@@ -15,6 +15,7 @@ namespace SportDash.Data
         public string FullName { get; set; }        
         public GamesCategory? SportType { get; set; }
         public string Location { get; set; }
+        public string Category { get; set; }
         public string Size { get; set; }
         public bool BallRenting { get; set; }
         public bool LockerRoom { get; set; }

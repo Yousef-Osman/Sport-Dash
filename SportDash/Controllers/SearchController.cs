@@ -35,7 +35,7 @@ namespace SportDash.Controllers
             // Use LINQ to get list of genres.
             //IQueryable<string> categoryQuery = _context.Users.Select(a => a.Category);
             //IQueryable<string> PriceQuery = _context.Users.Select(a => a.Email);
-            IQueryable<string> locationQuery = _context.Users.Select(a => a.Address);
+            IQueryable<string> locationQuery = _context.Users.Select(a => a.Location);
            // IQueryable<string> SportCategoryQuery = _context.Users.Select(a => a.FullName);
 
 
@@ -64,7 +64,7 @@ namespace SportDash.Controllers
 
 
 
-            var searchVM = new SearchViewModel();
+            var searchVM = new DataViewModel();
 
             searchVM.Category = new List<SelectListItem> 
             { 
@@ -103,9 +103,9 @@ namespace SportDash.Controllers
         [HttpGet]
         public IActionResult Search(string searchString)
         {
-            var newTrainers = trainers.Where(a=>a.FullName.Contains(searchString)||a.Address.Contains(searchString)||a.SportType.ToString().Contains(searchString)).Select(a => a.FullName);
-            var newPlaygrounds = playgrounds.Where(a =>a.FullName.Contains(searchString) || a.Address.Contains(searchString) || a.SportType.ToString().Contains(searchString)).Select(a => a.FullName);
-            var newGyms = gyms.Where(a => a.Category == "Gym" && a.FullName.Contains(searchString) || a.Address.Contains(searchString) || a.SportType.ToString().Contains(searchString)).Select(a => a.FullName);
+            var newTrainers = trainers.Where(a=>a.FullName.Contains(searchString)||a.Location.Contains(searchString)).Select(a => a.FullName).ToList();
+            var newPlaygrounds = playgrounds.Where(a =>a.FullName.Contains(searchString) || a.Location.Contains(searchString) ).Select(a => a.FullName).ToList();
+            var newGyms = gyms.Where(a => a.Category == "Gym" && a.FullName.Contains(searchString) || a.Location.Contains(searchString)).Select(a => a.FullName).ToList();
             var alldata = new List<string>();
             alldata.AddRange(newTrainers);
             alldata.AddRange(newPlaygrounds);
@@ -116,9 +116,9 @@ namespace SportDash.Controllers
         [HttpPost]
         public IActionResult SearchResult(string searchString)
         {
-            var newTrainers = trainers.Where(a => a.FullName.Contains(searchString) || a.Address.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
-            var newPlaygrounds = playgrounds.Where(a => a.FullName.Contains(searchString) || a.Address.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
-            var newGyms = gyms.Where(a => a.FullName.Contains(searchString) || a.Address.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
+            var newTrainers = trainers.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
+            var newPlaygrounds = playgrounds.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
+            var newGyms = gyms.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
             var alldata = new List<string>();
             return RedirectToAction(nameof(Index));
         }

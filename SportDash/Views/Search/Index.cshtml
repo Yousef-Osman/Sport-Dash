@@ -1,4 +1,4 @@
-﻿@model SportDash.ViewModels.SearchViewModel
+﻿@model SportDash.ViewModels.DataViewModel
 @{
     ViewData["Title"] = "Search";
 }
@@ -49,10 +49,10 @@
                     {
                         <div class="col-md-3">
                             <div class="card">
-                                <img src="~/images/seeandgreen202005231047266301.jpg" class="card-img-top" alt="...">
+                                <img src="~/images/01202005310546396911.jpeg" class="card-img-top" alt="...">
                                 <div class="card-body">
                                     <h5 class="card-title">@item.FullName</h5>
-                                    <p class="card-text">@item.Address</p>
+                                    <p class="card-text">@item.Location</p>
                                     @{var temp = item.PlaygroundPrices[0].Price;}
                                     @foreach (var i in item.PlaygroundPrices)
                                     {
@@ -78,7 +78,7 @@
                                 <img src="~/images/obl202005231057175364.jpg" class="card-img-top" alt="...">
                                 <div class="card-body">
                                     <h5 class="card-title">@item.FullName</h5>
-                                    <p class="card-text">@item.Address</p>
+                                    <p class="card-text">@item.Location</p>
                                     @{var temp1 = item.GymPrices[0].Subscribtion_Price;}
                                     @foreach (var i in item.GymPrices)
                                     {
@@ -101,10 +101,10 @@
                     {
                         <div class="col-md-3">
                             <div class="card">
-                                <img src="~/images/sun202005231049074096.jpg" class="card-img-top" alt="...">
+                                <img src="~/images/user-icon.jpg" class="card-img-top" alt="...">
                                 <div class="card-body">
                                     <h5 class="card-title">@item.FullName</h5>
-                                    <p class="card-text">@item.Address</p>
+                                    <p class="card-text">@item.Location</p>
                                     <span>@item.SportType.Value</span>
                                 </div>
                             </div>
