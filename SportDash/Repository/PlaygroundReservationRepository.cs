@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using SportDash.Data;
 using SportDash.Models;
 using System;
@@ -11,63 +12,106 @@ namespace SportDash.Repository
 {
     public class PlaygroundReservationRepository : IPlaygroundReservationRepository
     {
-        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ApplicationDbContext _DbContext;
 
-        public PlaygroundReservationRepository(ApplicationDbContext applicationDbContext)
+        public PlaygroundReservationRepository(ApplicationDbContext DbContext)
         {
-            _applicationDbContext = applicationDbContext ?? throw new ArgumentNullException(nameof(applicationDbContext));
+            _DbContext = DbContext;
         }
 
-        public async Task<bool> AddPlaygroundReservation(PlaygroundReservation playgroundReservation)
+        public bool Add(PlaygroundReservation playgroundReservation)
         {
-            PlaygroundReservation FoundplaygroundReservation = await _applicationDbContext.playgroundReservations.FindAsync(playgroundReservation.PlaygroundId);
-            if (FoundplaygroundReservation == null)
+            if (playgroundReservation != null && IsValid(playgroundReservation))
             {
-                await _applicationDbContext.playgroundReservations.AddAsync(playgroundReservation);
-                await _applicationDbContext.SaveChangesAsync();
+                _DbContext.playgroundReservations.Add(playgroundReservation);
+                _DbContext.SaveChanges();
                 return true;
             }
             else
             {
                 return false;
             }
-
         }
 
-        public async Task<PlaygroundReservation> GetOne(string id)
+        public List<PlaygroundReservation> GetUserReservations(string userId,string playgroundId)
         {
-            return await _applicationDbContext.playgroundReservations.FindAsync(id);
+            return _DbContext.playgroundReservations.Where(r=>r.UserId == userId && r.PlaygroundId == playgroundId).OrderBy(r=>r.StartTime).OrderBy(r => r.Date).ToList();
         }
 
-        public async Task<List<PlaygroundReservation>> GetAll()
+        public List<PlaygroundReservation> GetAll(string id)
         {
-            return await _applicationDbContext.playgroundReservations.ToListAsync();
+            return _DbContext.playgroundReservations.Where(r=>r.PlaygroundId==id && r.Status=="Accepted").OrderBy(r => r.StartTime).OrderBy(r => r.Date).ToList();
         }
 
-
-        public bool RemovePlaygroundReservation(string id)
+        public  List<PlaygroundReservation> GetRequests(string id)
         {
-            PlaygroundReservation playgroundReservation = _applicationDbContext.playgroundReservations.Find(id);
+            return _DbContext.playgroundReservations.Where(r=>r.PlaygroundId==id && r.Status=="Waiting").OrderBy(r => r.StartTime).OrderBy(r => r.Date).ToList();
+        }
+
+        public bool AcceptReservation(int id)
+        {
+            var reservation = _DbContext.playgroundReservations.Find(id);
+            if (IsValid(reservation))
+            {
+                reservation.Status = "Accepted";
+                _DbContext.Entry<PlaygroundReservation>(reservation).State = EntityState.Modified;
+                _DbContext.SaveChanges();
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public bool RefuseReservation(int id)
+        {
+            return Delete(id);
+        }
+
+        public string GetUsername(string id)
+        {
+            return _DbContext.playgroundReservations.Include("ApplicationUser").Where(r => r.UserId == id).Select(r => r.User.UserName).FirstOrDefault();
+        }
+
+        public bool Delete(int id)
+        {
+            PlaygroundReservation playgroundReservation = _DbContext.playgroundReservations.Find(id);
             if (playgroundReservation != null)
             {
-                _applicationDbContext.playgroundReservations.Remove(playgroundReservation);
-                _applicationDbContext.SaveChanges();
+                _DbContext.playgroundReservations.Remove(playgroundReservation);
+                _DbContext.SaveChanges();
                 return true;
             }
             return false;
         }
 
-        public bool UpdatePlaygroundReservation(PlaygroundReservation NewplaygroundReservation, string id)
+        public List<PlaygroundReservation> GetReservationsByMonth(string id, int month)
         {
-            PlaygroundReservation foundplaygroundReservation = _applicationDbContext.playgroundReservations.Find(id);
-            if (foundplaygroundReservation != null)
+            return _DbContext.playgroundReservations.Where(r => r.PlaygroundId == id && r.Date.Month== month && r.Status == "Accepted").OrderBy(r => r.Date).OrderBy(r => r.StartTime).ToList();
+        }
+
+        public List<PlaygroundReservation> GetReservationsByDay(string id, int day,int month,int year)
+        {
+            return _DbContext.playgroundReservations.Include(r=>r.User).Where(r => r.PlaygroundId == id && r.Date.Day == day && r.Date.Month==month && r.Date.Year == year && r.Status == "Accepted").OrderBy(r=>r.StartTime).ToList();
+        }
+
+        public List<PlaygroundReservation> GetReservationsByWeek(string id, int fromDay, int toDay)
+        {
+            return _DbContext.playgroundReservations.Where(r => r.PlaygroundId == id && r.Date.Day >= fromDay && r.Date.Day <= toDay && r.Status=="Accepted").OrderBy(r => r.Date).OrderBy(r => r.StartTime).ToList();
+        }
+
+        public bool IsValid(PlaygroundReservation reservation)
+        {
+            var allReservations = GetReservationsByDay(reservation.PlaygroundId, reservation.Date.Day, reservation.Date.Month,reservation.Date.Year);
+            bool flag = true;
+            foreach(var r in allReservations)
             {
-                foundplaygroundReservation = NewplaygroundReservation;
-                _applicationDbContext.playgroundReservations.Update(foundplaygroundReservation);
-                _applicationDbContext.SaveChanges();
-                return true;
+                if (reservation.StartTime >= r.StartTime && reservation.StartTime < r.EndTime)
+                {
+                    flag = false;
+                    break;
+                }
             }
-            return false;
+            return flag;
         }
     }
 }

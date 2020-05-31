@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportDash.Data;
 
 namespace SportDash.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200526213742_PlaygroundReservationTableUpdates")]
+    partial class PlaygroundReservationTableUpdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,36 +50,36 @@ namespace SportDash.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "57304d41-d054-4deb-9848-12efbbf415fe",
-                            ConcurrencyStamp = "3c3a330b-efaa-4367-be43-f0d1c04b62bf",
+                            Id = "167e3685-ec2e-491f-b398-ff62725a9ecf",
+                            ConcurrencyStamp = "a155bd5c-dc91-4e70-8028-cbec026755d6",
                             Name = "ClubManager",
                             NormalizedName = "CLUBMANAGER"
                         },
                         new
                         {
-                            Id = "de5a30eb-bddf-4c5f-bf21-9338edb417bc",
-                            ConcurrencyStamp = "9f751ca6-4d65-4828-8858-5d1288e5363c",
+                            Id = "cc232f7d-41d8-4aa1-b675-945423f08f69",
+                            ConcurrencyStamp = "74c253e4-16c1-4ef7-a42a-cc0a598f87e9",
                             Name = "PlaygroundManager",
                             NormalizedName = "PLAYGROUNDMANAGER"
                         },
                         new
                         {
-                            Id = "97a5d298-bb2b-48a3-903f-caf8645e0115",
-                            ConcurrencyStamp = "a3742b0e-2452-4e3b-9b94-eb791a9116a4",
+                            Id = "7f7c82c6-71b3-4954-9327-14356193a008",
+                            ConcurrencyStamp = "a9c0c140-d5fc-4dbb-80b2-2eda625713f8",
                             Name = "GymManager",
                             NormalizedName = "GYMMANAGER"
                         },
                         new
                         {
-                            Id = "1ae4637c-3fbb-4cc7-8b3c-c6d84d6465a6",
-                            ConcurrencyStamp = "4dabeb79-85be-42dc-a8bc-48bb82a737dd",
+                            Id = "ff2827f0-bd67-4a45-9e77-ccfd45165e1c",
+                            ConcurrencyStamp = "584dc2c8-bf83-4fbe-85f2-9302bfdceb4d",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "e721d796-97aa-4bc5-9dcb-93cfdaa1f05b",
-                            ConcurrencyStamp = "c9ece58a-ffa4-4164-a4ac-0d2444bf6094",
+                            Id = "3221a41d-0db0-413d-99cc-3d6615ec1898",
+                            ConcurrencyStamp = "e4c71c94-75aa-4665-b56c-111df69b0869",
                             Name = "NormalUser",
                             NormalizedName = "NORMALUSER"
                         });
@@ -413,41 +415,6 @@ namespace SportDash.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("playgroundReservations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateTime(2020, 5, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndTime = new TimeSpan(0, 8, 0, 0, 0),
-                            Name = "userA",
-                            PlaygroundId = "1dc196be-3c4b-435a-8eb5-fffb05ad8a66",
-                            StartTime = new TimeSpan(0, 6, 0, 0, 0),
-                            Status = "Waiting",
-                            UserId = "d209032e-026f-4d77-88eb-e8013acfc073"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Date = new DateTime(2020, 5, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndTime = new TimeSpan(0, 10, 0, 0, 0),
-                            Name = "userB",
-                            PlaygroundId = "1dc196be-3c4b-435a-8eb5-fffb05ad8a66",
-                            StartTime = new TimeSpan(0, 8, 0, 0, 0),
-                            Status = "Waiting",
-                            UserId = "d6c31671-bbab-493f-98ed-e79ace5fd968"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Date = new DateTime(2020, 5, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndTime = new TimeSpan(0, 10, 0, 0, 0),
-                            Name = "userC",
-                            PlaygroundId = "1dc196be-3c4b-435a-8eb5-fffb05ad8a66",
-                            StartTime = new TimeSpan(0, 8, 0, 0, 0),
-                            Status = "Waiting",
-                            UserId = "9419da5f-5e00-40bc-8c52-7f591822794f"
-                        });
                 });
 
             modelBuilder.Entity("SportDash.Models.Question", b =>

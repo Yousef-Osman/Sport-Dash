@@ -10,6 +10,9 @@ namespace SportDash.ViewModels
     {
         public string EntityName { get; set; }
         public IEnumerable<Image> Images { get; set; }
+        public IEnumerable<PlaygroundReservation> Reservations { get; set; }
+        public IEnumerable<PlaygroundReservation> Requests { get; set; }
+        public IEnumerable<PlaygroundReservation> AllReservations { get; set; }
         public Image Image { get; set; }
         public string ControllerName { get; set; }
     }

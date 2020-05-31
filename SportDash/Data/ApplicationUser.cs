@@ -22,5 +22,7 @@ namespace SportDash.Data
         public List<TrainingProgram> TrainingPrograms { get; set; }
         public List<GymPrices> GymPrices { get; set; }
         public List<Image> Images { get; set; }
+        public List<PlaygroundReservation> UserReservations { get; set; }
+        public List<PlaygroundReservation> Playgrounds { get; set; }
     }
 }

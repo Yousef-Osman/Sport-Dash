@@ -15,14 +15,17 @@ namespace SportDash.Controllers
         private readonly IImageRepository _imageRepository;
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IPlaygroundReservationRepository _reservationRepository;
 
         public ClubController(IImageRepository imageRepository,
                               IUserRepository userRepository,
-                            UserManager<ApplicationUser> userManager)
+                            UserManager<ApplicationUser> userManager,
+                            IPlaygroundReservationRepository reservationRepository)
         {
             _imageRepository = imageRepository;
             _userRepository = userRepository;
             _userManager = userManager;
+            _reservationRepository = reservationRepository;
         }
 
         public IActionResult Index()
@@ -51,6 +54,47 @@ namespace SportDash.Controllers
         {
             await _imageRepository.DeleteImage(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult DeleteReservation(int id)
+        {
+            _reservationRepository.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult AcceptReservation(int id)
+        {
+            _reservationRepository.AcceptReservation(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult AddReservation(PlaygroundReservation reservation)
+        {
+            bool res = true;
+            if (ModelState.IsValid)
+            {
+                reservation.PlaygroundId = _userManager.GetUserId(HttpContext.User);
+                res = _reservationRepository.Add(reservation);
+            }
+            if (res)
+                return RedirectToAction(nameof(Index));
+            else
+                return BadRequest(new BadRequestObjectResult("There is another reservation at the same time, Please change your reservation time."));
+        }
+
+        [HttpPost]
+        public IActionResult SearchByDate(DateTime date)
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var data = _reservationRepository.GetReservationsByDay(userId, date.Day, date.Month, date.Year);
+            
+            if (data != null)
+                return Ok(new JsonResult(data));
+            else
+                return NotFound(new NotFoundObjectResult("There is no reservations"));
         }
     }
 }
