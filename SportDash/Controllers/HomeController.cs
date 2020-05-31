@@ -10,20 +10,22 @@ using SportDash.Repository;
 using Microsoft.AspNetCore.Identity;
 using SportDash.Data;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Features;
+using SportDash.API;
 
 namespace SportDash.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;        
+        private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;            
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
+            TempData["baseUrl"] = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Request.PathBase);
             return View();
         }
 
@@ -36,7 +38,11 @@ namespace SportDash.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }        
+        }
+
         
+
+
+
     }
 }

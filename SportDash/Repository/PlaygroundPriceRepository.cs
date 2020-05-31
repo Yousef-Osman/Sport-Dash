@@ -1,4 +1,5 @@
-﻿using SportDash.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SportDash.Data;
 using SportDash.Models;
 using System;
 using System.Collections.Generic;
@@ -16,26 +17,44 @@ namespace SportDash.Repository
             _applicationDbContext = applicationDbContext ?? throw new ArgumentNullException(nameof(applicationDbContext));
         }
 
-        public bool AddPlaygroundPrice(PlaygroundPrice NewplaygroundPrice)
+        public int AddPlaygroundPrice(PlaygroundPrice NewPlaygroundPrice)
         {
-            PlaygroundPrice FoundplaygroundPrice = _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.PlaygroundId == NewplaygroundPrice.PlaygroundId && playgroundprice.Start == NewplaygroundPrice.Start && playgroundprice.End == NewplaygroundPrice.End).FirstOrDefault();
-            if (FoundplaygroundPrice == null)
-            {
-                _applicationDbContext.playgroundPrices.Add(NewplaygroundPrice);
+            //PlaygroundPrice FoundplaygroundPrice = SearchPlaygroundPrice(NewPlaygroundPrice);
+            //if (FoundplaygroundPrice == null)
+            //{
+            //try
+            //{
+                _applicationDbContext.playgroundPrices.Add(NewPlaygroundPrice);
                 _applicationDbContext.SaveChanges();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+                return NewPlaygroundPrice.Id;
+
+            //}
+            //catch (Exception)
+            //{
+            //    return false;
+            //}
+            
+
+            //}
+            //else
+            //{
+            //    return false;
+            //}
         }
 
-        public PlaygroundPrice GetOne(string playgroundId, TimeSpan start, TimeSpan end)
+        private PlaygroundPrice SearchPlaygroundPrice(int Id)
         {
-            PlaygroundPrice playgroundPrice = _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.PlaygroundId == playgroundId && playgroundprice.Start == start && playgroundprice.End == end).FirstOrDefault();
-            return playgroundPrice;
+            //return _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.PlaygroundId == NewplaygroundPrice.PlaygroundId && playgroundprice.Start == NewplaygroundPrice.Start && playgroundprice.End == NewplaygroundPrice.End).FirstOrDefault();
+            return _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.Id == Id).FirstOrDefault();
+
         }
+
+        //public PlaygroundPrice GetOne(string Id)
+        //{
+        //    //PlaygroundPrice playgroundPrice = _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.PlaygroundId == playgroundId && playgroundprice.Start == start && playgroundprice.End == end).FirstOrDefault();
+        //    PlaygroundPrice playgroundPrice = _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.Id == Id).FirstOrDefault();
+        //    return playgroundPrice;
+        //}
         public List<PlaygroundPrice> GetAPlaygroundPrices(string playgroundId)
         {
             List<PlaygroundPrice> playground_Prices = _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.PlaygroundId == playgroundId).ToList();
@@ -47,7 +66,7 @@ namespace SportDash.Repository
             return _applicationDbContext.playgroundPrices.ToList();
         }
 
-        public bool DeletePlaygroundPrice(string id)
+        public bool DeletePlaygroundPrice(int id)
         {
             PlaygroundPrice FoundplaygroundPrice = _applicationDbContext.playgroundPrices.Find(id);
 
@@ -55,22 +74,33 @@ namespace SportDash.Repository
             {
                 _applicationDbContext.playgroundPrices.Remove(FoundplaygroundPrice);
                 _applicationDbContext.SaveChanges();
+
                 return true;
             }
             return false;
         }
-        public bool UpdatePlaygroundPrice(PlaygroundPrice playgroundPrice, string id)
+        public bool UpdatePlaygroundPrice(int Id,PlaygroundPrice newPlaygroundPrice)
         {
-            PlaygroundPrice FoundplaygroundPrice = _applicationDbContext.playgroundPrices.Find(id);
-
+            PlaygroundPrice FoundplaygroundPrice = SearchPlaygroundPrice(Id);
             if (FoundplaygroundPrice != null)
             {
-                FoundplaygroundPrice = playgroundPrice;
-                _applicationDbContext.playgroundPrices.Update(FoundplaygroundPrice);
+                FoundplaygroundPrice.Price = newPlaygroundPrice.Price;
+                FoundplaygroundPrice.Start = newPlaygroundPrice.Start;
+                FoundplaygroundPrice.End = newPlaygroundPrice.End;
+
+                //_applicationDbContext.playgroundPrices.Update(FoundplaygroundPrice);
+                _applicationDbContext.Entry(FoundplaygroundPrice).State = EntityState.Modified;
+                //_applicationDbContext.Attach(newPlaygroundPrice);
                 _applicationDbContext.SaveChanges();
                 return true;
             }
             return false;
+        }
+
+        public List<PlaygroundPrice> GetByPlayground(string playgroundId)
+        {
+            return _applicationDbContext.playgroundPrices.Where(
+                playgroundprice => playgroundprice.PlaygroundId == playgroundId).ToList();
         }
     }
 }

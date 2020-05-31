@@ -18,6 +18,11 @@ namespace SportDash.Repository
             _applicationDbContext = applicationDbContext ?? throw new ArgumentNullException(nameof(applicationDbContext));
         }
 
+        public async Task<List<PlaygroundReservation>> GetByPlayground(string id)
+        {
+            return await _applicationDbContext.playgroundReservations.Where(
+                playgroundRes => playgroundRes.PlaygroundId == id).ToListAsync();
+        }
         public async Task<bool> AddPlaygroundReservation(PlaygroundReservation playgroundReservation)
         {
             PlaygroundReservation FoundplaygroundReservation = await _applicationDbContext.playgroundReservations.FindAsync(playgroundReservation.PlaygroundId);

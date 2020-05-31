@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace SportDash.Repository
 {
-    interface IPlaygroundPriceRepository
+    public interface IPlaygroundPriceRepository
     {
-        public PlaygroundPrice GetOne(string playgroundId, TimeSpan start, TimeSpan end);
+        //public PlaygroundPrice GetOne(string playgroundId, TimeSpan start, TimeSpan end);
+        //public PlaygroundPrice GetOne(string Id);
+
         public List<PlaygroundPrice> GetAPlaygroundPrices(string playgroundId);
+        public List<PlaygroundPrice> GetByPlayground(string playgroundId);
         public List<PlaygroundPrice> GetAll();
-        public bool AddPlaygroundPrice(PlaygroundPrice playgroundPrice);
-        public bool UpdatePlaygroundPrice(PlaygroundPrice playgroundPrice, string id);
-        public bool DeletePlaygroundPrice(string id);
+        public int AddPlaygroundPrice(PlaygroundPrice playgroundPrice);
+        public bool UpdatePlaygroundPrice(int Id, PlaygroundPrice oldPlaygroundPrice);
+        public bool DeletePlaygroundPrice(int id);
     }
 }

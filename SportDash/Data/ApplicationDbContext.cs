@@ -25,13 +25,12 @@ namespace SportDash.Data
 
         public DbSet<PlaygroundPrice> playgroundPrices { get; set; }
         public DbSet<PlaygroundReservation> playgroundReservations { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<PlaygroundPrice>()
-                .HasKey(p => new { p.PlaygroundId, p.Start, p.End });
-            
+            //builder.Entity<PlaygroundPrice>().HasKey(p => new { p.PlaygroundId, p.Start, p.End });
+
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "ClubManager", NormalizedName = "CLUBMANAGER" });
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "PlaygroundManager", NormalizedName = "PLAYGROUNDMANAGER" });
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "GymManager", NormalizedName = "GYMMANAGER" });

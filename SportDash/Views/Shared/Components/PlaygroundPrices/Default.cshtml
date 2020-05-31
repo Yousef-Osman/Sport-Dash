@@ -1,0 +1,381 @@
+﻿@model IEnumerable<SportDash.Models.PlaygroundPrice>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Default</title>
+
+</head>
+<body>
+
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <div id="Prices_Section" class="container lightSection ">
+        @{int i = 0;}
+        @foreach (var item in Model)
+        {
+            <div class="row separator">
+                <div id="row_@i" p="9" class="row col-12 col-lg-6 mx-0 px-0">
+                    <div class="col-1 ">
+                    </div>
+                    <div id="@(item.PlaygroundId)" class="col-10 prices rounded row prices py-3 d-flex ">
+
+                        <div class="col-2 h-75 align-self-center">
+                            <p>From</p>
+                        </div>
+                        <div class="col-3 h-75 Time rounded align-self-center">
+                            <p id="from_@i">@item.Start</p>
+                        </div>
+                        <div class="col-1 h-75 px-0 align-self-center">
+                            <p class="text-center">To</p>
+                        </div>
+                        <div class="col-3 h-75 Time rounded align-self-center">
+                            <p id="to_@i">@item.End</p>
+                        </div>
+                        <div class="col-3 h-75 align-self-center">
+                            <p id="price_@i">@item.Price L.E</p>
+                        </div>
+                    </div>
+                    <div class="col-1 ">
+                    </div>
+                </div>
+                @* Make buutons disapear if not admin *@
+                <div class="d-flex">
+
+                    <button id="Update_@i" class="align-self-center Time rounded op_button">Update</button>
+                    <button id="Delete_@i" class="align-self-center Time rounded op_button">Delete</button>
+                    <button id="Save_@i" class="d-none align-self-center Time rounded op_button">Save</button>
+                    <button id="Cancel_@i" class="d-none align-self-center Time rounded op_button">Cancel</button>
+                </div>
+                @{i++;}
+
+
+
+            </div>
+        }
+        <button id="Add" class="align-self-center Time rounded op_button">Add</button>
+        @* Increment id after adding *@
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" on-content-loaded="true">
+        /*
+        $('#edit-btn').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/Home/PutPlaygroundPrice/",
+                type: 'Post',
+                datatype: 'text',
+                data: { g: "dd" },
+                success: function () {
+                    //document.getElementById('entity-Name').innerHTML = newValue;
+                }
+            });
+        });*/
+    </script>
+
+    <script>
+
+        let last_id = @i;
+        let allow = true;
+        let from_id;
+        let to_id;
+        let price_id;
+        let currId;
+        let sourcearray = JSON.parse('@Html.Raw(Json.Serialize(Model.ToArray()))');
+        for (let x of sourcearray) {
+            console.log(x.playgroundId);
+            console.log(x.start);
+            console.log(x.end);
+            console.log(x.price);
+            //alert(x.playgroundId);
+        }
+
+
+        $(document).ready(() => {
+
+
+
+            function addListeners() {
+                let updateButtons = $('button[id^="Update_"]');
+                let deleteButtons = $('button[id^="Delete_"]');
+                let saveButtons = $('button[id^="Save_"]');
+                let cancelButtons = $('button[id^="Cancel_"]');
+                for (let item of updateButtons) {
+                    item.addEventListener("click", updateCallback);
+                }
+                for (let item of cancelButtons) {
+                    item.addEventListener("click", cancelCallback);
+                }
+                for (let item of deleteButtons) {
+                    item.addEventListener("click", deleteCallback);
+                }
+                for (let item of saveButtons) {
+                    item.addEventListener("click", saveCallback);
+                }
+                document.getElementById("Add").addEventListener("click", () => {
+                    //debugger;
+                    if (allow === true) {
+                        let NewRow = `<div class="row separator" >
+                <div id="row_${last_id}" class="row col-12 col-lg-6 mx-0 px-0">
+                    <div class="col-1 ">
+                    </div>
+                    <div class="col-10 prices rounded row prices py-3 d-flex ">
+                        <div class="col-2 h-75 align-self-center">
+                            <p>From</p>
+                        </div>
+                        <div class="col-3 h-75 Time rounded align-self-center">
+                            <input type='time' id="from_${last_id}">
+                        </div>
+                        <div class="col-1 h-75 px-0 align-self-center">
+                            <p class="text-center">To</p>
+                        </div>
+                        <div class="col-3 h-75 Time rounded align-self-center">
+                            <input type='time' id="to_${last_id}">
+                        </div>
+                        <div class="col-3 h-75 align-self-center">
+                            <input type='number' min='1' max='9999' size="4" id="price_${last_id}">
+                        </div>
+                    </div>
+                    <div class="col-1 ">
+                    </div>
+            </div>
+            <div class="d-flex">
+
+                    <button id="Update_${last_id}" class="d-none align-self-center Time rounded op_button">Update</button>
+                    <button id="Delete_${last_id}" class="d-none align-self-center Time rounded op_button">Delete</button>
+                    <button id="Save_${last_id}" class="align-self-center Time rounded op_button">Save</button>
+                    <button id="Cancel_${last_id}" class="align-self-center Time rounded op_button">Cancel</button>
+
+            </div>
+            </div>`;
+                        currId = last_id;
+                        document.getElementById("Prices_Section").innerHTML += NewRow;
+                        document.getElementById(`Update_${currId}`).addEventListener("click", updateCallback);
+                        document.getElementById(`Delete_${currId}`).addEventListener("click", deleteCallback);
+                        document.getElementById(`Save_${currId}`).addEventListener("click", addCallback);
+                        document.getElementById(`Cancel_${currId}`).addEventListener("click", cancelCallback);
+                        allow = false;
+                    }
+                    else {
+                        alert("Finish Other Operations First");
+                    }
+                });
+            }
+            addListeners();
+            function deleteCallback() {
+                debugger;
+                currId = getIds(this);
+                Manager.DeletePrice();
+            }
+            function cancelCallback() {
+                currId = getIds(this);
+                if (currId == last_id) {
+                    removeRow(last_id);
+                    addListeners();
+                    allow = true;
+                }
+                else {
+                    revertEditUI(currId, document.getElementById(`${from_id}`).value, document.getElementById(`${to_id}`).value, document.getElementById(`${price_id}`).value);
+                }
+
+            }
+            function removeRow(Target_id) {
+                let rowParent = document.getElementById(`row_${Target_id}`).parentElement;
+                rowParent.parentElement.removeChild(rowParent);
+            }
+
+
+            function updateCallback() {
+                //debugger;
+
+                if (allow === true) {
+                    currId = getIds(this);
+                    console.log(document.getElementById(`${from_id}`).innerText);
+                    toEditUI(currId, document.getElementById(`${from_id}`).innerText, document.getElementById(`${to_id}`).innerText, document.getElementById(`${price_id}`).innerText.slice(0, -4));
+                    allow = false;
+                }
+                else {
+                    alert("Not Allowed");
+                }
+            }
+
+
+
+
+            function saveCallback() {
+                console.log(sourcearray[currId].playgroundId);
+                //console.log(`${sourcearray[currId].start.hours}:${sourcearray[currId].start.minutes}`);
+                //console.log(`${sourcearray[currId].end.hours}:${sourcearray[currId].end.minutes}`);
+                //console.log(sourcearray[currId].price);
+                Manager.PutPrice();
+            }
+
+            function addCallback() {
+                Manager.PostPrice();
+            }
+
+            function getIds(item) {
+                id = getElementIdFrom(item.id, 7);
+                from_id = "from_" + id;
+                to_id = "to_" + id;
+                price_id = "price_" + id;
+                return id;
+            };
+
+            function getElementIdFrom(str, n) {
+                return str.substring(n);
+            };
+
+            function toEditUI(target_id, from_value = "", to_value = "", price_value = "") {
+            //debugger;
+            document.getElementById(`${from_id}`).parentElement.innerHTML = `<input type='time' id = "${from_id}" value="${from_value}">`;
+            document.getElementById(`${to_id}`).parentElement.innerHTML = `<input type='time' id = "${to_id}" value="${to_value}">`;
+            document.getElementById(`${price_id}`).parentElement.innerHTML = `<input type='number' min='1' max='9999' size="4" id = "${price_id}" value="${price_value}">`;//size doesn't work for chrome
+
+            document.getElementById(`row_${target_id}`).classList.remove("col-lg-6");
+            document.getElementById(`row_${target_id}`).classList.add("col-lg-9");
+
+            document.getElementById(`Update_${target_id}`).classList.add("d-none");
+            document.getElementById(`Delete_${target_id}`).classList.add("d-none");
+            document.getElementById(`Save_${target_id}`).classList.remove("d-none");
+            document.getElementById(`Cancel_${target_id}`).classList.remove("d-none");
+            allow = false;
+        }
+
+        function revertEditUI(target_id, from_value = "", to_value = "", price_value = "") {
+            document.getElementById(`from_${target_id}`).parentElement.innerHTajaxML = `<p id="from_${target_id}">${from_value}</p>`;
+            document.getElementById(`to_${target_id}`).parentElement.innerHTML = `<p id="to_${target_id}">${to_value}</p>`;
+            document.getElementById(`price_${target_id}`).parentElement.innerHTML = `<p id="price_${target_id}">${price_value} L.E</p>`;
+
+            document.getElementById(`row_${target_id}`).classList.remove("col-lg-9");
+            document.getElementById(`row_${target_id}`).classList.add("col-lg-6");
+
+            document.getElementById(`Update_${target_id}`).classList.remove("d-none");
+            document.getElementById(`Delete_${target_id}`).classList.remove("d-none");
+            document.getElementById(`Save_${target_id}`).classList.add("d-none");
+            document.getElementById(`Cancel_${target_id}`).classList.add("d-none");
+            allow = true;
+        }
+
+        var Manager = {
+
+            PutPrice: function () {
+                let obj = "";
+                let serviceURL = "@(TempData["baseUrl"])" + "/PlaygroundPrice/PutPlaygroundPrice/" /*+ sourcearray[currId].playgroundId*/;
+                let Data = {
+                    "Id": `${sourcearray[currId].id}`,
+                    "NewPlaygroundPrice": {
+                        "Id": `${sourcearray[currId].id}`,
+                        "playgroundId": `${sourcearray[currId].playgroundId}`,
+                        "Start": `${document.getElementById(from_id).value}`,
+                        "End": `${document.getElementById(to_id).value}`,
+                        "Price": `${document.getElementById(price_id).value}`
+                    }
+                };
+                Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
+                function onSuccess(jsonData) {
+                    alert("Successfully Updated");
+                    obj = jsonData;
+                    console.log(jsonData);
+                    revertEditUI(currId, document.getElementById(`${from_id}`).value, document.getElementById(`${to_id}`).value, document.getElementById(`${price_id}`).value);
+                }
+                function onFailed(error) {
+                    alert("Updating Failed");
+                    console.log(error);
+                }
+                return obj;
+            },
+
+            PostPrice: function () {
+                let obj = "";
+                let serviceURL = "@(TempData["baseUrl"])" + "/PlaygroundPrice/AddPlaygroundPrice/";
+                console.log(document.getElementById("from_"+currId).value);
+                let Data = {
+                    "NewPlaygroundPrice": {
+                        "playgroundId": `@TempData["playgroundId"]`,
+                        "Start": `${document.getElementById("from_"+currId).value}`,
+                        "End": `${document.getElementById("to_"+currId).value}`,
+                        "Price": `${document.getElementById("price_"+currId).value}`
+                    }
+                };
+                //debugger;
+                Manager.PostAPI(serviceURL, addsuccess, onFailed, Data);
+
+                function addsuccess(jsonData) {
+                    obj = jsonData;
+                    console.log(jsonData);
+                    console.log("Added Succcessfully");
+                    let from_value = document.getElementById(`from_${last_id}`).value + ":00";
+                    let to_value = document.getElementById(`to_${last_id}`).value+":00";
+                    let price_value = document.getElementById(`price_${last_id}`).value;
+                    console.log(from_value);
+                    console.log(to_value);
+                    console.log(price_value);
+                    revertEditUI(last_id, from_value, to_value, price_value);
+                    sourcearray.push({ id: jsonData.id, playgroundId: `@TempData["playgroundId"]`, start: from_value, end: to_value, price: price_value });
+                    let rowParent = document.getElementById(`row_${last_id}`).parentElement;
+
+                    //rowParent is row with separator class
+                    //rowParent.parentElemen is container
+                    rowParent = rowParent.parentElement.insertBefore(rowParent, document.getElementById("Add"));
+                    last_id++;
+                    addListeners();
+                    allow = true;
+                }
+
+
+                function onFailed(error) {
+                    alert("Addition Failed");
+                    removeRow(last_id);
+                    addListeners();
+                    console.log(error);
+                }
+
+                return obj;
+            },
+            DeletePrice: function () {
+                let obj = "";
+                let serviceURL = "@(TempData["baseUrl"])" + "/PlaygroundPrice/DeletePlaygroundPrice/";
+                console.log(sourcearray[currId].id);
+                let Data = {
+                    "Id": `${sourcearray[currId].id}`
+                };
+
+                Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
+
+                function onSuccess(jsonData) {
+                    alert("Deletion Successed");
+                    console.log(jsonData);
+                    removeRow(currId);
+                    allow = true;
+                }
+                function onFailed(error) {
+                    alert("Deletion Failed");
+                    console.log(error);
+                }
+
+                return obj;
+            },
+            PostAPI: function (serviceURL, successCallback, errorCallback, requestData) {
+                $.ajax({
+                    method: "POST",
+                    url: serviceURL,
+                    //dataType: 'json',
+                    success: successCallback,
+                    data: requestData,
+                    error: errorCallback
+                });
+            }
+
+        };
+        });
+    </script>
+</body>
+</html>

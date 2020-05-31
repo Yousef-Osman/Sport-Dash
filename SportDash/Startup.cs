@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SportDash.Repository;
+using Swashbuckle.Swagger;
 
 namespace SportDash
 {
@@ -35,6 +36,9 @@ namespace SportDash
             services.AddScoped<IGymPricesRepository, GymPricesRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IPlaygroundReservationRepository, PlaygroundReservationRepository>();
+            services.AddScoped<IPlaygroundPriceRepository, PlaygroundPriceRepository>();
+
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -55,7 +59,9 @@ namespace SportDash
                 options.AddPolicy("NormalUserPolicy", policy => {policy.RequireRole("NormalUser");});
             });
 
-            
+            //services.AddSwaggerGen(c => {
+            //    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo {  Title = "My API", Version = "v1" });
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

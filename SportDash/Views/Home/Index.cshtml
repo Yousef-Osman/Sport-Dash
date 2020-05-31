@@ -2,7 +2,10 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="text-center">
+        <h1 class="display-4">@TempData["baseUrl"]</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        @await Component.InvokeAsync("PlaygroundPrices", new { playgroundId = "1", baseUrl = TempData["baseUrl"] })
+
+        @*@await Component.InvokeAsync("Reservation", new { playgroundId = "1" })*@
+    </div>
