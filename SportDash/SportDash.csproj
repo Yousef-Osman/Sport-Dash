@@ -6,10 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\**" />
-    <Content Remove="Data\Migrations\**" />
-    <EmbeddedResource Remove="Data\Migrations\**" />
-    <None Remove="Data\Migrations\**" />
+    <Compile Remove="Data\Migrations\20200522082209_adding_ramy_enities.cs" />
+    <Compile Remove="Data\Migrations\20200522082209_adding_ramy_enities.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200521001203_images-and-seeding-roles.cs" />
+    <Compile Remove="Data\Migrations\20200521001203_images-and-seeding-roles.Designer.cs" />
+    <Compile Remove="Migrations\20200527040909_InsertDataToPlaygroundReservationTable.cs" />
+    <Compile Remove="Migrations\20200527040909_InsertDataToPlaygroundReservationTable.Designer.cs" />
+    <Compile Remove="Migrations\20200527053943_InsertDataToPlaygroundReservationTable.cs" />
+    <Compile Remove="Migrations\20200527053943_InsertDataToPlaygroundReservationTable.Designer.cs" />
   </ItemGroup>
 
 
@@ -17,6 +21,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4">

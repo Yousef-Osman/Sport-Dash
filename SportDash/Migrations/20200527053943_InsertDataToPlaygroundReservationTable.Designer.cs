@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportDash.Data;
 
 namespace SportDash.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200527053943_InsertDataToPlaygroundReservationTable")]
+    partial class InsertDataToPlaygroundReservationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,36 +50,36 @@ namespace SportDash.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "03cb44c9-ef5b-4a9b-a95a-0c210440502d",
-                            ConcurrencyStamp = "59382a6d-70be-4acf-9a1b-54996a5c9475",
+                            Id = "57304d41-d054-4deb-9848-12efbbf415fe",
+                            ConcurrencyStamp = "3c3a330b-efaa-4367-be43-f0d1c04b62bf",
                             Name = "ClubManager",
                             NormalizedName = "CLUBMANAGER"
                         },
                         new
                         {
-                            Id = "64d0a784-b499-496a-86db-1c52775c3c6c",
-                            ConcurrencyStamp = "df3edcf7-0163-4432-8386-97997a768517",
+                            Id = "de5a30eb-bddf-4c5f-bf21-9338edb417bc",
+                            ConcurrencyStamp = "9f751ca6-4d65-4828-8858-5d1288e5363c",
                             Name = "PlaygroundManager",
                             NormalizedName = "PLAYGROUNDMANAGER"
                         },
                         new
                         {
-                            Id = "50a28032-8568-4c25-8b23-d74f7a066905",
-                            ConcurrencyStamp = "3088c265-f1f3-4b01-817f-8a6ff9cdda42",
+                            Id = "97a5d298-bb2b-48a3-903f-caf8645e0115",
+                            ConcurrencyStamp = "a3742b0e-2452-4e3b-9b94-eb791a9116a4",
                             Name = "GymManager",
                             NormalizedName = "GYMMANAGER"
                         },
                         new
                         {
-                            Id = "6a800145-e73f-471c-b595-ba95e0c86ec0",
-                            ConcurrencyStamp = "95469846-f38a-4cc1-a01b-1fb295bcfe9d",
+                            Id = "1ae4637c-3fbb-4cc7-8b3c-c6d84d6465a6",
+                            ConcurrencyStamp = "4dabeb79-85be-42dc-a8bc-48bb82a737dd",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "2b2a4ac1-4cd7-4458-96a2-344d2a256dfe",
-                            ConcurrencyStamp = "5d76ba7c-39cb-41f7-8b25-9312794120e3",
+                            Id = "e721d796-97aa-4bc5-9dcb-93cfdaa1f05b",
+                            ConcurrencyStamp = "c9ece58a-ffa4-4164-a4ac-0d2444bf6094",
                             Name = "NormalUser",
                             NormalizedName = "NORMALUSER"
                         });
@@ -199,12 +201,6 @@ namespace SportDash.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<bool>("BallRenting")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -216,17 +212,8 @@ namespace SportDash.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("ForLadies")
-                        .HasColumnType("bit");
-
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("LockerRoom")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -251,20 +238,8 @@ namespace SportDash.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Safe")
-                        .HasColumnType("bit");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SportType")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Toilet")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -665,7 +640,7 @@ namespace SportDash.Migrations
             modelBuilder.Entity("SportDash.Models.PlaygroundPrice", b =>
                 {
                     b.HasOne("SportDash.Data.ApplicationUser", "Playground")
-                        .WithMany("PlaygroundPrices")
+                        .WithMany()
                         .HasForeignKey("PlaygroundId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

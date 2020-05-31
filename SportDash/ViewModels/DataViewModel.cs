@@ -18,7 +18,6 @@ namespace SportDash.ViewModels
 
         // Review View Model Properity
         public IEnumerable<Review> Reviews { get; set; } // +R
-        public ApplicationUser User { get; set; } // +R
         public Review Review { get; set; } // +R
 
         // Search View Model
@@ -35,5 +34,8 @@ namespace SportDash.ViewModels
         public string LocationString { get; set; }
         public string SportTypeString { get; set; }
 
+        public IEnumerable<PlaygroundReservation> Reservations { get; set; }
+        public IEnumerable<PlaygroundReservation> Requests { get; set; }
+        public IEnumerable<PlaygroundReservation> AllReservations { get; set; }
     }
 }
