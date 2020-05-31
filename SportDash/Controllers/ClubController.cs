@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
 using SportDash.Data;
 using SportDash.Models;
@@ -42,11 +44,15 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewImage(Image image)
+        public async Task<IActionResult> AddNewImage(IFormFile file)
         {
+            var image = new Image();
+            image.ImageFile = file;
             var userId = _userManager.GetUserId(HttpContext.User);
             await _imageRepository.CreateImage(image, userId);
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            //return ViewComponent("ImageGallery", new { controllerName = "Club" });
+            return Ok();
         }
 
         [HttpPost]
@@ -96,5 +102,21 @@ namespace SportDash.Controllers
             else
                 return NotFound(new NotFoundObjectResult("There is no reservations"));
         }
+
+        // Club Actions
+        //[HttpPost]
+        //public async Task<IActionResult> AssignPlayground(string playgroundId)
+        //{
+        //    string clubId = _userManager.GetUserId(HttpContext.User);
+        //    await _playgroundRepository.AssignPlaygroundToClub(playgroundId, clubId);
+        //    return Ok("Done");
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> RemovePlayground(string playgroundId)
+        //{
+        //    await _playgroundRepository.RemovePlaygroundFromClub(playgroundId);
+        //    return Ok("Done");
+        //}
     }
 }

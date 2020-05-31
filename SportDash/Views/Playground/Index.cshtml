@@ -1,0 +1,7 @@
+﻿@model SportDash.ViewModels.DataViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+@await Component.InvokeAsync("TitleBar", new { dataModel = Model })
+@await Component.InvokeAsync("ImageGallery", new { dataModel = Model })
