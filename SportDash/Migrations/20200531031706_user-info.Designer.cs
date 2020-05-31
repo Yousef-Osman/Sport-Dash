@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportDash.Data;
 
 namespace SportDash.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200531031706_user-info")]
+    partial class userinfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -404,16 +406,14 @@ namespace SportDash.Migrations
 
             modelBuilder.Entity("SportDash.Models.PlaygroundReservation", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("PlaygroundReservationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("time");
+                    b.Property<bool>("IsOccubied")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -421,57 +421,11 @@ namespace SportDash.Migrations
                     b.Property<string>("PlaygroundId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
+                    b.HasKey("PlaygroundReservationId");
 
                     b.HasIndex("PlaygroundId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("playgroundReservations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateTime(2020, 5, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndTime = new TimeSpan(0, 8, 0, 0, 0),
-                            Name = "userA",
-                            PlaygroundId = "1dc196be-3c4b-435a-8eb5-fffb05ad8a66",
-                            StartTime = new TimeSpan(0, 6, 0, 0, 0),
-                            Status = "Waiting",
-                            UserId = "d209032e-026f-4d77-88eb-e8013acfc073"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Date = new DateTime(2020, 5, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndTime = new TimeSpan(0, 10, 0, 0, 0),
-                            Name = "userB",
-                            PlaygroundId = "1dc196be-3c4b-435a-8eb5-fffb05ad8a66",
-                            StartTime = new TimeSpan(0, 8, 0, 0, 0),
-                            Status = "Waiting",
-                            UserId = "d6c31671-bbab-493f-98ed-e79ace5fd968"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Date = new DateTime(2020, 5, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndTime = new TimeSpan(0, 10, 0, 0, 0),
-                            Name = "userC",
-                            PlaygroundId = "1dc196be-3c4b-435a-8eb5-fffb05ad8a66",
-                            StartTime = new TimeSpan(0, 8, 0, 0, 0),
-                            Status = "Waiting",
-                            UserId = "9419da5f-5e00-40bc-8c52-7f591822794f"
-                        });
                 });
 
             modelBuilder.Entity("SportDash.Models.Question", b =>
@@ -671,12 +625,8 @@ namespace SportDash.Migrations
             modelBuilder.Entity("SportDash.Models.PlaygroundReservation", b =>
                 {
                     b.HasOne("SportDash.Data.ApplicationUser", "Playground")
-                        .WithMany("Playgrounds")
+                        .WithMany()
                         .HasForeignKey("PlaygroundId");
-
-                    b.HasOne("SportDash.Data.ApplicationUser", "User")
-                        .WithMany("UserReservations")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("SportDash.Models.Question", b =>

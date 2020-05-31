@@ -3,15 +3,24 @@ using Microsoft.EntityFrameworkCore;
 using SportDash.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SportDash.Data
-{
+{    
     public class ApplicationUser : IdentityUser
     {
         [PersonalData]
-        public string FullName { get; set; }
+        public string FullName { get; set; }        
+        public GamesCategory? SportType { get; set; }
+        public string Location { get; set; }
+        public string Size { get; set; }
+        public bool BallRenting { get; set; }
+        public bool LockerRoom { get; set; }
+        public bool Safe { get; set; }
+        public bool Toilet { get; set; }
+        public bool ForLadies { get; set; }
 
         public List<Question> Questions { get; set; }
         public List<Comment> Comments { get; set; }
@@ -22,5 +31,7 @@ namespace SportDash.Data
         public List<TrainingProgram> TrainingPrograms { get; set; }
         public List<GymPrices> GymPrices { get; set; }
         public List<Image> Images { get; set; }
+        public List<PlaygroundReservation> UserReservations { get; set; }
+        public List<PlaygroundReservation> Playgrounds { get; set; }
     }
 }

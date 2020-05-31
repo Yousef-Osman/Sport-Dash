@@ -1,0 +1,107 @@
+﻿@model SportDash.ViewModels.DataViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!-- Display Section -->
+<div class="container d-flex flex-wrap mt-3">
+    @foreach (var item in Model.Images)
+    {
+        <div class="col-lg-3 col-md-4 mt-1" style="padding:1px !important">
+            <img class="gallery-image" src="@("/images/" + item.Title)" asp-append-version="true">
+            @if (Model.isCurrentUser == true)
+            {
+                <button type="button" class="btn btn-danger mt-1 btn-full-width" data-toggle="modal" data-target="#delete-Modal" onclick="deleteImage(@item.Id)">Delete</button>
+            }
+        </div>
+    }
+</div>
+<div class="container">
+    @if (Model.isCurrentUser == true)
+    {
+        <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#addModal">Add Image</button>
+    }
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="delete-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you want to delete this image</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="delete-btn">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" accept="image/*" id="new-image" required>
+                    <label class="custom-file-label" for="validatedCustomFile">Upload an Image...</label>
+                    @*<div class="invalid-feedback">Required</div>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="add-btn">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" on-content-loaded="true">
+    $('#add-btn').click(function (e) {
+        e.preventDefault();
+
+        var formData = new FormData();
+        let newImage = $('#new-image')[0].files[0];
+        formData.append('file', newImage);
+
+        $.ajax({
+            url: '/@Model.ControllerName/AddNewImage',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                console.log("working");
+                //$("#display-images").html(result);
+                location.reload(true);
+            }
+        });
+    });
+
+    function deleteImage(imageId) {
+
+        var deleteBtn = document.getElementById('delete-btn');
+        deleteBtn.onclick = function remove() {
+            $.ajax({
+                url: '/@Model.ControllerName/DeleteImage',
+                type: 'POST',
+                datatype: 'text',
+                data: { id: imageId },
+                success: function () {
+                    location.reload(true);
+                }
+            });
+        }
+    }
+</script>
+

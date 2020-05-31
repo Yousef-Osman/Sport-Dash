@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SportDash.Migrations
 {
-    public partial class rebuilddatabase : Migration
+    public partial class updateddatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,8 @@ namespace SportDash.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FullName = table.Column<string>(nullable: true)
+                    FullName = table.Column<string>(nullable: true),
+                    SportType = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -373,11 +374,11 @@ namespace SportDash.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "3a73a0f5-7b10-4b74-9930-ab7b1aee16ec", "81ee5c2c-fa88-433f-9d64-cc05006bb3b7", "ClubManager", "CLUBMANAGER" },
-                    { "abe31908-e47a-4fb3-8768-9b112bd60c45", "e898c6e6-7311-41a0-8c63-b9f5dade7db2", "PlaygroundManager", "PLAYGROUNDMANAGER" },
-                    { "9af8ade6-0053-4d76-b51b-126c351bd667", "af6af67f-52a5-48c1-a27a-f8a8a9c715bb", "GymManager", "GYMMANAGER" },
-                    { "2c46daf6-9483-47cc-abdc-769521e7c133", "2b8e2b2c-d381-4ed6-bfc1-e335cd4f53f6", "Coach", "COACH" },
-                    { "e4a787d9-9f29-427d-83f5-7c36bf1f6fae", "17b9d139-5e3b-4516-a926-a29740c1954a", "NormalUser", "NORMALUSER" }
+                    { "8f405d76-9a9a-4565-8cbd-ed4485bd01df", "4944baff-0234-4575-aaf5-8f835aa8ae8f", "ClubManager", "CLUBMANAGER" },
+                    { "d58a04d4-6492-4264-b1ff-8db089f6f88b", "4aa4904c-a997-4e7a-b586-6692aec5c24c", "PlaygroundManager", "PLAYGROUNDMANAGER" },
+                    { "09265aa1-3ccc-466c-b969-46021c929eac", "616f24a6-6971-457b-a221-a88c20cf531e", "GymManager", "GYMMANAGER" },
+                    { "ea763756-0bf9-4973-ae45-c11b5b6719cb", "259f8243-47bd-4f7d-a2af-b75c9a59bfec", "Coach", "COACH" },
+                    { "a4a16da7-5f0c-40b4-b97c-4c1523e5410c", "a9205d02-6525-422e-a38b-a28ee9fb9f69", "NormalUser", "NORMALUSER" }
                 });
 
             migrationBuilder.CreateIndex(

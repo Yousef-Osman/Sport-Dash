@@ -32,7 +32,7 @@ namespace SportDash.Repository
             return image;
         }
 
-        public async Task CreateImage(Image image)
+        public async Task CreateImage(Image image, string id)
         {
             string wwwroot = _hostEnvironment.WebRootPath;
             string fileName = Path.GetFileNameWithoutExtension(image.ImageFile.FileName);
@@ -43,7 +43,7 @@ namespace SportDash.Repository
             {
                 await image.ImageFile.CopyToAsync(fileStram);
             }
-            Console.WriteLine(DateTime.Now.ToString());
+            image.UserId = id;
 
             _context.Add(image);
             await _context.SaveChangesAsync();

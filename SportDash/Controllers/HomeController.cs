@@ -16,17 +16,22 @@ namespace SportDash.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
+        private readonly ILogger<HomeController> _logger;        
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+                              ApplicationDbContext context)
         {
-            _logger = logger;
+            _context = context;
+            _logger = logger;            
         }
 
         public IActionResult Index()
         {
-            TempData["baseUrl"] = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Request.PathBase);
-            return View();
+            var entities = _context.Users.ToList();
+            return View(entities);
+            //TempData["baseUrl"] = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Request.PathBase);
+            //return View();
         }
 
         public IActionResult Privacy()
