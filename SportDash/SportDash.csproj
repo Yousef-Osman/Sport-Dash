@@ -12,6 +12,8 @@
     <Compile Remove="Data\Migrations\20200521001203_images-and-seeding-roles.Designer.cs" />
     <Compile Remove="Migrations\20200527040909_InsertDataToPlaygroundReservationTable.cs" />
     <Compile Remove="Migrations\20200527040909_InsertDataToPlaygroundReservationTable.Designer.cs" />
+    <Compile Remove="Migrations\20200527053943_InsertDataToPlaygroundReservationTable.cs" />
+    <Compile Remove="Migrations\20200527053943_InsertDataToPlaygroundReservationTable.Designer.cs" />
   </ItemGroup>
 
 

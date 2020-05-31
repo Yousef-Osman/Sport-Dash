@@ -59,7 +59,8 @@ namespace SportDash.Controllers
         public async Task<IActionResult> DeleteImage(int id)
         {
             await _imageRepository.DeleteImage(id);
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return Ok();
         }
 
         [HttpPost]

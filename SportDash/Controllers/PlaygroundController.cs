@@ -20,18 +20,21 @@ namespace SportDash.Controllers
         private readonly IAuthorizationService _authorizationService;
         private readonly IUserRepository _userRepository;
         private readonly IImageRepository _imageRepository;
+        private readonly IPlaygroundReservationRepository _reservationRepository;
 
         public PlaygroundController(UserManager<ApplicationUser> userManager,
                                     SignInManager<ApplicationUser> signInManager,
                                     IAuthorizationService authorizationService,
                                     IUserRepository userRepository,
-                                    IImageRepository imageRepository)
+                                    IImageRepository imageRepository,
+                                    IPlaygroundReservationRepository reservationRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authorizationService = authorizationService;
             _userRepository = userRepository;
             _imageRepository = imageRepository;
+            _reservationRepository = reservationRepository;
         }
 
         //[HttpPost]
@@ -91,6 +94,48 @@ namespace SportDash.Controllers
         {
             await _imageRepository.DeleteImage(id);
             return Ok();
+        }
+        [HttpPost]
+        [Authorize(Policy = "PlaygroundPolicy")]
+        public IActionResult DeleteReservation(int id)
+        {
+            _reservationRepository.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "PlaygroundPolicy")]
+        public IActionResult AcceptReservation(int id)
+        {
+            _reservationRepository.AcceptReservation(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult AddReservation(PlaygroundReservation reservation)
+        {
+            bool res = true;
+            if (ModelState.IsValid)
+            {
+                reservation.PlaygroundId = _userManager.GetUserId(HttpContext.User);
+                res = _reservationRepository.Add(reservation);
+            }
+            if (res)
+                return RedirectToAction(nameof(Index));
+            else
+                return BadRequest(new BadRequestObjectResult("There is another reservation at the same time, Please change your reservation time."));
+        }
+
+        [HttpPost]
+        public IActionResult SearchByDate(DateTime date)
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var data = _reservationRepository.GetReservationsByDay(userId, date.Day, date.Month, date.Year);
+
+            if (data != null)
+                return Ok(new JsonResult(data));
+            else
+                return NotFound(new NotFoundObjectResult("There is no reservations"));
         }
     }
 }

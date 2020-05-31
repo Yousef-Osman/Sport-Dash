@@ -20,11 +20,19 @@ namespace SportDash.Components.Reservation
             _repository = repository;
             _userManager = userManager;
         }
-        public IViewComponentResult Invoke(string controllerName)
+        public IViewComponentResult Invoke(DataViewModel dataModel)
         {
-            var userId = _userManager.GetUserId(HttpContext.User);
-            var dataModel = new ClubViewModel();
-            dataModel.ControllerName = controllerName;
+            string userId = null;
+
+            if (dataModel.Entity != null)
+            {
+                userId = dataModel.Entity.Id;
+            }
+            else if (dataModel.Entity == null)
+            {
+                userId = dataModel.CurrentUser.Id;
+                dataModel.Entity = dataModel.CurrentUser;
+            }
             var requests = _repository.GetRequests(userId);
             var todayReservations = _repository.GetReservationsByDay(userId, DateTime.Now.Day,DateTime.Now.Month,DateTime.Now.Year);
             var allReservations = _repository.GetAll(userId);
