@@ -20,21 +20,22 @@ namespace SportDash.Components.AvailableSports
             this.userManager = userManager;
         }
 
-        //public IViewComponentResult Invoke()
-        //{
-        //    var user = userManager.GetUserId(HttpContext.User);
-        //    List<SelectListItem> allPlaygrounds = new List<SelectListItem>();
-            
-        //    foreach(var playground in playgroundRepository.GetAll())
-        //    {
-        //        allPlaygrounds.Add(new SelectListItem(playground.FullName, playground.Id));
-        //    }
-        //    var clubModel = new ClubViewModel
-        //    {
-        //        AllPlaygrounds = allPlaygrounds,
-        //        PlaygroundsOfClub = playgroundRepository.GetPlaygroundsOfClub(user)
-        //    };
-        //    return View("/Components/AvailablePlaygrounds/AvailablePlaygrounds.cshtml", clubModel);
-        //}
+        public IViewComponentResult Invoke()
+        {
+            //var user = userManager.GetUserId(HttpContext.User);
+            //List<SelectListItem> allPlaygrounds = new List<SelectListItem>();
+
+            //foreach (var playground in playgroundRepository.GetAll())
+            //{
+            //    allPlaygrounds.Add(new SelectListItem(playground.FullName, playground.Id));
+            //}
+            //var clubModel = new ClubViewModel
+            //{
+            //    AllPlaygrounds = allPlaygrounds,
+            //    PlaygroundsOfClub = playgroundRepository.GetPlaygroundsOfClub(user)
+            //};
+            //return View("/Components/AvailablePlaygrounds/AvailablePlaygrounds.cshtml", clubModel);
+            return View("/Components/AvailablePlaygrounds/AvailablePlaygrounds.cshtml");
+        }
     }
 }

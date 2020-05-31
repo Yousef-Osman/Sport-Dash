@@ -15,16 +15,20 @@ namespace SportDash.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<HomeController> _logger;        
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+                              ApplicationDbContext context)
         {
+            _context = context;
             _logger = logger;            
         }
 
         public IActionResult Index()
         {
-            return View();
+            var entities = _context.Users.ToList();
+            return View(entities);
         }
 
         public IActionResult Privacy()

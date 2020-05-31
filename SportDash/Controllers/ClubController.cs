@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
@@ -40,18 +41,23 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewImage(Image image)
+        public async Task<IActionResult> AddNewImage(IFormFile file)
         {
+            var image = new Image();
+            image.ImageFile = file;
             var userId = _userManager.GetUserId(HttpContext.User);
             await _imageRepository.CreateImage(image, userId);
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            //return ViewComponent("ImageGallery", new { controllerName = "Club" });
+            return Ok();
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteImage(int id)
         {
             await _imageRepository.DeleteImage(id);
-            return RedirectToAction(nameof(Index));
+            //return ViewComponent("ImageGallery", new { controllerName = "Club" });
+            return Ok();
         }
 
         // Club Actions
