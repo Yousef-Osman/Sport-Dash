@@ -30,11 +30,7 @@ namespace SportDash.Repository
             return _context.Reviews.Include(a=>a.Reviewer).Where(r => r.TargetId == User_Id ).ToList();
         }
 
-        // get all reviews of all user
-        public IEnumerable<Review> GetAllReviews(string)
-        {
-            return _context.Reviews.Include(a => a.Reviewer).ToList();
-        }
+        
 
         public Review PostReview(Review r)
         {
