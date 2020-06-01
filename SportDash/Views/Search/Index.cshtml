@@ -94,7 +94,7 @@
                 </div>
             </div>
             <div id="trainers" class="bg-secondary p-3">
-                <h2>Trainers</h2>
+                <h2>Coaches</h2>
                 <div class="row">
 
                     @foreach (var item in Model.Trainers)
@@ -135,18 +135,18 @@
     {
         var category = $("#cat option:selected").text();
         console.log(category);
-        if (category == "Playground") {
+        if (category == "PlaygroundManager") {
             $('#trainers').hide();
             $('#gyms').hide();
             $('#playgrounds').show();
 
         }
-        else if (category == "Trainer") {
+        else if (category == "Coach") {
             $('#playgrounds').hide();
             $('#gyms').hide();
             $('#trainers').show();
         }
-        else if (category == "Gym") {
+        else if (category == "GymManager") {
             $('#playgrounds').hide();
             $('#trainers').hide();
             $('#gyms').show();

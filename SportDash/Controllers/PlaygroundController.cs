@@ -23,6 +23,8 @@ namespace SportDash.Controllers
         private readonly IPlaygroundReservationRepository _reservationRepository;
         private readonly IReviewRepository _reviewRepository;
         private readonly IMessageRepository _messageRepository;
+        private readonly IPlaygroundPriceRepository _playgroundPriceRepository;
+
 
         public PlaygroundController(UserManager<ApplicationUser> userManager,
                                     SignInManager<ApplicationUser> signInManager,
@@ -31,7 +33,8 @@ namespace SportDash.Controllers
                                     IImageRepository imageRepository,
                                     IPlaygroundReservationRepository reservationRepository,
                                     IReviewRepository reviewRepository,
-                                    IMessageRepository messageRepository)
+                                    IMessageRepository messageRepository,
+                                    IPlaygroundPriceRepository playgroundPriceRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -41,6 +44,7 @@ namespace SportDash.Controllers
             _reservationRepository = reservationRepository;
             _reviewRepository = reviewRepository;
             _messageRepository = messageRepository;
+            _playgroundPriceRepository = playgroundPriceRepository;
         }
 
         //[HttpPost]
@@ -175,6 +179,35 @@ namespace SportDash.Controllers
                 return Ok(new JsonResult(data));
             else
                 return NotFound(new NotFoundObjectResult("There is no reservations"));
+        }
+
+        //[ValidateAntiForgeryToken]
+        [HttpPost]
+        public IActionResult PutPlaygroundPrice(int Id, PlaygroundPrice NewPlaygroundPrice)
+        {
+            //bool result = playgroundPriceRepository.UpdatePlaygroundPrice(oldAndNewplaygroundPrice.NewPlaygroundPrice, oldAndNewplaygroundPrice.OldPlaygroundPrice);
+            bool result = _playgroundPriceRepository.UpdatePlaygroundPrice(Id, NewPlaygroundPrice);
+            if (result == true)
+                return Ok();
+            return BadRequest();
+
+        }
+
+        [HttpPost]
+        public IActionResult AddPlaygroundPrice(int Id, PlaygroundPrice NewPlaygroundPrice)
+        {
+            //bool result = playgroundPriceRepository.UpdatePlaygroundPrice(oldAndNewplaygroundPrice.NewPlaygroundPrice, oldAndNewplaygroundPrice.OldPlaygroundPrice);
+            int result = _playgroundPriceRepository.AddPlaygroundPrice(NewPlaygroundPrice);
+            return Ok(new { id = result });
+        }
+
+        [HttpPost]
+        public IActionResult DeletePlaygroundPrice(int Id)
+        {
+            bool result = _playgroundPriceRepository.DeletePlaygroundPrice(Id);
+            if (result == true)
+                return Ok();
+            return BadRequest();
         }
 
         [HttpPost]

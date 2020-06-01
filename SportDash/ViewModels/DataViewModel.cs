@@ -37,5 +37,6 @@ namespace SportDash.ViewModels
         public IEnumerable<PlaygroundReservation> Reservations { get; set; }
         public IEnumerable<PlaygroundReservation> Requests { get; set; }
         public IEnumerable<PlaygroundReservation> AllReservations { get; set; }
+        public IEnumerable<PlaygroundPrice> PlaygroundPrices { get; set; }
     }
 }

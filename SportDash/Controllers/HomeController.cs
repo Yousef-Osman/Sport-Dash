@@ -10,6 +10,7 @@ using SportDash.Repository;
 using Microsoft.AspNetCore.Identity;
 using SportDash.Data;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Features;
+using SportDash.API;
 
 namespace SportDash.Controllers
 {
@@ -29,6 +30,8 @@ namespace SportDash.Controllers
         {
             var entities = _context.Users.ToList();
             return View(entities);
+            //TempData["baseUrl"] = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Request.PathBase);
+            //return View();
         }
 
         public IActionResult Privacy()
@@ -40,7 +43,11 @@ namespace SportDash.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }        
+        }
+
         
+
+
+
     }
 }
