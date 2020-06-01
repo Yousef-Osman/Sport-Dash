@@ -25,11 +25,11 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#requests">Requests</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#add">Add</a>
-            </li>
         }
-        </ul>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#add">Add</a>
+        </li>
+    </ul>
 
     <!-- Tab panes -->
     <div class="tab-content">
@@ -90,8 +90,11 @@
         <div id="add" class="container tab-pane fade">
             <br>
             <div style="text-align:left;width: 40%;margin: 50px auto;padding: 10px;border: 1px solid #ddd;border-radius: 10px;">
-                <label>Username</label>
-                <input type="text" id="reservation-user" name="EventUsername" class="form-control" />
+                @if (User.IsInRole("NormalUser"))
+                {
+                    <label>Username</label>
+                    <input type="text" id="reservation-user" name="EventUsername" class="form-control" />
+                }
                 <label>Date</label>
                 <input type="date" id="reservation-date" name="EventDate" class="form-control" />
                 <label>Start Time</label>
