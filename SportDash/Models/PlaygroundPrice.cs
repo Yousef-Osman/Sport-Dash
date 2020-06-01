@@ -10,10 +10,7 @@ using SportDash.Data;
 namespace SportDash.Models
 {
     public class PlaygroundPrice
-    {
-        [Key]
-        public int Id { get; set; }
-        //[Key, Column(Order = 0)]
+    {        
         [Key]
         public int Id { get; set; }
         [ForeignKey(nameof(Playground))]
