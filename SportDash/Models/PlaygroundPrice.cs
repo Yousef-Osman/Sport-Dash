@@ -10,10 +10,9 @@ using SportDash.Data;
 namespace SportDash.Models
 {
     public class PlaygroundPrice
-    {
+    {        
         [Key]
         public int Id { get; set; }
-
         [ForeignKey(nameof(Playground))]
         public String PlaygroundId { get; set; }
 
