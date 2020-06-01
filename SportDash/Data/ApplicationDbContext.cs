@@ -34,8 +34,6 @@ namespace SportDash.Data
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "GymManager", NormalizedName = "GYMMANAGER" });
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "Coach", NormalizedName = "COACH" });
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "NormalUser", NormalizedName = "NORMALUSER" });
-            //builder.Entity<ApplicationUser>().HasData(new ApplicationUser { });
-            
         }
     }
 }

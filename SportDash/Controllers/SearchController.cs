@@ -23,9 +23,9 @@ namespace SportDash.Controllers
         {
             _User = User;
             _context = context;
-             trainers = _context.Users.Where(a => a.Category == "Trainer").ToList();
-             playgrounds = _context.Users.Include(a=>a.PlaygroundPrices).Where(a => a.Category == "Playground").ToList();
-             gyms = _context.Users.Include(a => a.GymPrices).Where(a => a.Category == "Gym").ToList();
+             trainers = _context.Users.Where(a => a.Category == "Coach").ToList();
+             playgrounds = _context.Users.Include(a=>a.PlaygroundPrices).Where(a => a.Category == "PlaygroundManager").ToList();
+             gyms = _context.Users.Include(a => a.GymPrices).Where(a => a.Category == "GymManager").ToList();
         }
       
         public async Task<IActionResult> Index(string entityCategory , string entityPrice , string entityLocation , string searchString)
@@ -68,9 +68,9 @@ namespace SportDash.Controllers
 
             searchVM.Category = new List<SelectListItem> 
             { 
-              new SelectListItem { Text = "Playground", Value = "1" }, 
-              new SelectListItem { Text = "Trainer", Value = "2" }, 
-              new SelectListItem { Text = "Gym", Value = "3" }
+              new SelectListItem { Text = "PlaygroundManager", Value = "1" }, 
+              new SelectListItem { Text = "GymManager", Value = "2" }, 
+              new SelectListItem { Text = "Coach", Value = "3" }
             };
 
             searchVM.Price = new List<SelectListItem>
@@ -105,7 +105,7 @@ namespace SportDash.Controllers
         {
             var newTrainers = trainers.Where(a=>a.FullName.Contains(searchString)).Select(a => a.FullName);
             var newPlaygrounds = playgrounds.Where(a =>a.FullName.Contains(searchString)).Select(a => a.FullName);
-            var newGyms = gyms.Where(a => a.Category == "Gym" && a.FullName.Contains(searchString)).Select(a => a.FullName);
+            var newGyms = gyms.Where(a => a.FullName.Contains(searchString)).Select(a => a.FullName);
             var alldata = new List<string>();
             alldata.AddRange(newTrainers);
             alldata.AddRange(newPlaygrounds);
@@ -126,7 +126,6 @@ namespace SportDash.Controllers
 
         public IActionResult SearchByCategory (string category)
         {
-            
             return  RedirectToAction(nameof(Index));
         }
 
