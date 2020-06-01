@@ -2,24 +2,26 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!-- Display Section -->
-<div class="container d-flex flex-wrap mt-3">
-    @foreach (var item in Model.Images)
-    {
-        <div class="col-lg-3 col-md-4 mt-1" style="padding:1px !important">
-            <img class="gallery-image" src="@("/images/" + item.Title)" asp-append-version="true">
-            @if (Model.isCurrentUser == true)
-            {
-                <button type="button" class="btn btn-danger mt-1 btn-full-width" data-toggle="modal" data-target="#delete-Modal" onclick="deleteImage(@item.Id)">Delete</button>
-            }
-        </div>
-    }
-</div>
-<div class="container">
-    @if (Model.isCurrentUser == true)
-    {
-        <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#addModal">Add Image</button>
-    }
-</div>
+<section class="container my-5">
+    <div class="d-flex flex-wrap mt-3">
+        @foreach (var item in Model.Images)
+        {
+            <div class="col-lg-3 col-md-4 mt-1" style="padding:1px !important">
+                <img class="gallery-image" src="@("/images/" + item.Title)" asp-append-version="true">
+                @if (Model.isCurrentUser == true)
+                {
+                    <button type="button" class="btn btn-danger mt-1 btn-full-width" data-toggle="modal" data-target="#delete-Modal" onclick="deleteImage(@item.Id)">Delete</button>
+                }
+            </div>
+        }
+    </div>
+    <div>
+        @if (Model.isCurrentUser == true)
+        {
+            <button type="button" class="btn btn-primary bg-elephant mt-3" data-toggle="modal" data-target="#addModal">Add Image</button>
+        }
+    </div>
+</section>
 <!-- Delete Modal -->
 <div class="modal fade" id="delete-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

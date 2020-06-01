@@ -26,12 +26,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        <li class="nav-item">
+                            <a id="newMsg" class="nav-link text-dark" asp-controller="Search" asp-action="Index">Search</a>
+                        </li>
                         @if (User.IsInRole("PlaygroundManager"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Playground" asp-action="Index" asp-route-id="">Playground</a>
                             </li>
-                        }                                               
+                        }
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
@@ -49,9 +52,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - SportDash - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted bg-elephant py-3">
+        <div class="container d-flex justify-content-center">
+            &copy; 2020 - SportDash - All Rights Reserved
         </div>
     </footer>
 
