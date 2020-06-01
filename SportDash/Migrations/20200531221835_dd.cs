@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SportDash.Migrations
 {
-    public partial class updateddatabase : Migration
+    public partial class dd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,7 +41,14 @@ namespace SportDash.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FullName = table.Column<string>(nullable: true),
-                    SportType = table.Column<int>(nullable: true)
+                    SportType = table.Column<int>(nullable: true),
+                    Location = table.Column<string>(nullable: true),
+                    Size = table.Column<string>(nullable: true),
+                    BallRenting = table.Column<bool>(nullable: false),
+                    LockerRoom = table.Column<bool>(nullable: false),
+                    Safe = table.Column<bool>(nullable: false),
+                    Toilet = table.Column<bool>(nullable: false),
+                    ForLadies = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -227,38 +234,50 @@ namespace SportDash.Migrations
                 name: "playgroundPrices",
                 columns: table => new
                 {
-                    PlaygroundId = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlaygroundId = table.Column<string>(nullable: true),
+                    Price = table.Column<double>(nullable: false),
                     Start = table.Column<TimeSpan>(nullable: false),
-                    End = table.Column<TimeSpan>(nullable: false),
-                    Price = table.Column<double>(nullable: false)
+                    End = table.Column<TimeSpan>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_playgroundPrices", x => new { x.PlaygroundId, x.Start, x.End });
+                    table.PrimaryKey("PK_playgroundPrices", x => x.Id);
                     table.ForeignKey(
                         name: "FK_playgroundPrices_AspNetUsers_PlaygroundId",
                         column: x => x.PlaygroundId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "playgroundReservations",
                 columns: table => new
                 {
-                    PlaygroundReservationId = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(nullable: true),
                     PlaygroundId = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
-                    IsOccubied = table.Column<bool>(nullable: false)
+                    StartTime = table.Column<TimeSpan>(nullable: false),
+                    EndTime = table.Column<TimeSpan>(nullable: false),
+                    Status = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_playgroundReservations", x => x.PlaygroundReservationId);
+                    table.PrimaryKey("PK_playgroundReservations", x => x.Id);
                     table.ForeignKey(
                         name: "FK_playgroundReservations_AspNetUsers_PlaygroundId",
                         column: x => x.PlaygroundId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_playgroundReservations_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -374,11 +393,11 @@ namespace SportDash.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "8f405d76-9a9a-4565-8cbd-ed4485bd01df", "4944baff-0234-4575-aaf5-8f835aa8ae8f", "ClubManager", "CLUBMANAGER" },
-                    { "d58a04d4-6492-4264-b1ff-8db089f6f88b", "4aa4904c-a997-4e7a-b586-6692aec5c24c", "PlaygroundManager", "PLAYGROUNDMANAGER" },
-                    { "09265aa1-3ccc-466c-b969-46021c929eac", "616f24a6-6971-457b-a221-a88c20cf531e", "GymManager", "GYMMANAGER" },
-                    { "ea763756-0bf9-4973-ae45-c11b5b6719cb", "259f8243-47bd-4f7d-a2af-b75c9a59bfec", "Coach", "COACH" },
-                    { "a4a16da7-5f0c-40b4-b97c-4c1523e5410c", "a9205d02-6525-422e-a38b-a28ee9fb9f69", "NormalUser", "NORMALUSER" }
+                    { "816ff29e-4b61-45f1-8dfb-759467e2c0cd", "43552c48-f110-4cdc-9076-61a2f8069f6d", "ClubManager", "CLUBMANAGER" },
+                    { "c5ae747d-629a-4ded-bb16-c1d2d48fc6eb", "1bd613f2-32a7-48de-9205-4bdf3692acc3", "PlaygroundManager", "PLAYGROUNDMANAGER" },
+                    { "4d9b1f75-20a5-4fc9-b091-178492845fdc", "f1abad3e-8104-4d34-b04e-1b43d85bc8a4", "GymManager", "GYMMANAGER" },
+                    { "edfbd240-fb8d-4213-86f4-15bada009bbf", "c4f531f5-aed7-4c4c-afec-f5c4829c8d2c", "Coach", "COACH" },
+                    { "84891b0a-1a2b-4005-b0a2-2dce8bf2154a", "83e8ab25-8e4b-429e-b54e-fe59a2541768", "NormalUser", "NORMALUSER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -451,9 +470,19 @@ namespace SportDash.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_playgroundPrices_PlaygroundId",
+                table: "playgroundPrices",
+                column: "PlaygroundId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_playgroundReservations_PlaygroundId",
                 table: "playgroundReservations",
                 column: "PlaygroundId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_playgroundReservations_UserId",
+                table: "playgroundReservations",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_UserId",

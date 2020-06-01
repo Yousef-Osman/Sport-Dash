@@ -53,41 +53,6 @@ namespace SportDash.Controllers
         }
 
 
-        //[ValidateAntiForgeryToken]
-        [HttpPost]
-        public IActionResult PutPlaygroundPrice(int Id, PlaygroundPrice NewPlaygroundPrice)
-        {
-            //bool result = playgroundPriceRepository.UpdatePlaygroundPrice(oldAndNewplaygroundPrice.NewPlaygroundPrice, oldAndNewplaygroundPrice.OldPlaygroundPrice);
-            bool result = playgroundPriceRepository.UpdatePlaygroundPrice(Id, NewPlaygroundPrice);
-            if (result == true)
-                return Ok();
-            return BadRequest();
-            //return NoContent();
-            //return Ok();
-        }
-
-        [HttpPost]
-        public IActionResult AddPlaygroundPrice(int Id, PlaygroundPrice NewPlaygroundPrice)
-        {
-            //bool result = playgroundPriceRepository.UpdatePlaygroundPrice(oldAndNewplaygroundPrice.NewPlaygroundPrice, oldAndNewplaygroundPrice.OldPlaygroundPrice);
-            int result = playgroundPriceRepository.AddPlaygroundPrice(NewPlaygroundPrice);
-            //if (result == true)
-            return Ok(new { id = result });
-            return BadRequest();
-            //return NoContent();
-            //return Ok();
-        }
-
-        [HttpPost]
-        public IActionResult DeletePlaygroundPrice(int Id)
-        {
-
-            bool result = playgroundPriceRepository.DeletePlaygroundPrice(Id);
-            if (result == true)
-                return Ok();
-            return BadRequest();
-            //return NoContent();
-            //return Ok();
-        }
+        
     }
 }

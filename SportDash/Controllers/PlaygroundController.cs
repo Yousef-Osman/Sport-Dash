@@ -21,13 +21,16 @@ namespace SportDash.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IImageRepository _imageRepository;
         private readonly IPlaygroundReservationRepository _reservationRepository;
+        private readonly IPlaygroundPriceRepository _playgroundPriceRepository;
+
 
         public PlaygroundController(UserManager<ApplicationUser> userManager,
                                     SignInManager<ApplicationUser> signInManager,
                                     IAuthorizationService authorizationService,
                                     IUserRepository userRepository,
                                     IImageRepository imageRepository,
-                                    IPlaygroundReservationRepository reservationRepository)
+                                    IPlaygroundReservationRepository reservationRepository,
+                                    IPlaygroundPriceRepository playgroundPriceRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -35,11 +38,13 @@ namespace SportDash.Controllers
             _userRepository = userRepository;
             _imageRepository = imageRepository;
             _reservationRepository = reservationRepository;
+            _playgroundPriceRepository = playgroundPriceRepository;
         }
 
         //[HttpPost]
         public async Task<IActionResult> Index(string id)
         {
+            //TempData["baseUrl"] = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Request.PathBase);
             var dataModel = new DataViewModel();
             var user = await _userManager.GetUserAsync(User);
             dataModel.ControllerName = "Playground";
@@ -136,6 +141,35 @@ namespace SportDash.Controllers
                 return Ok(new JsonResult(data));
             else
                 return NotFound(new NotFoundObjectResult("There is no reservations"));
+        }
+
+        //[ValidateAntiForgeryToken]
+        [HttpPost]
+        public IActionResult PutPlaygroundPrice(int Id, PlaygroundPrice NewPlaygroundPrice)
+        {
+            //bool result = playgroundPriceRepository.UpdatePlaygroundPrice(oldAndNewplaygroundPrice.NewPlaygroundPrice, oldAndNewplaygroundPrice.OldPlaygroundPrice);
+            bool result = _playgroundPriceRepository.UpdatePlaygroundPrice(Id, NewPlaygroundPrice);
+            if (result == true)
+                return Ok();
+            return BadRequest();
+
+        }
+
+        [HttpPost]
+        public IActionResult AddPlaygroundPrice(int Id, PlaygroundPrice NewPlaygroundPrice)
+        {
+            //bool result = playgroundPriceRepository.UpdatePlaygroundPrice(oldAndNewplaygroundPrice.NewPlaygroundPrice, oldAndNewplaygroundPrice.OldPlaygroundPrice);
+            int result = _playgroundPriceRepository.AddPlaygroundPrice(NewPlaygroundPrice);
+            return Ok(new { id = result });
+        }
+
+        [HttpPost]
+        public IActionResult DeletePlaygroundPrice(int Id)
+        {
+            bool result = _playgroundPriceRepository.DeletePlaygroundPrice(Id);
+            if (result == true)
+                return Ok();
+            return BadRequest();
         }
     }
 }
