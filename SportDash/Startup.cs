@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SportDash.Data;
+using SportDash.Models;
 using SportDash.Repository;
 using SportDash.Hubs;
 
@@ -32,6 +33,7 @@ namespace SportDash
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPlaygroundReservationRepository, PlaygroundReservationRepository>();
+            services.AddScoped<IPlaygroundPriceRepository, PlaygroundPriceRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

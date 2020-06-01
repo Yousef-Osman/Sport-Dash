@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SportDash.Data;
 
 namespace SportDash.Models
@@ -13,6 +14,8 @@ namespace SportDash.Models
         [Key]
         public int Id { get; set; }
         //[Key, Column(Order = 0)]
+        [Key]
+        public int Id { get; set; }
         [ForeignKey(nameof(Playground))]
         public String PlaygroundId { get; set; }
 
@@ -23,7 +26,7 @@ namespace SportDash.Models
         
         //[Key, Column(Order = 2)]
         public TimeSpan End { get; set; }
-        
+        [JsonIgnore]
         public ApplicationUser Playground { get; set; }
 
     }

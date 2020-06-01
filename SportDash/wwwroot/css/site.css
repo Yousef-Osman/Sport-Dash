@@ -73,6 +73,38 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
+
+/*--------------------------------------------------------------------------*/
+/*source Custom Styles*/
+.prices {
+  background-color: rgb(16, 43, 62);
+  color: white;
+}
+
+.separator {
+    margin-bottom:15px
+}
+
+.lightSection {
+  padding-top: 2%;
+  /* background-color: rgb(16, 43, 62); */
+  background-color: rgb(206, 216, 225);
+  /* background-color: rgb(28, 200, 160); */
+}
+
+.Time {
+  background-color: rgb(28, 200, 160);
+  color: rgb(16, 43, 62);
+}
+.op_button {
+  border-color: rgb(16, 43, 62);
+  margin: 2%;
+}
+
+/* background-color: rgb(16, 43, 62);//Dark Blue
+background-color: rgb(206, 216, 225);//Light
+background-color: rgb(28, 200, 160);//green degree */
+
 /* Review Stars 
 -------------------------------------------------- */
 .rating {
