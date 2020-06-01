@@ -23,23 +23,26 @@ namespace SportDash.Components
         }
 
 
-        public IViewComponentResult Invoke(string controllerName)
+        public IViewComponentResult Invoke(DataViewModel dataModel)
         {
-            var dataModel = new ReviewViewModel();
+            
             var newReview = new Review();
-            var user_Id = "";
-            if (User.IsInRole("NormalUser"))
+            string userId = null;
+
+            if (dataModel.Entity != null)
             {
-                 user_Id = "";
+                userId = dataModel.Entity.Id;
             }
-            else
+            else if (dataModel.Entity == null)
             {
-                 user_Id = _user.GetUserId(HttpContext.User);
+                userId = dataModel.CurrentUser.Id;
+                dataModel.Entity = dataModel.CurrentUser;
             }
-            dataModel.Reviews = _IR.GetReviewsOfReviewee(user_Id);
+            
+            dataModel.Reviews = _IR.GetReviewsOfReviewee(userId);
             dataModel.Review = newReview;
-            dataModel.ControllerName = controllerName;
-            dataModel.CurrentUser = user_Id;
+            //dataModel.ControllerName = controllerName;
+            //dataModel.CurrentUser = user_Id;
             return View("/Components/DisplayReview/DisplayReview.cshtml", dataModel);
         }
     }

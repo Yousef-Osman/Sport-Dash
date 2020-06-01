@@ -103,9 +103,9 @@ namespace SportDash.Controllers
         [HttpGet]
         public IActionResult Search(string searchString)
         {
-            var newTrainers = trainers.Where(a=>a.FullName.Contains(searchString)||a.Location.Contains(searchString)).Select(a => a.FullName).ToList();
-            var newPlaygrounds = playgrounds.Where(a =>a.FullName.Contains(searchString) || a.Location.Contains(searchString) ).Select(a => a.FullName).ToList();
-            var newGyms = gyms.Where(a => a.Category == "Gym" && a.FullName.Contains(searchString) || a.Location.Contains(searchString)).Select(a => a.FullName).ToList();
+            var newTrainers = trainers.Where(a=>a.FullName.Contains(searchString)).Select(a => a.FullName);
+            var newPlaygrounds = playgrounds.Where(a =>a.FullName.Contains(searchString)).Select(a => a.FullName);
+            var newGyms = gyms.Where(a => a.Category == "Gym" && a.FullName.Contains(searchString)).Select(a => a.FullName);
             var alldata = new List<string>();
             alldata.AddRange(newTrainers);
             alldata.AddRange(newPlaygrounds);

@@ -1,4 +1,4 @@
-﻿@model SportDash.ViewModels.ReviewViewModel
+﻿@model SportDash.ViewModels.DataViewModel
 
 @{
     Layout = null;
@@ -7,23 +7,24 @@
 
     <div class="container p-4">
         <h2>Reviews</h2>
-        @foreach (var item in Model.Reviews)
-        {
+        <div id="display-reviews">
+            @foreach (var item in Model.Reviews)
+            {
 
-            <div class="row">
-                <div class="col-md-4">
-                    <img class="" src="~/image/user.png" />
+                <div class="row">
+                    <div class="col-md-2">
+                        <img  width="50" height="50" class="" src="~/images/user-icon.jpg" />
+                    </div>
+                    <div class="col-md-8 text-left">
+                        <h3>@item.Reviewer.FullName</h3>
+                        <p>@item.Rating</p>
+                        <span>@item.Review_Date</span>
+                        <p>@item.Comment</p>
+                    </div>
                 </div>
-                <div class="col-md-8 text-left">
-                    <h3>@item.Reviewer.FullName</h3>
-                    <p>@item.Rating</p>
-                    <span>@item.Review_Date</span>
-                    <p>@item.Comment</p>
-                </div>
-            </div>
 
-        }
-
+            }
+        </div>
         @if (User.IsInRole("NormalUser"))
         {
             <div class="row">
@@ -68,7 +69,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-btn">Add</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-review">Add</button>
                         </div>
                     </div>
                 </div>
@@ -80,24 +81,29 @@
     </div>
 
 
-    <script type="text/javascript" on-content-loaded="true">
 
-        $('#add-btn').click(function (e) {
-            e.preventDefault();
-            const new_review = $("#staticBackdrop").find('#new-review').val();
-            const new_rate = $('input[name=rating]:checked').val();
-            const current_id = "@Model.CurrentUser";
-            var today = new Date();
-            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-            var dateTime = date + ' ' + time;
-            var review = {
+   
+
+
+<script type="text/javascript" on-content-loaded="true">
+    var review;
+    $('#add-review').click(function (e) {
+        console.log("iam in function");
+        e.preventDefault();
+        const new_review = $("#staticBackdrop").find('#new-review').val();
+        const new_rate = $('input[name=rating]:checked').val();
+        const current_id = "@Model.CurrentUser.Id";
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date + ' ' + time;
+        review = {
             Rating: new_rate,
             Comment: new_review,
             Review_Date: dateTime,
             ReviewerId: current_id,
-                TargetId: "a3608823-d0d1-48f6-b2e0-e125876d7880"
-            
+            TargetId: "@Model.Entity.Id"
+
         };
         console.log(review)
 
@@ -111,47 +117,27 @@
                 .end();
         });
 
-            if (review != null) {
-                $.ajax({
-                    url: '/@Model.ControllerName/Add',
-                    type: 'POST',
-                    data: { R: review },
-                    dataType: "text",
-                    success: function () {
-                        console.log("Done")
-                    }
-                });
-            }
-    });
-
-
-    
-    @*function edit(id) {
-        $.ajax({
-            url: '/Home/Edit?id=' + id,
-            method: 'Get',
-            success: function (data) {
-                mainA.innerHTML = data;
-            }
-        });
-    }
-    function del(id) {
-        $.ajax({
-            url: '/Home/Delete?id=' + id,
-            method: 'POST',
-            success: function () {
-                location.reload();
-            }
-        })
-    }
-    function goto(num) {
-        switch (num) {
-            case 1:
-                mainA.innerHTML = main1;
-                break;
-            case 2:
-                mainA.innerHTML = main2;
-                break;
+        if (review != null) {
+            $.ajax({
+                url: '/@Model.ControllerName/AddReview',
+                type: 'POST',
+                data: { R: review },
+                dataType: "Json",
+                success: function (response) {
+                    console.log(response);
+                    $('#display-reviews').append(`<div class="row">
+                    <div class="col-md-2">
+                        <img  width="50" height="50" class="" src="/images/user-icon.jpg" />
+                    </div>
+                    <div class="col-md-8 text-left">
+                        <h3>@Model.CurrentUser.FullName</h3>
+                        <p>${response.value.rating}</p>
+                        <span>${response.value.review_Date}</span>
+                        <p>${response.value.comment}</p>
+                    </div>
+                </div>`)
+                }
+            });
         }
-    }*@
-    </script>
+    });
+</script>

@@ -21,13 +21,15 @@ namespace SportDash.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IImageRepository _imageRepository;
         private readonly IPlaygroundReservationRepository _reservationRepository;
+        private readonly IReviewRepository _reviewRepository;
 
         public PlaygroundController(UserManager<ApplicationUser> userManager,
                                     SignInManager<ApplicationUser> signInManager,
                                     IAuthorizationService authorizationService,
                                     IUserRepository userRepository,
                                     IImageRepository imageRepository,
-                                    IPlaygroundReservationRepository reservationRepository)
+                                    IPlaygroundReservationRepository reservationRepository,
+                                    IReviewRepository reviewRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -35,6 +37,7 @@ namespace SportDash.Controllers
             _userRepository = userRepository;
             _imageRepository = imageRepository;
             _reservationRepository = reservationRepository;
+            _reviewRepository = reviewRepository;
         }
 
         //[HttpPost]
@@ -137,5 +140,16 @@ namespace SportDash.Controllers
             else
                 return NotFound(new NotFoundObjectResult("There is no reservations"));
         }
+
+        [HttpPost]
+        public IActionResult AddReview(Review R)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            //R.ReviewerId = _userManager.GetUserId(HttpContext.User);
+            //R.TargetId = "b6bf071e-32fe-4b3f-b8ec-57ddc6737e8";
+             var review = _reviewRepository.PostReview(R);
+            return Ok(new OkObjectResult(review));
+        }
+
     }
 }
