@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SportDash.Migrations
 {
-    public partial class addedClubIdAsFKInApplicationUser : Migration
+    public partial class updateddatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,17 +41,11 @@ namespace SportDash.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FullName = table.Column<string>(nullable: true),
-                    ClubId = table.Column<string>(nullable: true)
+                    SportType = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_AspNetUsers_ClubId",
-                        column: x => x.ClubId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -380,11 +374,11 @@ namespace SportDash.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "6ab1eb4e-cf05-4a20-b728-0660772c4ac4", "58edde98-c4d6-42f1-ac3d-a1f1edb90ce5", "ClubManager", "CLUBMANAGER" },
-                    { "be78f5fe-e0bf-4529-b25a-c700945b7597", "02124aab-a992-4a9b-a4d6-cc89f9f7cca4", "PlaygroundManager", "PLAYGROUNDMANAGER" },
-                    { "f18a9e4d-9dce-4b57-b12d-d10f571970f1", "d624978c-7004-43f6-b1c0-00862ce8a578", "GymManager", "GYMMANAGER" },
-                    { "dba9fd30-08ac-4305-9cb4-56b3b92e84f7", "a4b7ffd8-fb91-474e-ab5f-60deba7f2ab9", "Coach", "COACH" },
-                    { "060626e1-550b-4965-bc6f-e1130c75c8ac", "849c86c0-077b-4355-b678-71749825a6b3", "NormalUser", "NORMALUSER" }
+                    { "8f405d76-9a9a-4565-8cbd-ed4485bd01df", "4944baff-0234-4575-aaf5-8f835aa8ae8f", "ClubManager", "CLUBMANAGER" },
+                    { "d58a04d4-6492-4264-b1ff-8db089f6f88b", "4aa4904c-a997-4e7a-b586-6692aec5c24c", "PlaygroundManager", "PLAYGROUNDMANAGER" },
+                    { "09265aa1-3ccc-466c-b969-46021c929eac", "616f24a6-6971-457b-a221-a88c20cf531e", "GymManager", "GYMMANAGER" },
+                    { "ea763756-0bf9-4973-ae45-c11b5b6719cb", "259f8243-47bd-4f7d-a2af-b75c9a59bfec", "Coach", "COACH" },
+                    { "a4a16da7-5f0c-40b4-b97c-4c1523e5410c", "a9205d02-6525-422e-a38b-a28ee9fb9f69", "NormalUser", "NORMALUSER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -415,11 +409,6 @@ namespace SportDash.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_ClubId",
-                table: "AspNetUsers",
-                column: "ClubId");
-
-            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -429,7 +418,7 @@ namespace SportDash.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");            
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_QuestionId",
@@ -502,7 +491,7 @@ namespace SportDash.Migrations
                 name: "AspNetUserRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserTokens");            
+                name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
                 name: "Comments");

@@ -10,8 +10,8 @@ using SportDash.Data;
 namespace SportDash.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200528013809_addedClubIdAsFKInApplicationUser")]
-    partial class addedClubIdAsFKInApplicationUser
+    [Migration("20200526213742_PlaygroundReservationTableUpdates")]
+    partial class PlaygroundReservationTableUpdates
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,36 +50,36 @@ namespace SportDash.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6ab1eb4e-cf05-4a20-b728-0660772c4ac4",
-                            ConcurrencyStamp = "58edde98-c4d6-42f1-ac3d-a1f1edb90ce5",
+                            Id = "167e3685-ec2e-491f-b398-ff62725a9ecf",
+                            ConcurrencyStamp = "a155bd5c-dc91-4e70-8028-cbec026755d6",
                             Name = "ClubManager",
                             NormalizedName = "CLUBMANAGER"
                         },
                         new
                         {
-                            Id = "be78f5fe-e0bf-4529-b25a-c700945b7597",
-                            ConcurrencyStamp = "02124aab-a992-4a9b-a4d6-cc89f9f7cca4",
+                            Id = "cc232f7d-41d8-4aa1-b675-945423f08f69",
+                            ConcurrencyStamp = "74c253e4-16c1-4ef7-a42a-cc0a598f87e9",
                             Name = "PlaygroundManager",
                             NormalizedName = "PLAYGROUNDMANAGER"
                         },
                         new
                         {
-                            Id = "f18a9e4d-9dce-4b57-b12d-d10f571970f1",
-                            ConcurrencyStamp = "d624978c-7004-43f6-b1c0-00862ce8a578",
+                            Id = "7f7c82c6-71b3-4954-9327-14356193a008",
+                            ConcurrencyStamp = "a9c0c140-d5fc-4dbb-80b2-2eda625713f8",
                             Name = "GymManager",
                             NormalizedName = "GYMMANAGER"
                         },
                         new
                         {
-                            Id = "dba9fd30-08ac-4305-9cb4-56b3b92e84f7",
-                            ConcurrencyStamp = "a4b7ffd8-fb91-474e-ab5f-60deba7f2ab9",
+                            Id = "ff2827f0-bd67-4a45-9e77-ccfd45165e1c",
+                            ConcurrencyStamp = "584dc2c8-bf83-4fbe-85f2-9302bfdceb4d",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "060626e1-550b-4965-bc6f-e1130c75c8ac",
-                            ConcurrencyStamp = "849c86c0-077b-4355-b678-71749825a6b3",
+                            Id = "3221a41d-0db0-413d-99cc-3d6615ec1898",
+                            ConcurrencyStamp = "e4c71c94-75aa-4665-b56c-111df69b0869",
                             Name = "NormalUser",
                             NormalizedName = "NORMALUSER"
                         });
@@ -201,9 +201,6 @@ namespace SportDash.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("ClubId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -253,8 +250,6 @@ namespace SportDash.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClubId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -264,21 +259,6 @@ namespace SportDash.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("SportDash.Models.ClubEntities", b =>
-                {
-                    b.Property<string>("ClubId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PlaygroundId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ClubId", "PlaygroundId");
-
-                    b.HasIndex("PlaygroundId");
-
-                    b.ToTable("ClubEntities");
                 });
 
             modelBuilder.Entity("SportDash.Models.Comment", b =>
@@ -402,14 +382,16 @@ namespace SportDash.Migrations
 
             modelBuilder.Entity("SportDash.Models.PlaygroundReservation", b =>
                 {
-                    b.Property<string>("PlaygroundReservationId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsOccubied")
-                        .HasColumnType("bit");
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -417,9 +399,20 @@ namespace SportDash.Migrations
                     b.Property<string>("PlaygroundId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("PlaygroundReservationId");
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("PlaygroundId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("playgroundReservations");
                 });
@@ -571,28 +564,6 @@ namespace SportDash.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SportDash.Data.ApplicationUser", b =>
-                {
-                    b.HasOne("SportDash.Data.ApplicationUser", "Club")
-                        .WithMany()
-                        .HasForeignKey("ClubId");
-                });
-
-            modelBuilder.Entity("SportDash.Models.ClubEntities", b =>
-                {
-                    b.HasOne("SportDash.Data.ApplicationUser", "Club")
-                        .WithMany()
-                        .HasForeignKey("ClubId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SportDash.Data.ApplicationUser", "Playground")
-                        .WithMany()
-                        .HasForeignKey("PlaygroundId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SportDash.Models.Comment", b =>
                 {
                     b.HasOne("SportDash.Models.Question", "Question")
@@ -643,8 +614,12 @@ namespace SportDash.Migrations
             modelBuilder.Entity("SportDash.Models.PlaygroundReservation", b =>
                 {
                     b.HasOne("SportDash.Data.ApplicationUser", "Playground")
-                        .WithMany()
+                        .WithMany("Playgrounds")
                         .HasForeignKey("PlaygroundId");
+
+                    b.HasOne("SportDash.Data.ApplicationUser", "User")
+                        .WithMany("UserReservations")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("SportDash.Models.Question", b =>

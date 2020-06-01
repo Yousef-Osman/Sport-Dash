@@ -1,0 +1,143 @@
+﻿@model SportDash.ViewModels.DataViewModel
+
+@{
+    Layout = null;
+}
+
+
+    <div class="container p-4">
+        <h2>Reviews</h2>
+        <div id="display-reviews">
+            @foreach (var item in Model.Reviews)
+            {
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <img  width="50" height="50" class="" src="~/images/user-icon.jpg" />
+                    </div>
+                    <div class="col-md-8 text-left">
+                        <h3>@item.Reviewer.FullName</h3>
+                        <p>@item.Rating</p>
+                        <span>@item.Review_Date</span>
+                        <p>@item.Comment</p>
+                    </div>
+                </div>
+
+            }
+        </div>
+        @if (User.IsInRole("NormalUser"))
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#staticBackdrop">
+                        Leave Review
+                    </button>
+                </div>
+            </div>
+        }
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" id="post-review-box">
+                                <div class="col-md-12">
+                                    @*<form accept-charset="UTF-8" action="" method="post">*@
+                                    <input id="ratings-hidden" name="rating" type="hidden">
+                                    <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
+
+                                    <div class="text-right">
+                                        @*<div class="stars starrr" data-rating="0"></div>     old star *@
+                                        <div id="star-rating" class="rating">
+                                            <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Excellent">5 stars</label>
+                                            <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Very Good">4 stars</label>
+                                            <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Good">3 stars</label>
+                                            <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Nice">2 stars</label>
+                                            <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="bad">1 star</label>
+                                        </div>
+                                    </div>
+                                    @*</form>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-review">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    
+
+    </div>
+
+
+
+   
+
+
+<script type="text/javascript" on-content-loaded="true">
+    var review;
+    $('#add-review').click(function (e) {
+        console.log("iam in function");
+        e.preventDefault();
+        const new_review = $("#staticBackdrop").find('#new-review').val();
+        const new_rate = $('input[name=rating]:checked').val();
+        const current_id = "@Model.CurrentUser.Id";
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date + ' ' + time;
+        review = {
+            Rating: new_rate,
+            Comment: new_review,
+            Review_Date: dateTime,
+            ReviewerId: current_id,
+            TargetId: "@Model.Entity.Id"
+
+        };
+        console.log(review)
+
+        $('#staticBackdrop').on('hidden.bs.modal', function (e) {
+            $(this)
+                .find("input,textarea,select")
+                .val('')
+                .end()
+                .find("input[type=checkbox], input[type=radio]")
+                .prop("checked", "")
+                .end();
+        });
+
+        if (review != null) {
+            $.ajax({
+                url: '/@Model.ControllerName/AddReview',
+                type: 'POST',
+                data: { R: review },
+                dataType: "Json",
+                success: function (response) {
+                    console.log(response);
+                    $('#display-reviews').append(`<div class="row">
+                    <div class="col-md-2">
+                        <img  width="50" height="50" class="" src="/images/user-icon.jpg" />
+                    </div>
+                    <div class="col-md-8 text-left">
+                        <h3>@Model.CurrentUser.FullName</h3>
+                        <p>${response.value.rating}</p>
+                        <span>${response.value.review_Date}</span>
+                        <p>${response.value.comment}</p>
+                    </div>
+                </div>`)
+                }
+            });
+        }
+    });
+</script>

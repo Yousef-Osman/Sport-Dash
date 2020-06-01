@@ -10,8 +10,8 @@ using SportDash.Data;
 namespace SportDash.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200529132829_removedClubWithItsStaff")]
-    partial class removedClubWithItsStaff
+    [Migration("20200527053943_InsertDataToPlaygroundReservationTable")]
+    partial class InsertDataToPlaygroundReservationTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,36 +50,36 @@ namespace SportDash.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6ee32c63-e97e-42e0-ae95-a9a4619a6fd4",
-                            ConcurrencyStamp = "650783dd-fea1-4379-9012-5946516dfc59",
+                            Id = "57304d41-d054-4deb-9848-12efbbf415fe",
+                            ConcurrencyStamp = "3c3a330b-efaa-4367-be43-f0d1c04b62bf",
                             Name = "ClubManager",
                             NormalizedName = "CLUBMANAGER"
                         },
                         new
                         {
-                            Id = "0ec5f45d-214c-4ccf-8727-0a7f4b95ed3c",
-                            ConcurrencyStamp = "04b76a34-da78-4ddb-aa83-9b8212e880f7",
+                            Id = "de5a30eb-bddf-4c5f-bf21-9338edb417bc",
+                            ConcurrencyStamp = "9f751ca6-4d65-4828-8858-5d1288e5363c",
                             Name = "PlaygroundManager",
                             NormalizedName = "PLAYGROUNDMANAGER"
                         },
                         new
                         {
-                            Id = "153ccfbe-96b0-419d-84dc-50d881495c4f",
-                            ConcurrencyStamp = "36809ab3-2045-4c49-9d59-d1cc8f631f1f",
+                            Id = "97a5d298-bb2b-48a3-903f-caf8645e0115",
+                            ConcurrencyStamp = "a3742b0e-2452-4e3b-9b94-eb791a9116a4",
                             Name = "GymManager",
                             NormalizedName = "GYMMANAGER"
                         },
                         new
                         {
-                            Id = "a60b1ed7-6933-4e9c-a822-58de8a71be5b",
-                            ConcurrencyStamp = "d42537ad-a7db-4a41-9030-59beac7b652e",
+                            Id = "1ae4637c-3fbb-4cc7-8b3c-c6d84d6465a6",
+                            ConcurrencyStamp = "4dabeb79-85be-42dc-a8bc-48bb82a737dd",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "b4ca9f60-81d7-43d2-81ab-a4fc7ba88ae1",
-                            ConcurrencyStamp = "ba3ac75d-7455-44a3-8299-8439ee88b752",
+                            Id = "e721d796-97aa-4bc5-9dcb-93cfdaa1f05b",
+                            ConcurrencyStamp = "c9ece58a-ffa4-4164-a4ac-0d2444bf6094",
                             Name = "NormalUser",
                             NormalizedName = "NORMALUSER"
                         });
@@ -241,9 +241,6 @@ namespace SportDash.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SportType")
-                        .HasColumnType("int");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -385,14 +382,16 @@ namespace SportDash.Migrations
 
             modelBuilder.Entity("SportDash.Models.PlaygroundReservation", b =>
                 {
-                    b.Property<string>("PlaygroundReservationId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsOccubied")
-                        .HasColumnType("bit");
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -400,11 +399,57 @@ namespace SportDash.Migrations
                     b.Property<string>("PlaygroundId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("PlaygroundReservationId");
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("PlaygroundId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("playgroundReservations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Date = new DateTime(2020, 5, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new TimeSpan(0, 8, 0, 0, 0),
+                            Name = "userA",
+                            PlaygroundId = "1dc196be-3c4b-435a-8eb5-fffb05ad8a66",
+                            StartTime = new TimeSpan(0, 6, 0, 0, 0),
+                            Status = "Waiting",
+                            UserId = "d209032e-026f-4d77-88eb-e8013acfc073"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Date = new DateTime(2020, 5, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new TimeSpan(0, 10, 0, 0, 0),
+                            Name = "userB",
+                            PlaygroundId = "1dc196be-3c4b-435a-8eb5-fffb05ad8a66",
+                            StartTime = new TimeSpan(0, 8, 0, 0, 0),
+                            Status = "Waiting",
+                            UserId = "d6c31671-bbab-493f-98ed-e79ace5fd968"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Date = new DateTime(2020, 5, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new TimeSpan(0, 10, 0, 0, 0),
+                            Name = "userC",
+                            PlaygroundId = "1dc196be-3c4b-435a-8eb5-fffb05ad8a66",
+                            StartTime = new TimeSpan(0, 8, 0, 0, 0),
+                            Status = "Waiting",
+                            UserId = "9419da5f-5e00-40bc-8c52-7f591822794f"
+                        });
                 });
 
             modelBuilder.Entity("SportDash.Models.Question", b =>
@@ -604,8 +649,12 @@ namespace SportDash.Migrations
             modelBuilder.Entity("SportDash.Models.PlaygroundReservation", b =>
                 {
                     b.HasOne("SportDash.Data.ApplicationUser", "Playground")
-                        .WithMany()
+                        .WithMany("Playgrounds")
                         .HasForeignKey("PlaygroundId");
+
+                    b.HasOne("SportDash.Data.ApplicationUser", "User")
+                        .WithMany("UserReservations")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("SportDash.Models.Question", b =>

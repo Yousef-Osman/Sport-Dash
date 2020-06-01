@@ -9,19 +9,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SportDash.Components.TitleBar
+namespace SportDash.Components
 {
-    public class ImageGallery:ViewComponent
+    public class DisplayReview : ViewComponent
     {
-        private readonly IImageRepository _imageRepository;
+        private readonly IReviewRepository _IR;
+        private readonly UserManager<ApplicationUser> _user;
 
-        public ImageGallery(IImageRepository imageRepository)
+        public DisplayReview(IReviewRepository IR, UserManager<ApplicationUser> user)
         {
-            _imageRepository = imageRepository;
+            _IR = IR;
+            _user = user;
         }
+
 
         public IViewComponentResult Invoke(DataViewModel dataModel)
         {
+            
+            var newReview = new Review();
             string userId = null;
 
             if (dataModel.Entity != null)
@@ -33,9 +38,12 @@ namespace SportDash.Components.TitleBar
                 userId = dataModel.CurrentUser.Id;
                 dataModel.Entity = dataModel.CurrentUser;
             }
-
-            dataModel.Images = _imageRepository.GetImages(userId);
-            return View("/Components/ImageGallery/ImageGallery.cshtml", dataModel);
+            
+            dataModel.Reviews = _IR.GetReviewsOfReviewee(userId);
+            dataModel.Review = newReview;
+            //dataModel.ControllerName = controllerName;
+            //dataModel.CurrentUser = user_Id;
+            return View("/Components/DisplayReview/DisplayReview.cshtml", dataModel);
         }
     }
 }

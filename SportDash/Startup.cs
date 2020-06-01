@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SportDash.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SportDash.Data;
 using SportDash.Repository;
 using SportDash.Hubs;
 
@@ -37,7 +31,7 @@ namespace SportDash
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IPlaygroundRepository, PlaygroundRepository>();
+            services.AddScoped<IPlaygroundReservationRepository, PlaygroundReservationRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -50,12 +44,19 @@ namespace SportDash
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddAuthorization(options => {
-                options.AddPolicy("ClubPolicy", policy => {policy.RequireRole("ClubManager");});
-                options.AddPolicy("PlaygroundPolicy", policy => {policy.RequireRole("PlaygroundManager");});
-                options.AddPolicy("GymPolicy", policy => {policy.RequireRole("GymManager");});
-                options.AddPolicy("CoachPolicy", policy => {policy.RequireRole("Coach");});
-                options.AddPolicy("NormalUserPolicy", policy => {policy.RequireRole("NormalUser");});
+            services.AddControllersWithViews()
+                    .AddNewtonsoftJson(options =>
+                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    );
+
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ClubPolicy", policy => { policy.RequireRole("ClubManager"); });
+                options.AddPolicy("PlaygroundPolicy", policy => { policy.RequireRole("PlaygroundManager"); });
+                options.AddPolicy("GymPolicy", policy => { policy.RequireRole("GymManager"); });
+                options.AddPolicy("CoachPolicy", policy => { policy.RequireRole("Coach"); });
+                options.AddPolicy("NormalUserPolicy", policy => { policy.RequireRole("NormalUser"); });
             });
 
             services.AddSignalR();
