@@ -1,0 +1,173 @@
+﻿@model SportDash.ViewModels.DataViewModel
+@{
+    ViewData["Title"] = "Search";
+}
+
+
+
+    <div class="container" >
+        <div class="bg-primary text-center p-3">
+            <h2>What are you looking for ?</h2>
+            <p>You can search for Playground or Trainer or Gym with filters option </p>
+            <input type="text" id="txtSearch" class="col-form-label w-75"/>
+            <button  class="btn btn-lg btn-primary">Search</button>
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Category</label>
+                        <select id="cat" asp-for="CategoryString" asp-items="Model.Category">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Price</label>
+                        <select asp-for="PriceString" asp-items="Model.Price">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Location</label>
+                        <select asp-for="LocationString" asp-items="Model.Location">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Sport Type</label>
+                        <select asp-for="SportTypeString" asp-items="Model.SportType">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div id="playgrounds"  class="bg-success p-3">
+                <h2>Playgrounds</h2>
+                <div class="row">
+
+                    @foreach (var item in Model.Playgrounds)
+                    {
+                        <div class="col-md-3">
+                            <div class="card">
+                                <img src="~/images/01202005310546396911.jpeg" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.FullName</h5>
+                                    <p class="card-text">@item.Location</p>
+                                    @{var temp = item.PlaygroundPrices[0].Price;}
+                                    @foreach (var i in item.PlaygroundPrices)
+                                    {
+
+                                        if (i.Price < temp)
+                                            temp = i.Price;
+                                    }
+                                    <span>Starts from @temp</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div id="gyms" class="bg-primary p-3">
+                <h2>Gyms</h2>
+                <div class="row">
+
+                    @foreach (var item in Model.Gyms)
+                    {
+                        <div class="col-md-3">
+                            <div class="card">
+                                <img src="~/images/obl202005231057175364.jpg" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.FullName</h5>
+                                    <p class="card-text">@item.Location</p>
+                                    @{var temp1 = item.GymPrices[0].Subscribtion_Price;}
+                                    @foreach (var i in item.GymPrices)
+                                    {
+
+                                        if (i.Subscribtion_Price < temp1)
+                                            temp1 = i.Subscribtion_Price;
+                                    }
+                                    <span>Starts from @temp1 </span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div id="trainers" class="bg-secondary p-3">
+                <h2>Trainers</h2>
+                <div class="row">
+
+                    @foreach (var item in Model.Trainers)
+                    {
+                        <div class="col-md-3">
+                            <div class="card">
+                                <img src="~/images/user-icon.jpg" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.FullName</h5>
+                                    <p class="card-text">@item.Location</p>
+                                    <span>@item.SportType.Value</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        
+            $('#txtSearch').autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/Search/Search',
+                        type: 'GET',
+                        data: { searchString: $('#txtSearch').val() },
+                        success: function (result) {
+                            console.log(result);
+                        }
+                    });
+                }
+            });
+        
+    $('#cat').change(function()
+    {
+        var category = $("#cat option:selected").text();
+        console.log(category);
+        if (category == "Playground") {
+            $('#trainers').hide();
+            $('#gyms').hide();
+            $('#playgrounds').show();
+
+        }
+        else if (category == "Trainer") {
+            $('#playgrounds').hide();
+            $('#gyms').hide();
+            $('#trainers').show();
+        }
+        else if (category == "Gym") {
+            $('#playgrounds').hide();
+            $('#trainers').hide();
+            $('#gyms').show();
+        }
+        else {
+            $('#playgrounds').show();
+            $('#gyms').show();
+            $('#trainers').show();
+        }
+    });
+
+
+    @*$('#price').change(function () {
+        var price = $("#price option:selected").text();
+        $.ajax({
+        url: '@Url.Action("SearchByPrice", "search")' + "/" + select,
+        type: 'POST',
+        data: { price : price},
+        success: function(result) {
+            console.log(result);
+        }
+      });
+    })*@
+    </script>

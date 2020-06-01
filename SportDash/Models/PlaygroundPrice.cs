@@ -10,6 +10,8 @@ namespace SportDash.Models
 {
     public class PlaygroundPrice
     {
+        [Key]
+        public int Id { get; set; }
         //[Key, Column(Order = 0)]
         [ForeignKey(nameof(Playground))]
         public String PlaygroundId { get; set; }

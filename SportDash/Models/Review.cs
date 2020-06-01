@@ -14,8 +14,7 @@ namespace SportDash.Models
         Nice = 1,
         Good = 2,
         VeryGood = 3,
-        Excellent = 4,
-        Perfect = 5     
+        Excellent = 4     
     }
     public class Review
     {

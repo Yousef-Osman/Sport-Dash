@@ -13,5 +13,6 @@ namespace SportDash.Repository
         public Message GetMessage(int id);
         public Message PostMessage(Message m);
         public void DeleteMessage(int id);
+        IEnumerable<Message> GetMessages(string senderId, string receiverId);
     }
 }

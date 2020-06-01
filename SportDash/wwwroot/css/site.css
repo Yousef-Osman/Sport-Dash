@@ -2,73 +2,130 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
 }
+
+/* Review Stars 
+-------------------------------------------------- */
+.rating {
+    float: left;
+}
+
+    /* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+      follow these rules. Every browser that supports :checked also supports :not(), so
+      it doesn’t make the test unnecessarily selective */
+    .rating:not(:checked) > input {
+        position: absolute;
+        top: -9999px;
+        clip: rect(0,0,0,0);
+    }
+
+    .rating:not(:checked) > label {
+        float: right;
+        width: 1em;
+        /* padding:0 .1em; */
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 300%;
+        /* line-height:1.2; */
+        color: #ddd;
+    }
+
+        .rating:not(:checked) > label:before {
+            content: '★ ';
+        }
+
+    .rating > input:checked ~ label {
+        color: dodgerblue;
+    }
+
+    .rating:not(:checked) > label:hover,
+    .rating:not(:checked) > label:hover ~ label {
+        color: dodgerblue;
+    }
+
+    .rating > input:checked + label:hover,
+    .rating > input:checked + label:hover ~ label,
+    .rating > input:checked ~ label:hover,
+    .rating > input:checked ~ label:hover ~ label,
+    .rating > label:hover ~ input:checked ~ label {
+        color: dodgerblue;
+    }
+
+    .rating > label:active {
+        position: relative;
+        top: 2px;
+        left: 2px;
+    }
 
 /* Available Sports Styling */
 * {
@@ -76,59 +133,131 @@ body {
     box-sizing: border-box;
 }
 
-.gallery {
-    background: #EEE;
-}
-
-.gallery-cell {
-    width: 100%;
-    height: 200px;
-    padding-top: 60px;
-    margin-right: 10px;
-    background: #343a40;
-    display: block;
-    text-align: center;
-    line-height: 40px;
-    font-size: 40px;
-    color: white;
-}
-
-/* big buttons, no circle */
-.flickity-prev-next-button {
-    width: 100px;
+.popup {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 300px;
     height: 100px;
-    background: transparent;
+    background: #0ff677;
+    color: #fff;
+    display: none;
+    padding: 20px;
+    box-shadow: 2px 1px #ddd;
 }
-    /* arrow color */
-    .flickity-prev-next-button .arrow {
-        fill: white;
-    }
 
-    .flickity-prev-next-button.no-svg {
-        color: white;
-    }
-
-    .flickity-prev-next-button:hover {
-        background: transparent;
-    }
-    /* hide disabled button */
-    .flickity-prev-next-button:disabled {
-        display: none;
-    }
-
-/* position dots in gallery */
-.flickity-page-dots {
-    bottom: 0px;
+.chat {    
+    border: solid 1px #EEE !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 10px;
+    height: 350px;
+    overflow-y: auto;
+    background: #fff;
+    margin-top: 10px;
+    border-radius: 40px !important;    
 }
-    /* white circles */
-    .flickity-page-dots .dot {
-        width: 12px;
-        height: 12px;
-        opacity: 1;
-        background: transparent;
-        border: 2px solid white;
+
+.messages {
+    margin-top: 30px !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.message {
+    border-radius: 20px !important;
+    padding: 8px 15px !important;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    display: inline-block !important;
+}
+
+.yours {
+    align-items: flex-start !important;
+}
+
+.yours .message {
+    margin-right: 25% !important;
+    background-color: #eee !important;
+    position: relative !important; 
+}
+
+.yours .message.last:before {
+    content: "" !important;
+    position: absolute !important;
+    z-index: 0 !important;
+    bottom: 0 !important;
+    left: -7px !important;
+    height: 20px !important;
+    width: 20px !important;
+    background: #eee !important;
+    border-bottom-right-radius: 15px !important;
+}
+
+.yours .message.last:after {
+    content: "" !important;
+    position: absolute !important;
+    z-index: 1 !important;
+    bottom: 0 !important;
+    left: -10px !important;
+    width: 10px !important;
+    height: 20px !important;
+    background: white !important;
+    border-bottom-right-radius: 10px !important;
+}
+
+.mine {
+    align-items: flex-end !important;
+}
+
+    .mine .message {
+        color: white !important;
+        margin-left: 25% !important;
+        /*background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%) !important;*/
+        background: #102b3e;
+        background-attachment: fixed !important;
+        position: relative !important;
     }
-        /* fill-in selected dot */
-        .flickity-page-dots .dot.is-selected {
-            background: white;
-        }
+
+.mine .message.last:before {
+    content: "" !important;
+    position: absolute !important;
+    z-index: 0 !important;
+    bottom: 0 !important;
+    right: -8px !important;
+    height: 20px !important;
+    width: 20px !important;
+    /*background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%) !important;*/
+    background: #102b3e;
+    background-attachment: fixed !important;
+    border-bottom-left-radius: 15px !important;
+}
+
+.mine .message.last:after {
+    content: "" !important;
+    position: absolute !important;
+    z-index: 1 !important;
+    bottom: 0 !important;
+    right: -10px !important;
+    width: 10px !important;
+    height: 20px !important;
+    background: white !important;
+    border-bottom-left-radius: 10px !important;
+}
+
+/* css framework*/
+
+.round-borders{
+    border-radius: 20px;
+}
+.btn-elephant {
+    padding: 12px;
+    border: none;
+    color: #fff;
+    background: #102b3e;
+}
+.form-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}

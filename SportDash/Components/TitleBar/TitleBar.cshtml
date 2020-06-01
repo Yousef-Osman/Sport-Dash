@@ -30,7 +30,7 @@
             @if (SignInManager.IsSignedIn(User) && Model.isCurrentUser == false)
             {
                 <div class="col-md-2 mt-3 mb-3" style="padding:0 !important">
-                    <a class="nav-link btn btn-primary text-white" asp-controller="" asp-action="">Message</a>
+                    <a class="nav-link btn btn-primary text-white" asp-controller="Playground" asp-action="Message" asp-route-id="@Model.Entity.Id">Message</a>
                 </div>
             }
         </div>

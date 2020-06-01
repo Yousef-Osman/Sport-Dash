@@ -21,13 +21,17 @@ namespace SportDash.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IImageRepository _imageRepository;
         private readonly IPlaygroundReservationRepository _reservationRepository;
+        private readonly IReviewRepository _reviewRepository;
+        private readonly IMessageRepository _messageRepository;
 
         public PlaygroundController(UserManager<ApplicationUser> userManager,
                                     SignInManager<ApplicationUser> signInManager,
                                     IAuthorizationService authorizationService,
                                     IUserRepository userRepository,
                                     IImageRepository imageRepository,
-                                    IPlaygroundReservationRepository reservationRepository)
+                                    IPlaygroundReservationRepository reservationRepository,
+                                    IReviewRepository reviewRepository,
+                                    IMessageRepository messageRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -35,6 +39,8 @@ namespace SportDash.Controllers
             _userRepository = userRepository;
             _imageRepository = imageRepository;
             _reservationRepository = reservationRepository;
+            _reviewRepository = reviewRepository;
+            _messageRepository = messageRepository;
         }
 
         //[HttpPost]
@@ -75,6 +81,21 @@ namespace SportDash.Controllers
             //var newName = "Idiot";
             _userRepository.EditFullName(userId, newName);
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Message(string id)
+        {
+            var playgroundReciver = await _userManager.FindByIdAsync(id);
+            var currentUser = await _userManager.GetUserAsync(User);
+            var allMessages = _messageRepository.GetMessages(currentUser.Id, playgroundReciver.Id).OrderByDescending(m => m.MessageDate);
+
+            MessagingViewModel messagingViewModel = new MessagingViewModel
+            {
+                CurrentPage = playgroundReciver.FullName,
+                Messages = allMessages
+            };
+
+            return View(messagingViewModel);
         }
 
         [HttpPost]
@@ -137,5 +158,16 @@ namespace SportDash.Controllers
             else
                 return NotFound(new NotFoundObjectResult("There is no reservations"));
         }
+
+        [HttpPost]
+        public IActionResult AddReview(Review R)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            //R.ReviewerId = _userManager.GetUserId(HttpContext.User);
+            //R.TargetId = "b6bf071e-32fe-4b3f-b8ec-57ddc6737e8";
+             var review = _reviewRepository.PostReview(R);
+            return Ok(new OkObjectResult(review));
+        }
+
     }
 }
