@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using SportDash.Data;
 using SportDash.Models;
 using SportDash.Repository;
-//using Swashbuckle.Swagger;
+using SportDash.Hubs;
 
 namespace SportDash
 {
@@ -61,7 +61,7 @@ namespace SportDash
                 options.AddPolicy("NormalUserPolicy", policy => { policy.RequireRole("NormalUser"); });
             });
 
-            
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,6 +92,7 @@ namespace SportDash
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chathub");
             });
         }
     }

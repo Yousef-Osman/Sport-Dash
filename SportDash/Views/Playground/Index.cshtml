@@ -7,4 +7,4 @@
 @await Component.InvokeAsync("ImageGallery", new { dataModel = Model })
 @await Component.InvokeAsync("Reservation", new { dataModel = Model })
 @await Component.InvokeAsync("PlaygroundPrices", new { dataModel = Model })
-@*@await Component.InvokeAsync("PlaygroundPrices", new { dataModel = Model /*new { playgroundId = "1", baseUrl = TempData["baseUrl"] */})*@
+@await Component.InvokeAsync("DisplayReview" , new { dataModel = Model }) 

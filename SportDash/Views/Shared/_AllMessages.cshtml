@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Message>
+
+@foreach (var message in Model)
+{
+    <div style="background: #fff;" class="round-borders media border p-3 mt-3">
+        <div class="media-body">
+            <h4>
+                <a asp-action="Message" asp-controller="Playground" asp-route-id="@message.SenderId">@message.Sender.UserName</a>
+                <small> <i>@message.MessageDate</i></small>
+            </h4>
+            <p>@message.Body</p>
+            <div class="container">
+                <button class="btn btn-primary" onclick="sendData('@message.Sender.Id')" data-toggle="modal" data-target="#replayModal">Replay</button>
+            </div>
+        </div>
+    </div>
+}

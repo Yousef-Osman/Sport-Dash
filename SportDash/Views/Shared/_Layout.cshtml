@@ -5,15 +5,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SportDash</title>
-    <link href="~/css/filcky.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/custom.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SportDash</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -31,13 +31,13 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Playground" asp-action="Index" asp-route-id="">Playground</a>
                             </li>
-                        }
-                        @*@if (SignInManager.IsSignedIn(User))
+                        }                                               
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Playground" asp-action="Index" asp-route-id="">Chat</a>
+                                <a id="newMsg" class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">Messages</a>
                             </li>
-                        }*@
+                        }
                     </ul>
                 </div>
             </div>
@@ -54,10 +54,31 @@
             &copy; 2020 - SportDash - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+    <div class="popup" style="width: 300px;"></div>
+    <audio id="sound" src="~/sounds/noti.mp3" style="display: none;"></audio>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
     @RenderSection("Scripts", required: false)
+    <script>        
+        const newMsg = document.querySelector("#newMsg");
+        connection.on("recMsg", function (res, sender) {
+            if (!location.pathname.includes("Message")) {
+                const popup = document.querySelector(".popup");
+                popup.style.display = "block"
+                popup.innerHTML = `${sender.fullName}: ${res}`;
+                setTimeout(() => {
+                    popup.style.display = "none";
+                }, 5000);
+                const sound = document.querySelector("#sound");                
+            }
+            sound.play();
+        });        
+    </script>
 </body>
 </html>

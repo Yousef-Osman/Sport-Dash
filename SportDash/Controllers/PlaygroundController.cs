@@ -21,6 +21,8 @@ namespace SportDash.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IImageRepository _imageRepository;
         private readonly IPlaygroundReservationRepository _reservationRepository;
+        private readonly IReviewRepository _reviewRepository;
+        private readonly IMessageRepository _messageRepository;
         private readonly IPlaygroundPriceRepository _playgroundPriceRepository;
 
 
@@ -30,6 +32,8 @@ namespace SportDash.Controllers
                                     IUserRepository userRepository,
                                     IImageRepository imageRepository,
                                     IPlaygroundReservationRepository reservationRepository,
+                                    IReviewRepository reviewRepository,
+                                    IMessageRepository messageRepository,
                                     IPlaygroundPriceRepository playgroundPriceRepository)
         {
             _userManager = userManager;
@@ -38,13 +42,14 @@ namespace SportDash.Controllers
             _userRepository = userRepository;
             _imageRepository = imageRepository;
             _reservationRepository = reservationRepository;
+            _reviewRepository = reviewRepository;
+            _messageRepository = messageRepository;
             _playgroundPriceRepository = playgroundPriceRepository;
         }
 
         //[HttpPost]
         public async Task<IActionResult> Index(string id)
         {
-            //TempData["baseUrl"] = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Request.PathBase);
             var dataModel = new DataViewModel();
             var user = await _userManager.GetUserAsync(User);
             dataModel.ControllerName = "Playground";
@@ -80,6 +85,21 @@ namespace SportDash.Controllers
             //var newName = "Idiot";
             _userRepository.EditFullName(userId, newName);
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Message(string id)
+        {
+            var playgroundReciver = await _userManager.FindByIdAsync(id);
+            var currentUser = await _userManager.GetUserAsync(User);
+            var allMessages = _messageRepository.GetMessages(currentUser.Id, playgroundReciver.Id).OrderByDescending(m => m.MessageDate);
+
+            MessagingViewModel messagingViewModel = new MessagingViewModel
+            {
+                CurrentPage = playgroundReciver.FullName,
+                Messages = allMessages
+            };
+
+            return View(messagingViewModel);
         }
 
         [HttpPost]
@@ -171,5 +191,16 @@ namespace SportDash.Controllers
                 return Ok();
             return BadRequest();
         }
+
+        [HttpPost]
+        public IActionResult AddReview(Review R)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            //R.ReviewerId = _userManager.GetUserId(HttpContext.User);
+            //R.TargetId = "b6bf071e-32fe-4b3f-b8ec-57ddc6737e8";
+             var review = _reviewRepository.PostReview(R);
+            return Ok(new OkObjectResult(review));
+        }
+
     }
 }

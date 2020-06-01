@@ -24,6 +24,7 @@ namespace SportDash.Data
         public DbSet<GymPrices> GymPrices { get; set; }
         public DbSet<PlaygroundPrice> playgroundPrices { get; set; }
         public DbSet<PlaygroundReservation> playgroundReservations { get; set; }
+        public DbSet<ConnectedUser> ConnectedUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -35,7 +36,7 @@ namespace SportDash.Data
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "GymManager", NormalizedName = "GYMMANAGER" });
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "Coach", NormalizedName = "COACH" });
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "NormalUser", NormalizedName = "NORMALUSER" });
-
+            //builder.Entity<ApplicationUser>().HasData(new ApplicationUser { });
             
         }
     }

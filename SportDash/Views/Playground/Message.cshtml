@@ -1,0 +1,71 @@
+﻿@model SportDash.ViewModels.MessagingViewModel
+
+@{
+    ViewData["Title"] = "Live Chat";
+}
+
+<div class="container">
+    <h3 class="mt-3 p-3">@Model.CurrentPage</h3>
+    <div id="msgs-container" class="chat" style="border-radius: 40px;">
+        @foreach (var msg in Model.Messages)
+        {
+            if (msg.Sender.UserName == User.Identity.Name)
+            {
+                <div class="mine messages">
+                    <div class="message last">
+                        @msg.Body
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="yours messages">
+                    <div class="message last">
+                        @msg.Body
+                    </div>
+                </div>
+            }
+        }        
+    </div>
+    <div class="form-group mt-2 form-container">
+        <textarea id="msg" onkeypress="sendKey(event)" class="form-control round-borders" style="width: 90%;" placeholder="Write your message here ...."></textarea>
+        <button onclick="send()" style="width: 9%" class="round-borders btn-elephant"><img src="~/images/send.png" /></button>
+    </div>    
+</div>
+
+@section Scripts{ 
+    <script>
+        const msgIn = document.querySelector("#msg");
+        msgIn.focus();
+        function send() {
+            const msgIn = document.querySelector("#msg");
+            if (msgIn.value != "") {
+                connection.invoke("SendMsg", msgIn.value, location.pathname.split('/')[3]);
+                msgIn.value = "";
+            }
+        }
+        function sendKey(event) {            
+            if (event.key == "Enter") {
+                event.preventDefault();
+                send();
+            }
+        }
+        connection.on("recMsg", (msg, sender) => {
+            const msgContainer = $("#msgs-container");            
+            if (sender.id == location.pathname.split('/')[3]) {                
+                msgContainer.prepend(`<div class="yours messages">
+                <div class="message last">
+                    ${msg}
+                </div>
+            </div>`);
+            }
+            else {
+                msgContainer.prepend(`<div class="mine messages">
+                <div class="message last">
+                    ${msg}
+                </div>
+            </div>`);
+            }
+        });
+    </script>
+}
