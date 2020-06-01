@@ -12,7 +12,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-elephant border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SportDash</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -49,6 +49,7 @@
     </footer>
 
     <div class="popup" style="width: 300px;"></div>
+    <audio id="sound" src="~/sounds/noti.mp3" style="display: none;"></audio>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -67,7 +68,9 @@
                 setTimeout(() => {
                     popup.style.display = "none";
                 }, 5000);
-            }            
+                const sound = document.querySelector("#sound");                
+            }
+            sound.play();
         });        
     </script>
 </body>
