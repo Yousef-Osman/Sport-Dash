@@ -1,104 +1,108 @@
 ﻿@model SportDash.ViewModels.DataViewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<div class="container mt-4">
-    <h1>Reservations</h1>    
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-       
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#todayReservations">Today's Reservations</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#search">Search</a>
-        </li>
-        @if (User.IsInRole("PlaygroundManager"))
-        {
+<section class="bg-elephant div-min-height">
+    <div class="container my-4 py-4 bg-elephant">
+        <h1 class="text-Geyser pb-3">Reservations</h1>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#requests">Requests</a>
+                <a class="nav-link active bg-Geyser text-elephant" data-toggle="tab" href="#todayReservations">Today's Reservations</a>
             </li>
-        }
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#add">Add</a>
-        </li>
-    </ul>
+            <li class="nav-item">
+                <a class="nav-link bg-Geyser text-elephant" data-toggle="tab" href="#search">Search</a>
+            </li>
+            @if (User.IsInRole("PlaygroundManager"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link bg-Geyser text-elephant" data-toggle="tab" href="#requests">Requests</a>
+                </li>
+            }
+            <li class="nav-item text-elephant">
+                <a class="nav-link bg-Geyser text-elephant" data-toggle="tab" href="#add">Add</a>
+            </li>
+        </ul>
 
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <div id="todayReservations" class="container tab-pane active">
-            <br>
-            <div class="card-group mt-3">
-                @foreach (var res in Model.Reservations)
-                {
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">@res.Name</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">@res.Date</h6>
-                            <p class="card-text">@res.Playground.FullName</p>
-                            <p class="card-text">Hours: @(res.EndTime-res.StartTime)</p>
-                            <p class="card-text">From: @res.StartTime</p>
-                            <p class="card-text">To:  @res.EndTime</p>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-
-        <div id="search" class="container tab-pane">
-            <br>
-            <div class="form-group">
-                <label class="col-form-label">Date</label>
-                <input type="date" style="width: 25%; display:inline-block" id="search-date" name="bday" class="form-control">
-                <button type="button" id="show-reservation" class="btn btn-info">Show</button>
-            </div>
-            <div class="card-group mt-3" id="returned-data">
-
-            </div>
-        </div>
-
-        <div id="requests" class="container tab-pane fade">
-            <br>
-            <div class="card-group mt-3">
-                @foreach (var res in Model.Requests)
-                {
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">@res.Name</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">@res.Date</h6>
-                            <p class="card-text">@res.Playground.FullName</p>
-                            <p class="card-text">Hours: @(res.EndTime-res.StartTime)</p>
-                            <p class="card-text">From: @res.StartTime</p>
-                            <p class="card-text">To:  @res.EndTime</p>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div id="todayReservations" class="container tab-pane active">
+                <br>
+                <div class="card-group mt-3 d-flex flex-wrap">
+                    @foreach (var res in Model.Reservations)
+                    {
+                    <div class="col-lg-3 col-md-6 pb-4">
+                        <div class="bg-Geyser round-borders mx-1">
                             <div class="card-body">
-                                <button type="button" onclick="acceptReservation(@res.Id)" class="btn btn-success">Accept</button>
-                                <button type="button" onclick="deleteReservation(@res.Id)" class="btn btn-danger">Cancel</button>
+                                <h5 class="card-title">@res.Name</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">@res.Date</h6>
+                                <p class="card-text">@res.Playground.FullName</p>
+                                <p class="card-text">Hours: @(res.EndTime - res.StartTime)</p>
+                                <p class="card-text">From: @res.StartTime</p>
+                                <p class="card-text">To:  @res.EndTime</p>
+                                <button type="button" onclick="deleteReservation(@res.Id)" class="btn btn-danger col-12">Cancel</button>
                             </div>
                         </div>
                     </div>
-                }
+                    }
+                </div>
             </div>
-        </div>
 
-        <div id="add" class="container tab-pane fade">
-            <br>
-            <div style="text-align:left;width: 40%;margin: 50px auto;padding: 10px;border: 1px solid #ddd;border-radius: 10px;">
-                @if (User.IsInRole("PlaygroundManager"))
-                {
-                    <label>Username</label>
-                    <input type="text" id="reservation-user" name="EventUsername" class="form-control" />
-                }
-                <label>Date</label>
-                <input type="date" id="reservation-date" name="EventDate" class="form-control" />
-                <label>Start Time</label>
-                <input type="time" id="start-at" name="EventFrom" class="form-control" />
-                <label>End Time</label>
-                <input type="time" id="end-at" name="EventTo" class="form-control" />
-                <button id="new-reservation" style="margin: 20px 0;width: 100%;" class="btn btn-danger">Add</button>
+            <div id="search" class="container tab-pane">
+                <br>
+                <div class="form-group">
+                    <label class="col-form-label text-Geyser mr-3">Date</label>
+                    <input type="date" style="width: 25%; display:inline-block" id="search-date" name="bday" class="form-control">
+                    <button type="button" id="show-reservation" class="btn btn-info">Show</button>
+                </div>
+                <div class="card-group mt-3" id="returned-data">
+
+                </div>
+            </div>
+
+            <div id="requests" class="container tab-pane fade">
+                <br>
+                <div class="card-group mt-3">
+                    @foreach (var res in Model.Requests)
+                    {
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">@res.Name</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">@res.Date</h6>
+                                <p class="card-text">@res.Playground.FullName</p>
+                                <p class="card-text">Hours: @(res.EndTime - res.StartTime)</p>
+                                <p class="card-text">From: @res.StartTime</p>
+                                <p class="card-text">To:  @res.EndTime</p>
+                                <div class="card-body">
+                                    <button type="button" onclick="acceptReservation(@res.Id)" class="btn btn-success">Accept</button>
+                                    <button type="button" onclick="deleteReservation(@res.Id)" class="btn btn-danger">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div id="add" class="container tab-pane fade">
+                <br>
+                <div style="text-align:left;width: 40%;margin: 50px auto;padding: 10px;border: 1px solid #ddd;border-radius: 10px;">
+                    @if (User.IsInRole("PlaygroundManager"))
+                    {
+                        <label class="text-Geyser">Username</label>
+                        <input type="text" id="reservation-user" name="EventUsername" class="form-control" />
+                    }
+                    <label class="text-Geyser">Date</label>
+                    <input type="date" id="reservation-date" name="EventDate" class="form-control" />
+                    <label class="text-Geyser">Start Time</label>
+                    <input type="time" id="start-at" name="EventFrom" class="form-control" />
+                    <label class="text-Geyser">End Time</label>
+                    <input type="time" id="end-at" name="EventTo" class="form-control" />
+                    <button id="new-reservation" style="margin: 20px 0;width: 100%;" class="btn btn-info bg-Mountain">Add</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
+</section>
 
 <div class="modal" tabindex="-1" role="dialog" data-target="#myModal" id="myModal">
     <div class="modal-dialog" role="document">
