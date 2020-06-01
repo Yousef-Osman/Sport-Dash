@@ -146,8 +146,7 @@ body {
     box-shadow: 2px 1px #ddd;
 }
 
-.chat {
-    width: 100% !important;
+.chat {    
     border: solid 1px #EEE !important;
     display: flex !important;
     flex-direction: column !important;
@@ -156,10 +155,7 @@ body {
     overflow-y: auto;
     background: #fff;
     margin-top: 10px;
-    border-radius: 10px;
-    /*background-image: url("../images/sun202005232209559266.jpg") !important;
-        background-size: cover !important;
-        background-repeat: no-repeat;*/
+    border-radius: 40px !important;    
 }
 
 .messages {
@@ -214,26 +210,28 @@ body {
     align-items: flex-end !important;
 }
 
-.mine .message {
-    color: white !important;
-    margin-left: 25% !important;
-    background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%) !important;
-    background-attachment: fixed !important;
-    position: relative !important;
-}
-
-    .mine .message.last:before {
-        content: "" !important;
-        position: absolute !important;
-        z-index: 0 !important;
-        bottom: 0 !important;
-        right: -8px !important;
-        height: 20px !important;
-        width: 20px !important;
-        background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%) !important;
+    .mine .message {
+        color: white !important;
+        margin-left: 25% !important;
+        /*background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%) !important;*/
+        background: #102b3e;
         background-attachment: fixed !important;
-        border-bottom-left-radius: 15px !important;
+        position: relative !important;
     }
+
+.mine .message.last:before {
+    content: "" !important;
+    position: absolute !important;
+    z-index: 0 !important;
+    bottom: 0 !important;
+    right: -8px !important;
+    height: 20px !important;
+    width: 20px !important;
+    /*background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%) !important;*/
+    background: #102b3e;
+    background-attachment: fixed !important;
+    border-bottom-left-radius: 15px !important;
+}
 
 .mine .message.last:after {
     content: "" !important;
@@ -245,4 +243,21 @@ body {
     height: 20px !important;
     background: white !important;
     border-bottom-left-radius: 10px !important;
+}
+
+/* css framework*/
+
+.round-borders{
+    border-radius: 20px;
+}
+.btn-elephant {
+    padding: 12px;
+    border: none;
+    color: #fff;
+    background: #102b3e;
+}
+.form-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
