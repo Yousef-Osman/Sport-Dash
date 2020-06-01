@@ -69,7 +69,7 @@ namespace SportDash.Repository
 
         public string GetUsername(string id)
         {
-            return _DbContext.playgroundReservations.Include("ApplicationUser").Where(r => r.UserId == id).Select(r => r.User.UserName).FirstOrDefault();
+            return _DbContext.Users.Where(r => r.Id == id).Select(r => r.FullName).FirstOrDefault();
         }
 
         public bool Delete(int id)

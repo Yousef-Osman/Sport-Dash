@@ -140,9 +140,19 @@ namespace SportDash.Controllers
         public IActionResult AddReservation(PlaygroundReservation reservation)
         {
             bool res = true;
+            if (User.IsInRole("PlaygroundManager"))
+            {
+                reservation.Status = "Accepted";
+                reservation.PlaygroundId = _userManager.GetUserId(HttpContext.User);
+            }
+            else
+            {
+                reservation.Status = "Waiting";
+                reservation.UserId = _userManager.GetUserId(HttpContext.User);
+                reservation.Name = _reservationRepository.GetUsername(reservation.UserId);
+            }
             if (ModelState.IsValid)
             {
-                reservation.PlaygroundId = _userManager.GetUserId(HttpContext.User);
                 res = _reservationRepository.Add(reservation);
             }
             if (res)
@@ -152,9 +162,17 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchByDate(DateTime date)
+        public IActionResult SearchByDate(DateTime date , string playgroundId)
         {
-            var userId = _userManager.GetUserId(HttpContext.User);
+            string userId = null;
+            if (User.IsInRole("PlaygroundManager"))
+            {
+                userId = _userManager.GetUserId(HttpContext.User);
+            }
+            else
+            {
+                userId = playgroundId;
+            }
             var data = _reservationRepository.GetReservationsByDay(userId, date.Day, date.Month, date.Year);
 
             if (data != null)
