@@ -105,7 +105,8 @@ namespace SportDash.Repository
             bool flag = true;
             foreach(var r in allReservations)
             {
-                if (reservation.StartTime >= r.StartTime && reservation.StartTime < r.EndTime)
+                if ((reservation.StartTime >= r.StartTime && reservation.StartTime < r.EndTime)||
+                    (reservation.EndTime > r.StartTime && reservation.EndTime <= r.EndTime))
                 {
                     flag = false;
                     break;

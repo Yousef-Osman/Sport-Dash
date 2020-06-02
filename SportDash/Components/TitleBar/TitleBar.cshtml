@@ -5,7 +5,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 
 <div class="bg-elephant py-4">
-    <div class="container">
+    <div class="container py-2">
         <div class="d-flex align-items-center justify-content-between flex-wrap">
             <div class="d-flex align-items-center col-md-6" style="padding:0 !important">
                 @if (Model.Images.FirstOrDefault() == null)
@@ -21,7 +21,7 @@
                         <h3 class="text-white" id="entity-Name">@Model.Entity.FullName</h3>
                         @if (Model.isCurrentUser == true)
                         {
-                            <button type="button" class="btn btn-success ml-4" data-toggle="modal" data-target="#editModal">Edit</button>
+                            <button type="button" class="btn btn-success bg-Mountain ml-4" data-toggle="modal" data-target="#editModal">Edit</button>
                         }
                     </div>
                     <p class="text-white mt-0">@Model.Entity.SportType</p>

@@ -37,3 +37,23 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.div-min-height{
+    min-height: 500px;
+}
+
+.text-elephant {
+    color: #102B3E;
+}
+
+.text-Mountain {
+    color: #1CC8A0;
+}
+
+.text-Geyser {
+    color: #CED8E1;
+}
+
+.div-border{
+    border-radius: 20%;
+}
