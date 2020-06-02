@@ -133,6 +133,14 @@ namespace SportDash.Controllers
         public IActionResult AcceptReservation(int id)
         {
             _reservationRepository.AcceptReservation(id);
+            //check for another requests and delete the requests with the same time of another reservation
+            var playgroundId = _userManager.GetUserId(HttpContext.User);
+            var remainingRequests = _reservationRepository.GetRequests(playgroundId);
+            foreach(var r in remainingRequests)
+            {
+                if (_reservationRepository.IsValid(r) == false)
+                    _reservationRepository.Delete(r.Id);
+            }
             return RedirectToAction(nameof(Index));
         }
 
@@ -168,6 +176,8 @@ namespace SportDash.Controllers
             if (User.IsInRole("PlaygroundManager"))
             {
                 userId = _userManager.GetUserId(HttpContext.User);
+                if (userId != playgroundId)
+                    userId = playgroundId;
             }
             else
             {
