@@ -187,7 +187,7 @@ background-color: rgb(28, 200, 160);//green degree */
     overflow-y: auto;
     background: #fff;
     margin-top: 10px;
-    border-radius: 40px !important;    
+    border-radius: 40px !important;     
 }
 
 .messages {
@@ -199,9 +199,10 @@ background-color: rgb(28, 200, 160);//green degree */
 .message {
     border-radius: 20px !important;
     padding: 8px 15px !important;
-    margin-top: 5px !important;
-    margin-bottom: 5px !important;
+    margin-top: 3px !important;
+    margin-bottom: 3px !important;
     display: inline-block !important;
+    font-size: 35px !important;
 }
 
 .yours {
@@ -211,7 +212,8 @@ background-color: rgb(28, 200, 160);//green degree */
 .yours .message {
     margin-right: 25% !important;
     background-color: #eee !important;
-    position: relative !important; 
+    position: relative !important;     
+    font-size: 35px !important;
 }
 
 .yours .message.last:before {
@@ -220,7 +222,7 @@ background-color: rgb(28, 200, 160);//green degree */
     z-index: 0 !important;
     bottom: 0 !important;
     left: -7px !important;
-    height: 20px !important;
+    height: 10px !important;
     width: 20px !important;
     background: #eee !important;
     border-bottom-right-radius: 15px !important;
@@ -233,7 +235,7 @@ background-color: rgb(28, 200, 160);//green degree */
     bottom: 0 !important;
     left: -10px !important;
     width: 10px !important;
-    height: 20px !important;
+    height: 10px !important;
     background: white !important;
     border-bottom-right-radius: 10px !important;
 }
@@ -242,14 +244,13 @@ background-color: rgb(28, 200, 160);//green degree */
     align-items: flex-end !important;
 }
 
-    .mine .message {
-        color: white !important;
-        margin-left: 25% !important;
-        /*background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%) !important;*/
-        background: #102b3e;
-        background-attachment: fixed !important;
-        position: relative !important;
-    }
+.mine .message {
+    color: white !important;
+    margin-left: 25% !important;
+    background: linear-gradient(to bottom, #fff 0%, #102b3e 100%) !important;    
+    background-attachment: fixed !important;
+    position: relative !important;
+}
 
 .mine .message.last:before {
     content: "" !important;
@@ -259,8 +260,7 @@ background-color: rgb(28, 200, 160);//green degree */
     right: -8px !important;
     height: 20px !important;
     width: 20px !important;
-    /*background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%) !important;*/
-    background: #102b3e;
+    background: linear-gradient(to bottom, #fff 0%, #102b3e 100%) !important;    
     background-attachment: fixed !important;
     border-bottom-left-radius: 15px !important;
 }
@@ -289,7 +289,5 @@ background-color: rgb(28, 200, 160);//green degree */
     background: #102b3e;
 }
 .form-container{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    display: flex;        
 }

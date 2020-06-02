@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SportDash.Data;
+using SportDash.Models;
 using SportDash.Repository;
 using SportDash.ViewModels;
 
@@ -24,9 +25,10 @@ namespace SportDash.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUser = await userManager.GetUserAsync(User);
-            // getting the most recent 10 messages
+            // getting the most recent 5 messages
             var msgs = messageRepository.GetMessagesR(currentUser.Id)
-                                        .OrderByDescending(m => m.MessageDate).Take(5);
+                                        .OrderByDescending(m => m.MessageDate)
+                                        .GroupBy(m => m.Sender.UserName).Take(5);
             return View(msgs);
         }
 
@@ -35,7 +37,8 @@ namespace SportDash.Controllers
             var currentUser = await userManager.GetUserAsync(User);
             // getting the most recent 10 messages
             var msgs = messageRepository.GetMessagesR(currentUser.Id)
-                                        .OrderByDescending(m => m.MessageDate);            
+                                        .OrderByDescending(m => m.MessageDate)
+                                        .GroupBy(m => m.Sender.UserName);
             return PartialView("_AllMessages", msgs);
         }
     }
