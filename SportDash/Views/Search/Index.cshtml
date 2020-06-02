@@ -10,7 +10,7 @@
             <h2>What are you looking for ?</h2>
             <p>You can search for Playground or Trainer or Gym with filters option </p>
             <input type="text" id="txtSearch" class="col-form-label w-75"/>
-            <button  class="btn btn-lg btn-primary">Search</button>
+            <button  id="search-btn" class="btn btn-lg btn-primary">Search</button>
             <div class="container mt-3">
                 <div class="row">
                     <div class="col-md-3">
@@ -117,7 +117,7 @@
 
     <script>
 
-        
+
             $('#txtSearch').autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -130,7 +130,7 @@
                     });
                 }
             });
-        
+
     $('#cat').change(function()
     {
         var category = $("#cat option:selected").text();
@@ -157,6 +157,22 @@
             $('#trainers').show();
         }
     });
+
+
+
+     $('#serch-btn').click(function (e) {
+        e.preventDefault();
+        const searchString = $("#txtSearch").val();
+        
+        console.log(searchString)
+        if (searchString != null) {
+            $.ajax({
+                url: '/Search/SearchResult',
+                type: 'GET',
+                data: { searchString: searchString },
+                dataType: "text",
+                success: function () { console.log("Done") }
+            });
 
 
     @*$('#price').change(function () {

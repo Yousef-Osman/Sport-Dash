@@ -113,14 +113,18 @@ namespace SportDash.Controllers
             return Ok(alldata);
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult SearchResult(string searchString)
         {
-            var newTrainers = trainers.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
-            var newPlaygrounds = playgrounds.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
-            var newGyms = gyms.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
-            var alldata = new List<string>();
-            return RedirectToAction(nameof(Index));
+            var searchVM = new DataViewModel();
+            var newTrainers = trainers.Where(a => a.FullName.Contains(searchString));
+            var newPlaygrounds = playgrounds.Where(a => a.FullName.Contains(searchString));
+            var newGyms = gyms.Where(a => a.FullName.Contains(searchString));
+            searchVM.Trainers = newTrainers.ToList();
+            searchVM.Playgrounds = newPlaygrounds.ToList();
+            searchVM.Gyms = newGyms.ToList();
+
+            return View("Index",searchVM);
         }
 
 
