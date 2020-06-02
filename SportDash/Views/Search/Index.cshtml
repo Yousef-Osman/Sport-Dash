@@ -5,119 +5,142 @@
 
 
 
-    <div class="container" >
-        <div class="bg-primary text-center p-3">
-            <h2>What are you looking for ?</h2>
-            <p>You can search for Playground or Trainer or Gym with filters option </p>
-            <input type="text" id="txtSearch" class="col-form-label w-75"/>
-            <button  class="btn btn-lg btn-primary">Search</button>
-            <div class="container mt-3">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label>Category</label>
-                        <select id="cat" asp-for="CategoryString" asp-items="Model.Category">
-                            <option value="">All</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Price</label>
-                        <select asp-for="PriceString" asp-items="Model.Price">
-                            <option value="">All</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Location</label>
-                        <select asp-for="LocationString" asp-items="Model.Location">
-                            <option value="">All</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Sport Type</label>
-                        <select asp-for="SportTypeString" asp-items="Model.SportType">
-                            <option value="">All</option>
-                        </select>
+<section>
+    <div class="text-center">
+        <div class="bg-elephant d-flex justify-content-center">
+            <div class="container text-Geyser py-5">
+                <div>
+                    <h2>What are you looking for ?</h2>
+                    <p>You can search for Playground or Trainer or Gym with filters option </p>
+                    <div class="form-inline">
+                        <div class="form-group px-sm-3 mb-2 col-md-11">
+                            <input type="search" id="txtSearch" class="form-control w-100" />
+                        </div>
+                        <div class="form-group px-sm-3 mb-2 col-md-1">
+                            <button class="btn btn-lg btn-primary">Search</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div>
-            <div id="playgrounds"  class="bg-success p-3">
-                <h2>Playgrounds</h2>
-                <div class="row">
-
-                    @foreach (var item in Model.Playgrounds)
-                    {
-                        <div class="col-md-3">
-                            <div class="card">
-                                <img src="~/images/01202005310546396911.jpeg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">@item.FullName</h5>
-                                    <p class="card-text">@item.Location</p>
-                                    @{var temp = item.PlaygroundPrices[0].Price;}
-                                    @foreach (var i in item.PlaygroundPrices)
-                                    {
-
-                                        if (i.Price < temp)
-                                            temp = i.Price;
-                                    }
-                                    <span>Starts from @temp</span>
-                                </div>
-                            </div>
+                <div class="row mt-3">
+                    <div class="form-group row col-md-3">
+                        <label class="col-sm-4 col-form-label">Category</label>
+                        <div class="col-sm-8">
+                            <select id="cat" class="form-control" asp-for="CategoryString" asp-items="Model.Category">
+                                <option value="">All</option>
+                            </select>
                         </div>
-                    }
-                </div>
-            </div>
-            <div id="gyms" class="bg-primary p-3">
-                <h2>Gyms</h2>
-                <div class="row">
-
-                    @foreach (var item in Model.Gyms)
-                    {
-                        <div class="col-md-3">
-                            <div class="card">
-                                <img src="~/images/obl202005231057175364.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">@item.FullName</h5>
-                                    <p class="card-text">@item.Location</p>
-                                    @{var temp1 = item.GymPrices[0].Subscribtion_Price;}
-                                    @foreach (var i in item.GymPrices)
-                                    {
-
-                                        if (i.Subscribtion_Price < temp1)
-                                            temp1 = i.Subscribtion_Price;
-                                    }
-                                    <span>Starts from @temp1 </span>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="form-group row col-md-3">
+                        <label class="col-sm-4 col-form-label">Price</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" asp-for="PriceString" asp-items="Model.Price">
+                                <option value="">All</option>
+                            </select>
                         </div>
-                    }
-                </div>
-            </div>
-            <div id="trainers" class="bg-secondary p-3">
-                <h2>Coaches</h2>
-                <div class="row">
-
-                    @foreach (var item in Model.Trainers)
-                    {
-                        <div class="col-md-3">
-                            <div class="card">
-                                <img src="~/images/user-icon.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">@item.FullName</h5>
-                                    <p class="card-text">@item.Location</p>
-                                    <span>@item.SportType.Value</span>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="form-group row col-md-3">
+                        <label class="col-sm-4 col-form-label">Location</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" asp-for="LocationString" asp-items="Model.Location">
+                                <option value="">All</option>
+                            </select>
                         </div>
-                    }
+                    </div>
+                    <div class="form-group row col-md-3">
+                        <label class="col-sm-6 col-form-label">Sport Type</label>
+                        <div class="col-sm-6">
+                            <select class="form-control" asp-for="SportTypeString" asp-items="Model.SportType">
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
 
-        
+    <div class="bg-Geyser">
+        <div id="playgrounds" class="container p-3">
+            <h2>Playgrounds</h2>
+            <div class="row">
+
+                @foreach (var item in Model.Playgrounds)
+                {
+                    <div class="col-md-3">
+                        <div class="card">
+                            <img src="~/images/01202005310546396911.jpeg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.FullName</h5>
+                                <p class="card-text">@item.Location</p>
+                                @{var temp = item.PlaygroundPrices[0].Price;}
+                                @foreach (var i in item.PlaygroundPrices)
+                                {
+
+                                    if (i.Price < temp)
+                                        temp = i.Price;
+                                }
+                                <span>Starts from @temp</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <hr />
+        </div>
+        <div id="gyms" class="container p-3">
+            <h2>Gyms</h2>
+            <div class="row">
+
+                @foreach (var item in Model.Gyms)
+                {
+                    <div class="col-md-3">
+                        <div class="card">
+                            <img src="~/images/obl202005231057175364.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.FullName</h5>
+                                <p class="card-text">@item.Location</p>
+                                @{var temp1 = item.GymPrices[0].Subscribtion_Price;}
+                                @foreach (var i in item.GymPrices)
+                                {
+
+                                    if (i.Subscribtion_Price < temp1)
+                                        temp1 = i.Subscribtion_Price;
+                                }
+                                <span>Starts from @temp1 </span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <hr />
+        </div>
+
+        <div id="trainers" class="container p-3">
+            <h2>Coaches</h2>
+            <div class="row">
+
+                @foreach (var item in Model.Trainers)
+                {
+                    <div class="col-md-3">
+                        <div class="card">
+                            <img src="~/images/user-icon.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.FullName</h5>
+                                <p class="card-text">@item.Location</p>
+                                <span>@item.SportType.Value</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+
+
             $('#txtSearch').autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -130,7 +153,7 @@
                     });
                 }
             });
-        
+
     $('#cat').change(function()
     {
         var category = $("#cat option:selected").text();
@@ -170,4 +193,4 @@
         }
       });
     })*@
-    </script>
+</script>

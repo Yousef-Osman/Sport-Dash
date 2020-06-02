@@ -90,12 +90,15 @@ namespace SportDash.Controllers
         public async Task<IActionResult> Message(string id)
         {
             var playgroundReciver = await _userManager.FindByIdAsync(id);
+            if (playgroundReciver == null) return NotFound();
+
             var currentUser = await _userManager.GetUserAsync(User);
             var allMessages = _messageRepository.GetMessages(currentUser.Id, playgroundReciver.Id).OrderByDescending(m => m.MessageDate);
 
             MessagingViewModel messagingViewModel = new MessagingViewModel
             {
                 CurrentPage = playgroundReciver.FullName,
+                EntityId = id,
                 Messages = allMessages
             };
 
@@ -133,6 +136,14 @@ namespace SportDash.Controllers
         public IActionResult AcceptReservation(int id)
         {
             _reservationRepository.AcceptReservation(id);
+            //check for another requests and delete the requests with the same time of another reservation
+            var playgroundId = _userManager.GetUserId(HttpContext.User);
+            var remainingRequests = _reservationRepository.GetRequests(playgroundId);
+            foreach(var r in remainingRequests)
+            {
+                if (_reservationRepository.IsValid(r) == false)
+                    _reservationRepository.Delete(r.Id);
+            }
             return RedirectToAction(nameof(Index));
         }
 
@@ -168,6 +179,8 @@ namespace SportDash.Controllers
             if (User.IsInRole("PlaygroundManager"))
             {
                 userId = _userManager.GetUserId(HttpContext.User);
+                if (userId != playgroundId)
+                    userId = playgroundId;
             }
             else
             {
