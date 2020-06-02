@@ -28,9 +28,10 @@ namespace SportDash.Repository
             return await _context.GymPrices.Where(gp => gp.GymId == gymId).ToListAsync();
         }
 
-        public async Task AddPerDayPrice(string gymId, GymPrices gymPrices)
+
+        public async Task AddOrEditPricePerPeriod(GymPrices gymPrices)
         {
-            var gymPrice = await _context.GymPrices.FirstOrDefaultAsync(gp => gp.GymId == gymId && gp.Subscribtion_Type == Subscribtion_type.Day);
+            var gymPrice = await _context.GymPrices.FirstOrDefaultAsync(gp => gp.GymId == gymPrices.GymId && gp.Subscribtion_Type == gymPrices.Subscribtion_Type);
             if (gymPrice == null)
             {
                 _context.GymPrices.Add(gymPrices);
@@ -38,66 +39,83 @@ namespace SportDash.Repository
             else
             {
                 gymPrice.Subscribtion_Price = gymPrices.Subscribtion_Price;
-                gymPrice.Subscribtion_Type = Subscribtion_type.Day;
-                gymPrice.GymId = gymId;
+                gymPrice.Subscribtion_Type = gymPrices.Subscribtion_Type;
+                gymPrice.GymId = gymPrices.GymId;
                 _context.Entry(gymPrice).State = EntityState.Modified;
             }
             await this.Commit();
         }
 
-
-        public async Task AddPerWeekPrice(string gymId, GymPrices gymPrices)
-        {
-            var gymPrice = await _context.GymPrices.FirstOrDefaultAsync(gp => gp.GymId == gymId && gp.Subscribtion_Type == Subscribtion_type.Week);
-            if (gymPrice == null)
-            {
-                _context.GymPrices.Add(gymPrices);
-            }
-            else
-            {
-                gymPrice.Subscribtion_Price = gymPrices.Subscribtion_Price;
-                gymPrice.Subscribtion_Type = Subscribtion_type.Week;
-                gymPrice.GymId = gymId;
-                _context.Entry(gymPrice).State = EntityState.Modified;
-            }
-            await this.Commit();
-        }
-
-
-        public async Task AddPerMonthPrice(string gymId, GymPrices gymPrices)
-        {
-            var gymPrice = await _context.GymPrices.FirstOrDefaultAsync(gp => gp.GymId == gymId && gp.Subscribtion_Type == Subscribtion_type.Month);
-            if (gymPrice == null)
-            {
-                _context.GymPrices.Add(gymPrices);
-            }
-            else
-            {
-                gymPrice.Subscribtion_Price = gymPrices.Subscribtion_Price;
-                gymPrice.Subscribtion_Type = Subscribtion_type.Month;
-                gymPrice.GymId = gymId;
-                _context.Entry(gymPrice).State = EntityState.Modified;
-            }
-            await this.Commit();
-        }
+        //public async Task AddPerDayPrice(string gymId, GymPrices gymPrices)
+        //{
+        //    var gymPrice = await _context.GymPrices.FirstOrDefaultAsync(gp => gp.GymId == gymId && gp.Subscribtion_Type == Subscribtion_type.Day);
+        //    if (gymPrice == null)
+        //    {
+        //        _context.GymPrices.Add(gymPrices);
+        //    }
+        //    else
+        //    {
+        //        gymPrice.Subscribtion_Price = gymPrices.Subscribtion_Price;
+        //        gymPrice.Subscribtion_Type = Subscribtion_type.Day;
+        //        gymPrice.GymId = gymId;
+        //        _context.Entry(gymPrice).State = EntityState.Modified;
+        //    }
+        //    await this.Commit();
+        //}
 
 
-        public async Task AddPerYearPrice(string gymId, GymPrices gymPrices)
-        {
-            var gymPrice = await _context.GymPrices.FirstOrDefaultAsync(gp => gp.GymId == gymId && gp.Subscribtion_Type == Subscribtion_type.Year);
-            if (gymPrice == null)
-            {
-                _context.GymPrices.Add(gymPrices);
-            }
-            else
-            {
-                gymPrice.Subscribtion_Price = gymPrices.Subscribtion_Price;
-                gymPrice.Subscribtion_Type = Subscribtion_type.Year;
-                gymPrice.GymId = gymId;
-                _context.Entry(gymPrice).State = EntityState.Modified;
-            }
-            await this.Commit();
-        }
+        //public async Task AddPerWeekPrice(string gymId, GymPrices gymPrices)
+        //{
+        //    var gymPrice = await _context.GymPrices.FirstOrDefaultAsync(gp => gp.GymId == gymId && gp.Subscribtion_Type == Subscribtion_type.Week);
+        //    if (gymPrice == null)
+        //    {
+        //        _context.GymPrices.Add(gymPrices);
+        //    }
+        //    else
+        //    {
+        //        gymPrice.Subscribtion_Price = gymPrices.Subscribtion_Price;
+        //        gymPrice.Subscribtion_Type = Subscribtion_type.Week;
+        //        gymPrice.GymId = gymId;
+        //        _context.Entry(gymPrice).State = EntityState.Modified;
+        //    }
+        //    await this.Commit();
+        //}
+
+
+        //public async Task AddPerMonthPrice(string gymId, GymPrices gymPrices)
+        //{
+        //    var gymPrice = await _context.GymPrices.FirstOrDefaultAsync(gp => gp.GymId == gymId && gp.Subscribtion_Type == Subscribtion_type.Month);
+        //    if (gymPrice == null)
+        //    {
+        //        _context.GymPrices.Add(gymPrices);
+        //    }
+        //    else
+        //    {
+        //        gymPrice.Subscribtion_Price = gymPrices.Subscribtion_Price;
+        //        gymPrice.Subscribtion_Type = Subscribtion_type.Month;
+        //        gymPrice.GymId = gymId;
+        //        _context.Entry(gymPrice).State = EntityState.Modified;
+        //    }
+        //    await this.Commit();
+        //}
+
+
+        //public async Task AddPerYearPrice(string gymId, GymPrices gymPrices)
+        //{
+        //    var gymPrice = await _context.GymPrices.FirstOrDefaultAsync(gp => gp.GymId == gymId && gp.Subscribtion_Type == Subscribtion_type.Year);
+        //    if (gymPrice == null)
+        //    {
+        //        _context.GymPrices.Add(gymPrices);
+        //    }
+        //    else
+        //    {
+        //        gymPrice.Subscribtion_Price = gymPrices.Subscribtion_Price;
+        //        gymPrice.Subscribtion_Type = Subscribtion_type.Year;
+        //        gymPrice.GymId = gymId;
+        //        _context.Entry(gymPrice).State = EntityState.Modified;
+        //    }
+        //    await this.Commit();
+        //}
 
     }
 }

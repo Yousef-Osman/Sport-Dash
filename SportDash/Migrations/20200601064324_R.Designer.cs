@@ -10,8 +10,8 @@ using SportDash.Data;
 namespace SportDash.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200601062522_R2")]
-    partial class R2
+    [Migration("20200601064324_R")]
+    partial class R
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,36 +50,36 @@ namespace SportDash.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d73d7975-bdd4-4c8c-a9e0-1d3134030413",
-                            ConcurrencyStamp = "7ab90236-53d8-4543-83d0-55b52ee5006f",
+                            Id = "fa14a6fe-9e38-4ac9-aac2-cf077d96adf7",
+                            ConcurrencyStamp = "dbe4578e-3dec-4eea-a806-e43342e92502",
                             Name = "ClubManager",
                             NormalizedName = "CLUBMANAGER"
                         },
                         new
                         {
-                            Id = "1b0d3b70-c05c-4622-b97e-a6a42cf29a2e",
-                            ConcurrencyStamp = "90bc7a09-3e0d-4719-a534-e57576d68a68",
+                            Id = "4f116479-56ad-402d-bc9b-f47b43510e03",
+                            ConcurrencyStamp = "2d104fdc-f4dc-4fcf-96a9-91d1531ad920",
                             Name = "PlaygroundManager",
                             NormalizedName = "PLAYGROUNDMANAGER"
                         },
                         new
                         {
-                            Id = "ba8e9f2a-4920-4180-af26-2665bbcaab0d",
-                            ConcurrencyStamp = "6be883ec-40b5-49d1-b337-ece2e2eed74a",
+                            Id = "b416c13b-4b04-4c36-92ce-2b6416d142e8",
+                            ConcurrencyStamp = "957762a3-266b-49a9-975c-063ae46258f4",
                             Name = "GymManager",
                             NormalizedName = "GYMMANAGER"
                         },
                         new
                         {
-                            Id = "66bb4633-4415-4bd2-908d-d241460e5f2b",
-                            ConcurrencyStamp = "99943c03-d1f8-4840-b679-aa11fc9450da",
+                            Id = "4ff4269e-2232-4c78-8597-9e2bd072cd24",
+                            ConcurrencyStamp = "dbe5958d-1ba9-40c0-8a0f-031341959d0a",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "8d75a498-0182-4599-91d9-42e0a7d27416",
-                            ConcurrencyStamp = "419f4de5-5f72-4a2a-8504-8cbcc1883ad2",
+                            Id = "59a925d3-4bd0-4b9c-9314-9dc990dcc436",
+                            ConcurrencyStamp = "80fb1e9b-d570-4083-a1db-76e01e7f3999",
                             Name = "NormalUser",
                             NormalizedName = "NORMALUSER"
                         });

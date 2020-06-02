@@ -96,6 +96,7 @@ body {
   background-color: rgb(28, 200, 160);
   color: rgb(16, 43, 62);
 }
+
 .op_button {
   border-color: rgb(16, 43, 62);
   margin: 2%;
@@ -104,6 +105,33 @@ body {
 /* background-color: rgb(16, 43, 62);//Dark Blue
 background-color: rgb(206, 216, 225);//Light
 background-color: rgb(28, 200, 160);//green degree */
+.greenColor {
+    color: rgb(28, 200, 160);
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.price-size {
+    width: 3.1em;
+}
+
+.medium-size {
+    font-size: medium;
+}
+
+.large-size-1 {
+    font-size: large;
+}
+
+.large-size-2 {
+    font-size: x-large;
+}
+
+.large-size-3 {
+    font-size: xx-large;
+}
 
 /* Review Stars 
 -------------------------------------------------- */
