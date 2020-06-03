@@ -17,7 +17,7 @@
                             <input type="search" id="txtSearch" class="form-control w-100" />
                         </div>
                         <div class="form-group px-sm-3 mb-2 col-md-1">
-                            <button class="btn btn-lg btn-primary">Search</button>
+                            <button id="search-btn" class="btn btn-lg btn-primary">Search</button>
                         </div>
                     </div>
                 </div>
@@ -64,9 +64,11 @@
         <div id="playgrounds" class="container p-3">
             <h2>Playgrounds</h2>
             <div class="row">
+                @if(Model.Playgrounds != null)
+                { 
+                  @foreach (var item in Model.Playgrounds)
+                   {
 
-                @foreach (var item in Model.Playgrounds)
-                {
                     <div class="col-md-3">
                         <div class="card">
                             <img src="~/images/01202005310546396911.jpeg" class="card-img-top" alt="...">
@@ -84,7 +86,12 @@
                             </div>
                         </div>
                     </div>
-                }
+                   }
+                 }
+                 else
+                 { 
+                      <h3>There are no Playgrounds with such that name</h3>              
+                 }
             </div>
             <hr />
         </div>
@@ -119,7 +126,8 @@
         <div id="trainers" class="container p-3">
             <h2>Coaches</h2>
             <div class="row">
-
+               @if (Model.Trainers != null)
+               {
                 @foreach (var item in Model.Trainers)
                 {
                     <div class="col-md-3">
@@ -133,6 +141,11 @@
                         </div>
                     </div>
                 }
+               }
+               else
+               {
+                   <h3></h3>
+               }
             </div>
         </div>
     </div>
@@ -183,21 +196,22 @@
 
 
 
-     $('#serch-btn').click(function (e) {
+    $('#search-btn').click(function (e) {
         e.preventDefault();
-        const searchString = $("#txtSearch").val();
-        
-        console.log(searchString)
-        if (searchString != null) {
+        const txt = $("#txtSearch").val();
+
+        console.log(txt)
+        if (txt != null) {
             $.ajax({
                 url: '/Search/SearchResult',
                 type: 'GET',
-                data: { searchString: searchString },
+                data: { searchString: txt },
                 dataType: "text",
                 success: function () { console.log("Done") }
             });
 
-
+        }
+    });
     @*$('#price').change(function () {
         var price = $("#price option:selected").text();
         $.ajax({

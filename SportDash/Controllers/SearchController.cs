@@ -19,6 +19,7 @@ namespace SportDash.Controllers
         List<ApplicationUser> trainers;
         List<ApplicationUser> playgrounds;
         List<ApplicationUser> gyms;
+        bool flag = true;
         public SearchController(UserManager<ApplicationUser> User , ApplicationDbContext context)
         {
             _User = User;
@@ -28,7 +29,7 @@ namespace SportDash.Controllers
              gyms = _context.Users.Include(a => a.GymPrices).Where(a => a.Category == "GymManager").ToList();
         }
       
-        public async Task<IActionResult> Index(string entityCategory , string entityPrice , string entityLocation , string searchString)
+        public async Task<IActionResult> Index(DataViewModel searchVM)
         {
 
 
@@ -64,7 +65,7 @@ namespace SportDash.Controllers
 
 
 
-            var searchVM = new DataViewModel();
+            //searchVM = new DataViewModel();
 
             searchVM.Category = new List<SelectListItem> 
             { 
@@ -92,9 +93,14 @@ namespace SportDash.Controllers
               new SelectListItem { Text = GamesCategory.Others.ToString() , Value = ((int)GamesCategory.BasketBall).ToString() }
             };
 
-            searchVM.Trainers = trainers.ToList();
-            searchVM.Playgrounds = playgrounds.ToList();
-            searchVM.Gyms = gyms.ToList();
+            
+            if (flag== true)
+            {
+                searchVM.Trainers = trainers.ToList();
+                searchVM.Playgrounds = playgrounds.ToList();
+                searchVM.Gyms = gyms.ToList();
+                flag = false;
+            }
             
 
             return View(searchVM);
@@ -116,15 +122,15 @@ namespace SportDash.Controllers
         [HttpGet]
         public IActionResult SearchResult(string searchString)
         {
-            var searchVM = new DataViewModel();
-            var newTrainers = trainers.Where(a => a.FullName.Contains(searchString));
-            var newPlaygrounds = playgrounds.Where(a => a.FullName.Contains(searchString));
-            var newGyms = gyms.Where(a => a.FullName.Contains(searchString));
-            searchVM.Trainers = newTrainers.ToList();
-            searchVM.Playgrounds = newPlaygrounds.ToList();
-            searchVM.Gyms = newGyms.ToList();
+            var SVM = new DataViewModel();
+            var newTrainers = trainers.Where(a => a.FullName==searchString);
+            var newPlaygrounds = playgrounds.Where(a => a.FullName==searchString);
+            var newGyms = gyms.Where(a => a.FullName==searchString);
+            SVM.Trainers = newTrainers.ToList();
+            SVM.Playgrounds = newPlaygrounds.ToList();
+            SVM.Gyms = newGyms.ToList();
 
-            return View("Index",searchVM);
+            return RedirectToAction("Index",SVM);
         }
 
 
