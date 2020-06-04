@@ -19,33 +19,33 @@ namespace SportDash.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IPlaygroundPriceRepository _priceRepository;
         private readonly UserManager<ApplicationUser> _User;
-        List<ApplicationUser> trainers;
-        List<ApplicationUser> playgrounds;
-        List<ApplicationUser> gyms;
-        DataViewModel searchVM;
-        public SearchController(UserManager<ApplicationUser> User , ApplicationDbContext context,IPlaygroundPriceRepository priceRepository)
+        private List<ApplicationUser> trainers;
+        private List<ApplicationUser> playgrounds;
+        private List<ApplicationUser> gyms;
+        private DataViewModel SearchVM;
+        
+        public SearchController(UserManager<ApplicationUser> User , ApplicationDbContext context)
         {
             _User = User;
             _context = context;
-            _priceRepository = priceRepository;
             trainers = _context.Users.Where(a => a.Category == "Coach").ToList();
             playgrounds = _context.Users.Include(a=>a.PlaygroundPrices).Where(a => a.Category == "PlaygroundManager").ToList();
             gyms = _context.Users.Include(a => a.GymPrices).Where(a => a.Category == "GymManager").ToList();
-            searchVM = new DataViewModel();
+            SearchVM = new DataViewModel();
         }
       
         public IActionResult Index()
         {
             IQueryable<string> locationQuery = _context.Users.Select(a => a.Location);
-    
-            searchVM.Category = new List<SelectListItem> 
-            { 
-              new SelectListItem { Text = "PlaygroundManager", Value = "1" }, 
-              new SelectListItem { Text = "GymManager", Value = "2" }, 
+
+            SearchVM.Category = new List<SelectListItem>
+            {
+              new SelectListItem { Text = "PlaygroundManager", Value = "1" },
+              new SelectListItem { Text = "GymManager", Value = "2" },
               new SelectListItem { Text = "Coach", Value = "3" }
             };
 
-            searchVM.Price = new List<SelectListItem>
+            SearchVM.Price = new List<SelectListItem>
             {
               new SelectListItem { Text = "Under 100", Value = "1" },
               new SelectListItem { Text = "100 - 150", Value = "2" },
@@ -83,7 +83,7 @@ namespace SportDash.Controllers
                 new SelectListItem {Text = "Janklies", Value= "26"}
             };
 
-            searchVM.SportType = new List<SelectListItem>
+            SearchVM.SportType = new List<SelectListItem>
             {
               new SelectListItem { Text = GamesCategory.BasketBall.ToString() , Value =((int)GamesCategory.BasketBall).ToString()},
               new SelectListItem { Text = GamesCategory.FootBall.ToString() , Value = ((int)GamesCategory.BasketBall).ToString() },
@@ -92,34 +92,41 @@ namespace SportDash.Controllers
               new SelectListItem { Text = GamesCategory.Others.ToString() , Value = ((int)GamesCategory.BasketBall).ToString() }
             };
 
-            searchVM.Trainers = trainers.ToList();
-            searchVM.Playgrounds = playgrounds.ToList();
-            searchVM.Gyms = gyms.ToList();
-           
-            return View(searchVM);
+            SearchVM.Playgrounds = playgrounds;
+            SearchVM.Gyms = gyms;
+            SearchVM.Trainers = trainers;
+            return View(SearchVM);
         }
+
+        //[HttpGet]
+        //public IActionResult AutoCompleteSearch(string searchString)
+        //{
+        //    var newTrainers = trainers.Where(a=>a.FullName.Contains(searchString)).Select(a => a.FullName);
+        //    var newPlaygrounds = playgrounds.Where(a =>a.FullName.Contains(searchString)).Select(a => a.FullName);
+        //    var newGyms = gyms.Where(a => a.FullName.Contains(searchString)).Select(a => a.FullName);
+        //    var alldata = new List<string>();
+        //    alldata.AddRange(newTrainers);
+        //    alldata.AddRange(newPlaygrounds);
+        //    alldata.AddRange(newGyms);
+        //    return Ok(alldata);
+        //}
 
         [HttpGet]
-        public IActionResult Search(string searchString)
-        {
-            var newTrainers = trainers.Where(a=>a.FullName.Contains(searchString)).Select(a => a.FullName);
-            var newPlaygrounds = playgrounds.Where(a =>a.FullName.Contains(searchString)).Select(a => a.FullName);
-            var newGyms = gyms.Where(a => a.FullName.Contains(searchString)).Select(a => a.FullName);
-            var alldata = new List<string>();
-            alldata.AddRange(newTrainers);
-            alldata.AddRange(newPlaygrounds);
-            alldata.AddRange(newGyms);
-            return Ok(alldata);
-        }
-
-        [HttpPost]
         public IActionResult SearchResult(string searchString)
         {
-            var newTrainers = trainers.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
-            var newPlaygrounds = playgrounds.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
-            var newGyms = gyms.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
-            var alldata = new List<string>();
-            return RedirectToAction(nameof(Index));
+           
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                searchString = searchString.ToLower();
+                trainers = trainers.Where(a => a.FullName.ToLower().Contains(searchString)).ToList();
+                playgrounds = playgrounds.Where(a => a.FullName.ToLower().Contains(searchString)).ToList();
+                gyms = gyms.Where(a => a.FullName.ToLower().Contains(searchString)).ToList();
+                SearchVM.Trainers = trainers.ToList();
+                SearchVM.Playgrounds = playgrounds.ToList();
+                SearchVM.Gyms = gyms.ToList();
+            }
+
+            return PartialView("_SearchResult", SearchVM);
         }
 
         public IActionResult SearchByCategory (string category)

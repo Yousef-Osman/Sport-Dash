@@ -12,14 +12,16 @@
                 <div>
                     <h2>What are you looking for ?</h2>
                     <p>You can search for Playground or Trainer or Gym with filters option </p>
-                    <div class="form-inline">
-                        <div class="form-group px-sm-3 mb-2 col-md-11">
-                            <input type="search" id="txtSearch" class="form-control w-100" />
+                    @*<form asp-action="Index">*@
+                        <div class="form-inline">
+                            <div class="form-group px-sm-3 mb-2 col-md-11">
+                                <input type="search" id="txtSearch" class="form-control w-100" />
+                            </div>
+                            <div class="form-group px-sm-3 mb-2 col-md-1">
+                                <button id="search-btn" class="btn btn-lg btn-primary">Search</button>
+                            </div>
                         </div>
-                        <div class="form-group px-sm-3 mb-2 col-md-1">
-                            <button class="btn btn-lg btn-primary">Search</button>
-                        </div>
-                    </div>
+                    @*</form>*@
                 </div>
                 <div class="row mt-3">
                     <div class="form-group row col-md-3">
@@ -60,12 +62,15 @@
     </div>
 
 
-    <div class="bg-Geyser">
+    <div id="search-container" class="bg-Geyser">
         <div id="playgrounds" class="container p-3">
             <h2>Playgrounds</h2>
-            <div id="playground-body" class="row">
-                @foreach (var item in Model.Playgrounds)
-                {
+            <div class="row">
+                @if(Model.Playgrounds != null)
+                { 
+                  @foreach (var item in Model.Playgrounds)
+                   {
+
                     <div class="col-md-3">
                         <div class="card">
                             <img src="~/images/01202005310546396911.jpeg" class="card-img-top" alt="...">
@@ -83,42 +88,50 @@
                             </div>
                         </div>
                     </div>
-                }
+                   }
+                 }
+                 else
+                 { 
+                      <h3>There are no Playgrounds with such that name</h3>              
+                 }
             </div>
             <hr />
         </div>
         <div id="gyms" class="container p-3">
             <h2>Gyms</h2>
             <div class="row">
+                @if (Model.Gyms != null)
+                 {
+                    @foreach (var item in Model.Gyms)
+                     {
+                        <div class="col-md-3">
+                            <div class="card">
+                                <img src="~/images/03.jpg" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.FullName</h5>
+                                    <p class="card-text">@item.Location</p>
+                                    @{var temp1 = item.GymPrices[0].Subscribtion_Price;}
+                                    @foreach (var i in item.GymPrices)
+                                     {
 
-                @foreach (var item in Model.Gyms)
-                {
-                    <div class="col-md-3">
-                        <div class="card">
-                            <img src="~/images/obl202005231057175364.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">@item.FullName</h5>
-                                <p class="card-text">@item.Location</p>
-                                @{var temp1 = item.GymPrices[0].Subscribtion_Price;}
-                                @foreach (var i in item.GymPrices)
-                                {
-
-                                    if (i.Subscribtion_Price < temp1)
-                                        temp1 = i.Subscribtion_Price;
-                                }
-                                <span>Starts from @temp1 </span>
+                                        if (i.Subscribtion_Price < temp1)
+                                            temp1 = i.Subscribtion_Price;
+                                     }
+                                    <span>Starts from @temp1 </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
-            </div>
+                     }
+                 }
+                </div>
             <hr />
         </div>
 
         <div id="trainers" class="container p-3">
             <h2>Coaches</h2>
             <div class="row">
-
+               @if (Model.Trainers != null)
+               {
                 @foreach (var item in Model.Trainers)
                 {
                     <div class="col-md-3">
@@ -132,6 +145,11 @@
                         </div>
                     </div>
                 }
+               }
+               else
+               {
+                   <h3></h3>
+               }
             </div>
         </div>
     </div>
@@ -140,23 +158,27 @@
 <script>
 
 
-            $('#txtSearch').autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: '/Search/Search',
-                        type: 'GET',
-                        data: { searchString: $('#txtSearch').val() },
-                        success: function (result) {
-                            console.log(result);
-                        }
-                    });
-                }
-            });
+            //$('#txtSearch').autocomplete({
+            //    source: function (request, response) {
+            //        $.ajax({
+            //            url: '/Search/Search',
+            //            type: 'GET',
+            //            data: { searchString: $('#txtSearch').val() },
+            //            success: function (result) {
+            //                response($.map(result, function (item) {
+
+            //                    return {
+            //                        label:item.Name,value:item.Value
+            //                    }
+            //                }))
+            //            }
+            //        });
+            //    }
+            //});
 
     $('#cat').change(function()
     {
         var category = $("#cat option:selected").text();
-        console.log(category);
         if (category == "PlaygroundManager") {
             $('#trainers').hide();
             $('#gyms').hide();
@@ -260,6 +282,25 @@
         });
     });
 
+
+
+    $('#search-btn').click(function (e) {
+        e.preventDefault();
+        const txt = $("#txtSearch").val();
+
+        console.log(txt)
+        if (txt != null) {
+            $.ajax({
+                url: '/Search/SearchResult',
+                type: 'GET',
+                data: { searchString: txt },
+                dataType: "text",
+                success: function (result) {
+                    console.log(result);
+                    $('#search-container').html(result);
+                   
+                }
+            });
 
 
     $('#search-location').change(function () {

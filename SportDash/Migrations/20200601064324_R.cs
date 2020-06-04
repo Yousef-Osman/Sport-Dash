@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SportDash.Migrations
 {
-    public partial class Rebuild : Migration
+    public partial class R : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -412,11 +412,11 @@ namespace SportDash.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "33b1b1a0-6b44-4ef3-bee5-c03314bacbaa", "72ba31dd-3e72-45ff-8816-586a9d24beec", "ClubManager", "CLUBMANAGER" },
-                    { "16e9e794-a1f7-4689-a752-174b65232c67", "0c44ac88-9989-4517-8beb-b3534afb1ca8", "PlaygroundManager", "PLAYGROUNDMANAGER" },
-                    { "fdf17da1-d2d3-44fb-acc4-7e7a229f4aa6", "4876e623-7e10-4bfb-9338-366100e42b26", "GymManager", "GYMMANAGER" },
-                    { "43c26710-d679-42d8-83eb-64d3c421cf8b", "07982736-018b-4e3a-b719-7aa65bf66f1e", "Coach", "COACH" },
-                    { "37fdd937-5b56-4844-83ee-5981b35b42d8", "b118d7b8-7b18-4ef3-9617-399d04cf4b8a", "NormalUser", "NORMALUSER" }
+                    { "fa14a6fe-9e38-4ac9-aac2-cf077d96adf7", "dbe4578e-3dec-4eea-a806-e43342e92502", "ClubManager", "CLUBMANAGER" },
+                    { "4f116479-56ad-402d-bc9b-f47b43510e03", "2d104fdc-f4dc-4fcf-96a9-91d1531ad920", "PlaygroundManager", "PLAYGROUNDMANAGER" },
+                    { "b416c13b-4b04-4c36-92ce-2b6416d142e8", "957762a3-266b-49a9-975c-063ae46258f4", "GymManager", "GYMMANAGER" },
+                    { "4ff4269e-2232-4c78-8597-9e2bd072cd24", "dbe5958d-1ba9-40c0-8a0f-031341959d0a", "Coach", "COACH" },
+                    { "59a925d3-4bd0-4b9c-9314-9dc990dcc436", "80fb1e9b-d570-4083-a1db-76e01e7f3999", "NormalUser", "NORMALUSER" }
                 });
 
             migrationBuilder.CreateIndex(

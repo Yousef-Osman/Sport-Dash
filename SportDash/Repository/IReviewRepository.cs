@@ -12,6 +12,6 @@ namespace SportDash.Repository
         public Review GetReview(int id);
         public Review PostReview(Review r);
         //public Review PutReview(int id);
-        //public void DeleteMessage(int id);
+        public void DeleteReview(int id);
     }
 }

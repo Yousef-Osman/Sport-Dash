@@ -6,10 +6,11 @@ namespace SportDash.Repository
 {
     public interface IGymPricesRepository
     {
-        Task AddPerDayPrice(string gymId, GymPrices gymPrices);
-        Task AddPerMonthPrice(string gymId, GymPrices gymPrices);
-        Task AddPerWeekPrice(string gymId, GymPrices gymPrices);
-        Task AddPerYearPrice(string gymId, GymPrices gymPrices);
+        Task AddOrEditPricePerPeriod(GymPrices gymPrices);
+        //Task AddPerDayPrice(string gymId, GymPrices gymPrices);
+        //Task AddPerMonthPrice(string gymId, GymPrices gymPrices);
+        //Task AddPerWeekPrice(string gymId, GymPrices gymPrices);
+        //Task AddPerYearPrice(string gymId, GymPrices gymPrices);
         Task<bool> Commit();
         Task<IEnumerable<GymPrices>> PricesOfAGym(string gymId);
     }
