@@ -233,5 +233,12 @@ namespace SportDash.Controllers
             return Ok(new OkObjectResult(review));
         }
 
+        [HttpPost]
+        public IActionResult DeleteReview(int id)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            _reviewRepository.DeleteReview(id);
+            return Ok();
+        }
     }
 }

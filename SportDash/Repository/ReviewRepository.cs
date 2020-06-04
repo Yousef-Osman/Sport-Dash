@@ -17,6 +17,12 @@ namespace SportDash.Repository
             _context = context;    
         }
 
+        public void DeleteReview(int id)
+        {
+            _context.Reviews.Remove(GetReview(id));
+            _context.SaveChanges();
+        }
+
 
         // get specific Review 
         public Review GetReview(int Id)
@@ -38,5 +44,8 @@ namespace SportDash.Repository
             _context.SaveChanges();
             return r;
         }
+
+
+
     }
 }
