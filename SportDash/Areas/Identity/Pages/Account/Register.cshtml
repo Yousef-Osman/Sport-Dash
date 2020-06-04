@@ -29,6 +29,12 @@
                     <input asp-for="Input.ConfirmPassword" class="form-control" />
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
+                @*<div class="form-group">
+                    <label asp-for="Location"></label>
+                    <select asp-for="Location" class="form-control">
+                        <option value="">Select...</option>
+                    </select>
+                </div>*@
                 <div class="form-group">
                     <label asp-for="SelectedRole"></label>
                     <select asp-for="SelectedRole" onchange="renderSportTypes(event)" class="custom-select my-1 mr-sm-2" asp-items="Model.roles">
@@ -57,7 +63,7 @@
                 sportTypes.innerHTML = `
                                     <div class="form-group">
                                         <label>Select Sport Type</label>
-                                        <select name="SportType" class="custom-select my-1 mr-sm-2">
+                                        <select name="Input.SportType" class="custom-select my-1 mr-sm-2">
                                             <option value="0">FootBall</option>
                                             <option value="1">BasketBall</option>
                                             <option value="2">VolleyBall</option>

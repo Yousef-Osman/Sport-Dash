@@ -26,7 +26,7 @@ namespace SportDash.ViewModels
         public List<ApplicationUser> Trainers { get; set; }
         public List<SelectListItem> Category { get; set; }
         public List<SelectListItem> Price { get; set; }
-        public SelectList Location { get; set; }
+        public List<SelectListItem> Location { get; set; }
         public List<SelectListItem> SportType { get; set; }
         public string SearchString { get; set; }
         public string CategoryString { get; set; }

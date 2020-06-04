@@ -33,7 +33,7 @@
                     <div class="form-group row col-md-3">
                         <label class="col-sm-4 col-form-label">Price</label>
                         <div class="col-sm-8">
-                            <select class="form-control" asp-for="PriceString" asp-items="Model.Price">
+                            <select id="search-price" class="form-control" asp-for="PriceString" asp-items="Model.Price">
                                 <option value="">All</option>
                             </select>
                         </div>
@@ -41,7 +41,7 @@
                     <div class="form-group row col-md-3">
                         <label class="col-sm-4 col-form-label">Location</label>
                         <div class="col-sm-8">
-                            <select class="form-control" asp-for="LocationString" asp-items="Model.Location">
+                            <select id="search-location" class="form-control" asp-for="LocationString" asp-items="Model.Location">
                                 <option value="">All</option>
                             </select>
                         </div>
@@ -49,7 +49,7 @@
                     <div class="form-group row col-md-3">
                         <label class="col-sm-6 col-form-label">Sport Type</label>
                         <div class="col-sm-6">
-                            <select class="form-control" asp-for="SportTypeString" asp-items="Model.SportType">
+                            <select id="search-sportType" class="form-control" asp-for="SportTypeString" asp-items="Model.SportType">
                                 <option value="">All</option>
                             </select>
                         </div>
@@ -63,8 +63,7 @@
     <div class="bg-Geyser">
         <div id="playgrounds" class="container p-3">
             <h2>Playgrounds</h2>
-            <div class="row">
-
+            <div id="playground-body" class="row">
                 @foreach (var item in Model.Playgrounds)
                 {
                     <div class="col-md-3">
@@ -182,6 +181,127 @@
     });
 
 
+
+    $('#search-price').change(function () {
+        var price = $("#search-price option:selected").text();
+        console.log(price);
+        $.ajax({
+            url: '/Search/SearchByPrice',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                price: price
+            },
+            success: function (res) {
+                var target = $('#playground-body');
+                target.empty();
+                if (res.length == 0) {
+                    target.append(`<h1>there is no playgrounds with the same price.</h1><hr />`);
+                }
+                else {
+                    for (var i = 0; i < res.length; i++) {
+                        var item = res[i];
+                        target.append(`
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img src="~/images/01202005310546396911.jpeg" />
+                                    <div class="card-body">
+                                        <a class="btn btn-info col-12 py-4 my-1 bg-elephant h2" href="playground/index/${item.id}">
+                                            <h5>${item.fullName}</h5>
+                                        </a>
+                                        <p class="card-text">${item.location}</p>
+                                    </div>
+                                </div>
+                            </div>
+                         <hr />`)
+                    }
+                }
+            }
+        });
+    });
+
+
+
+    $('#search-sportType').change(function () {
+        var sportType = $("#search-sportType option:selected").text();
+        console.log(sportType);
+        $.ajax({
+            url: '/Search/SearchBySportType',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                sportType: sportType
+            },
+            success: function (res) {
+                var target = $('#playground-body');
+                target.empty();
+                if (res.length == 0) {
+                    target.append(`<h1>there is no playgrounds for ${sportType}</h1><hr />`);
+                }
+                else {
+                    for (var i = 0; i < res.length; i++) {
+                        var item = res[i];
+                        target.append(`
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img src="~/images/01202005310546396911.jpeg" />
+                                    <div class="card-body">
+                                        <a class="btn btn-info col-12 py-4 my-1 bg-elephant h2" href="playground/index/${item.id}">
+                                            <h5>${item.fullName}</h5>
+                                        </a>
+                                        <p class="card-text">${item.location}</p>
+                                    </div>
+                                </div>
+                            </div>
+                         <hr />`)
+                    }
+                }
+            }
+        });
+    });
+
+
+
+    $('#search-location').change(function () {
+        var location = $("#search-location option:selected").text();
+        console.log(location);
+        $.ajax({
+            url: '/Search/SearchByLocation',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                location: location
+            },
+            success: function (res) {
+                console.log(res.length);
+                console.log(res);
+                var target = $('#playground-body');
+                target.empty();
+                if (res.length == 0) {
+                    target.append(`<h1>there is no playgrounds for ${location}</h1><hr />`);
+                }
+                else {
+                    for (var i = 0; i < res.length; i++) {
+                        var item = res[i];
+                        console.log(item);
+                        target.append(`
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img src="~/images/01202005310546396911.jpeg" />
+                                    <div class="card-body">
+                                        <a class="btn btn-info col-12 py-4 my-1 bg-elephant h2" href="playground/index/${item.id}">
+                                            <h5>${item.fullName}</h5>
+                                        </a>
+                                        <p class="card-text">${item.location}</p>
+                                    </div>
+                                </div>
+                            </div>
+                         <hr />`)
+                    }
+                }
+            }
+        });
+    });
     @*$('#price').change(function () {
         var price = $("#price option:selected").text();
         $.ajax({

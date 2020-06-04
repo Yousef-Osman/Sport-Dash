@@ -137,7 +137,7 @@ namespace SportDash.Controllers
         {
             _reservationRepository.AcceptReservation(id);
             //check for another requests and delete the requests with the same time of another reservation
-            var playgroundId = _userManager.GetUserId(HttpContext.User);
+            var playgroundId = _userManager.GetUserId(HttpContext.User); 
             var remainingRequests = _reservationRepository.GetRequests(playgroundId);
             foreach(var r in remainingRequests)
             {
