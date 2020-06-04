@@ -17,12 +17,11 @@ namespace SportDash.Controllers
     public class SearchController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IPlaygroundPriceRepository _priceRepository;
         private readonly UserManager<ApplicationUser> _User;
         private List<ApplicationUser> trainers;
         private List<ApplicationUser> playgrounds;
         private List<ApplicationUser> gyms;
-        private DataViewModel SearchVM;
+        private DataViewModel searchVM;
         
         public SearchController(UserManager<ApplicationUser> User , ApplicationDbContext context)
         {
@@ -31,21 +30,21 @@ namespace SportDash.Controllers
             trainers = _context.Users.Where(a => a.Category == "Coach").ToList();
             playgrounds = _context.Users.Include(a=>a.PlaygroundPrices).Where(a => a.Category == "PlaygroundManager").ToList();
             gyms = _context.Users.Include(a => a.GymPrices).Where(a => a.Category == "GymManager").ToList();
-            SearchVM = new DataViewModel();
+            searchVM = new DataViewModel();
         }
       
         public IActionResult Index()
         {
             IQueryable<string> locationQuery = _context.Users.Select(a => a.Location);
 
-            SearchVM.Category = new List<SelectListItem>
+            searchVM.Category = new List<SelectListItem>
             {
               new SelectListItem { Text = "PlaygroundManager", Value = "1" },
               new SelectListItem { Text = "GymManager", Value = "2" },
               new SelectListItem { Text = "Coach", Value = "3" }
             };
 
-            SearchVM.Price = new List<SelectListItem>
+            searchVM.Price = new List<SelectListItem>
             {
               new SelectListItem { Text = "Under 100", Value = "1" },
               new SelectListItem { Text = "100 - 150", Value = "2" },
@@ -83,7 +82,7 @@ namespace SportDash.Controllers
                 new SelectListItem {Text = "Janklies", Value= "26"}
             };
 
-            SearchVM.SportType = new List<SelectListItem>
+            searchVM.SportType = new List<SelectListItem>
             {
               new SelectListItem { Text = GamesCategory.BasketBall.ToString() , Value =((int)GamesCategory.BasketBall).ToString()},
               new SelectListItem { Text = GamesCategory.FootBall.ToString() , Value = ((int)GamesCategory.BasketBall).ToString() },
@@ -92,10 +91,10 @@ namespace SportDash.Controllers
               new SelectListItem { Text = GamesCategory.Others.ToString() , Value = ((int)GamesCategory.BasketBall).ToString() }
             };
 
-            SearchVM.Playgrounds = playgrounds;
-            SearchVM.Gyms = gyms;
-            SearchVM.Trainers = trainers;
-            return View(SearchVM);
+            searchVM.Playgrounds = playgrounds;
+            searchVM.Gyms = gyms;
+            searchVM.Trainers = trainers;
+            return View(searchVM);
         }
 
         //[HttpGet]
@@ -121,12 +120,12 @@ namespace SportDash.Controllers
                 trainers = trainers.Where(a => a.FullName.ToLower().Contains(searchString)).ToList();
                 playgrounds = playgrounds.Where(a => a.FullName.ToLower().Contains(searchString)).ToList();
                 gyms = gyms.Where(a => a.FullName.ToLower().Contains(searchString)).ToList();
-                SearchVM.Trainers = trainers.ToList();
-                SearchVM.Playgrounds = playgrounds.ToList();
-                SearchVM.Gyms = gyms.ToList();
+                searchVM.Trainers = trainers.ToList();
+                searchVM.Playgrounds = playgrounds.ToList();
+                searchVM.Gyms = gyms.ToList();
             }
 
-            return PartialView("_SearchResult", SearchVM);
+            return PartialView("_SearchResult", searchVM);
         }
 
         public IActionResult SearchByCategory (string category)
