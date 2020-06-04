@@ -4,14 +4,14 @@
     ViewData["Title"] = "Live Chat";
 }
 
-<div class="container">
-    <h3 class="mt-3 p-3">@Model.CurrentPage</h3>
-    <div id="msgs-container" class="chat" style="border-radius: 40px;">
+<div class="container mb-5">
+    <h3 class="mt-3 p-3" style="border-radius: 40px;width: 50%;margin: 20px auto;text-transform: capitalize;padding: 20px;background: #fff;text-align: center;"><a asp-action="Index" asp-controller="Playground" asp-route-id="@Model.EntityId">@Model.CurrentPage</a></h3>
+    <div id="msgs-container" class="chat" style="width: 50% !important;margin: auto;border-radius: 25px;">
         @foreach (var msg in Model.Messages)
         {
             if (msg.Sender.UserName == User.Identity.Name)
             {
-                <div class="mine messages">
+                <div class="mine messages" style="margin-bottom: -20px;font-size: 23px;">    
                     <div class="message last">
                         @msg.Body
                     </div>
@@ -19,7 +19,7 @@
             }
             else
             {
-                <div class="yours messages">
+                <div class="yours messages" style="margin-bottom: -20px;font-size: 23px;">
                     <div class="message last">
                         @msg.Body
                     </div>
@@ -27,8 +27,8 @@
             }
         }        
     </div>
-    <div class="form-group mt-2 form-container">
-        <textarea id="msg" onkeypress="sendKey(event)" class="form-control round-borders" style="width: 90%;" placeholder="Write your message here ...."></textarea>
+    <div class="mt-2 form-container" style="display: flex;justify-content: center;">
+        <textarea id="msg" onkeypress="sendKey(event)" class="form-control round-borders" style="width: 40%;" placeholder="Write your message here ...."></textarea>
         <button onclick="send()" style="width: 9%" class="round-borders btn-elephant"><img src="~/images/send.png" /><br />Send</button>
     </div>    
 </div>

@@ -90,12 +90,15 @@ namespace SportDash.Controllers
         public async Task<IActionResult> Message(string id)
         {
             var playgroundReciver = await _userManager.FindByIdAsync(id);
+            if (playgroundReciver == null) return NotFound();
+
             var currentUser = await _userManager.GetUserAsync(User);
             var allMessages = _messageRepository.GetMessages(currentUser.Id, playgroundReciver.Id).OrderByDescending(m => m.MessageDate);
 
             MessagingViewModel messagingViewModel = new MessagingViewModel
             {
                 CurrentPage = playgroundReciver.FullName,
+                EntityId = id,
                 Messages = allMessages
             };
 

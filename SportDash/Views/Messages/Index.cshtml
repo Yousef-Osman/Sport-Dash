@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Message>
+﻿@model IEnumerable<IGrouping<string, Message>>
 @{
     ViewData["Title"] = "Received Messages";
 }
@@ -9,7 +9,7 @@
 }
 else
 {
-    <div class="container mt-3">
+    <div class="container mt-3 mb-5">
         <h3>Recent Messages</h3>
         <div id="all-msgs"> 
             @foreach (var message in Model)
@@ -17,12 +17,12 @@ else
                 <div style="background: #fff;" class="mt-3 round-borders media border p-3">
                     <div class="media-body">
                         <h4>
-                            <a asp-action="Message" asp-controller="Playground" asp-route-id="@message.SenderId">@message.Sender.UserName</a>
-                            <small> <i>@message.MessageDate</i></small>
+                            <a asp-action="Message" asp-controller="Playground" asp-route-id="@(message.FirstOrDefault().SenderId)">@message.Key</a>
+                            <small> <i>@message.FirstOrDefault().MessageDate</i></small>
                         </h4>
-                        <p>@message.Body</p>
+                        <p>@message.FirstOrDefault().Body</p>
                         <div class="container">
-                            <button class="btn btn-primary" onclick="sendData('@message.Sender.Id')" data-toggle="modal" data-target="#replayModal">Replay</button>
+                            <button class="btn bg-elephant" style="color: #fff;" onclick="sendData('@message.FirstOrDefault().SenderId')" data-toggle="modal" data-target="#replayModal">Replay</button>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,6 @@ else
                 url: "/Messages/GetAll",
                 type: 'POST',
                 success: function (data) {
-                    const allmsgs = document.querySelector("#all-msgs");
                     allmsgs.innerHTML = data;
                 }
             })
@@ -104,8 +103,8 @@ else
                 </div>
             </div>
             `;
-            if (sender.userName != '@(User.Identity.Name)') {
-                $('#all-msgs').prepend(htmlObj);
+            if (sender.userName != '@(User.Identity.Name)') {                
+                $('#all-msgs').prepend(htmlObj);                
             }
         });
     </script>

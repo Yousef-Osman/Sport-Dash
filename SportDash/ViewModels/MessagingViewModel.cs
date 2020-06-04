@@ -10,5 +10,6 @@ namespace SportDash.ViewModels
     {
         public IOrderedEnumerable<Models.Message> Messages { get; set; }
         public string CurrentPage { get; set; }
+        public string EntityId { get; set; }
     }
 }

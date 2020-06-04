@@ -1,0 +1,145 @@
+﻿@*@model SportDash.ViewModels.DataViewModel*@
+@*@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers*@
+
+@model SportDash.ViewModels.GymPriceViewModel
+
+@{
+    string price = "";
+    string subType = "";
+
+    //if (Model.GymPrice != null)
+    //{
+    if (Model.GymPrice.Subscribtion_Type == SportDash.Models.Subscribtion_type.Day)
+    {
+        subType = "Per Day";
+    }
+    else if (Model.GymPrice.Subscribtion_Type == SportDash.Models.Subscribtion_type.Week)
+    {
+        subType = "Per Week";
+    }
+    else if (Model.GymPrice.Subscribtion_Type == SportDash.Models.Subscribtion_type.Month)
+    {
+        subType = "Per Month";
+    }
+    else if (Model.GymPrice.Subscribtion_Type == SportDash.Models.Subscribtion_type.Year)
+    {
+        subType = "Per Year";
+    }
+    //}
+
+    //if (Model.GymPrice != null)
+    //{
+    price = Model.GymPrice.Subscribtion_Price.ToString();
+    //}
+    //else
+    //{
+    //    price = "00.00";
+    //}
+}
+
+
+
+<div class="col-12 col-md-6 col-lg-3 mx-0 py-3 ">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8 text-center py-3 prices rounded">
+            <div class="greenColor large-size-3 bold">
+                @* No Subscrition Type will be duplicated in the parent view because it call this component
+                once for every subscription type*@
+                <p id="price_@Model.GymPrice.Subscribtion_Type">@price</p>
+            </div>
+            <div class="prices medium bold">
+                <p>@subType</p>
+            </div>
+            @if (Model.DataViewModel.isCurrentUser)
+            {
+                <div>
+                    <button id="btn_@Model.GymPrice.Subscribtion_Type" class="Time rounded op_button">Edit Price</button>
+                </div>
+            }
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="confirm-price" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4 id="">success</h4>                 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success text-white" data-dismiss="modal" id="edit-btn">Confirm</button>
+                <button type="button" class="btn btn-secondary" id="edit-name-btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var tempPrice = $("#price_@Model.GymPrice.Subscribtion_Type")[0].innerText;
+    $(document).ready(() => {
+        console.log(tempPrice);
+
+        const Subscribtion_type_Enum = Object.freeze({ "Day": 0, "Week": 1, "Month": 2, "Year": 3 });
+        $("#btn_@Model.GymPrice.Subscribtion_Type").click((e) => {
+            if (e.target.innerText === "Edit Price") {
+                // console.log(this);
+                // console.log(e.target);
+                tempPrice = $("#price_@Model.GymPrice.Subscribtion_Type")[0].innerText;
+                togglePriceElement(`<input type="number" id="price_@Model.GymPrice.Subscribtion_Type" class="price-size" size="4" min="1" max="99" value = ${$("#price_@Model.GymPrice.Subscribtion_Type")[0].innerText}>`, "Save");
+                // console.log($("#_")[0].innerText);
+                console.log(tempPrice);
+
+            }
+            else if (e.target.innerText === "Save") {
+                EditPrice();
+            }
+        });
+        function EditPrice() {
+            $.ajax({
+                method: "POST",
+                url:`/Gym/EditPricePerPeriod/`,
+                //dataType: 'json',
+                success: (Resposnse) => {
+                    togglePriceElement(`<p id="price_@Model.GymPrice.Subscribtion_Type" >${$("#price_@Model.GymPrice.Subscribtion_Type")[0].value}</p>`, "Edit Price");
+                    alert("Edited Successfully");
+                },
+                data: {
+                    "gymPrice": {
+                        // "Id":1,
+                        "GymId": "@Model.GymPrice.GymId",
+                        "Subscribtion_Price": $("#price_@Model.GymPrice.Subscribtion_Type")[0].value,
+                        "Subscribtion_Type": "@((int)Model.GymPrice.Subscribtion_Type)"
+                        /*will change depending on value from Invoke that is send to this component
+                         in view()*/
+                        /*will creat a variable at begining of script,where its value will be assigned from
+                         Subscribtion_type_Enum depending on a condition from razor syntax*/
+                    }
+                },
+                error: (error) => {
+                    console.log(error);
+                    togglePriceElement(`<p id="price_@Model.GymPrice.Subscribtion_Type" >${tempPrice}</p>`, "Edit Price");
+                    alert("Editing Failed");
+                }
+            });
+        }
+        function togglePriceElement(parentHTML, buttontext) {
+            let element = $("#price_@Model.GymPrice.Subscribtion_Type")[0];
+            let parent = $("#price_@Model.GymPrice.Subscribtion_Type").parent()[0];
+            parent.innerHTML = parentHTML;
+            $("#btn_@Model.GymPrice.Subscribtion_Type")[0].innerText = buttontext;
+        }
+    });
+    // document.getElementById("_").addEventListener("click",()=>{
+
+    // })
+</script>
+
