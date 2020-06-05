@@ -15,6 +15,7 @@ namespace SportDash.Models
         [Key]
         public int Id { get; set; }
         public string Title { get; set; }
+        public bool IsProfileImg { get; set; } = false;
 
         [NotMapped]
         [DisplayName("Upload an Image")]

@@ -329,7 +329,7 @@ background-color: rgb(28, 200, 160);//green degree */
     display: none;
 }
 #new-msg{
-    display: none;
+    display: inline;
 }
 
 @media only screen and (max-width: 600px) {

@@ -152,7 +152,14 @@ namespace SportDash.Controllers
                 ReceiverId = acceptedReservation.UserId,
                 SenderId = playgroundId
             });
+
             var playground = await _userManager.GetUserAsync(User);
+
+            // getting the user that made the reservation request
+            // then we change the status of his mesages to true
+            ApplicationUser receiver = _userRepository.GetUserById(acceptedReservation.UserId);
+            _userRepository.ChangeMsgsStatus(receiver, true);
+
             // getting the conId of the reserver user and see if he is online
             // if so, i will send a the message in real time
             ConnectedUser receiverConnectedUser = _connectedUsersRepository.GetConnectionIdOfUser(acceptedReservation.UserId);

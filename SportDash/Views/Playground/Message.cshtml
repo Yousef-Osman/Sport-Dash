@@ -52,9 +52,9 @@
                 send();
             }
         }
-        connection.on("recMsg", (msg, sender, date) => {
+        connection.on("recMsg", (msg, senderId, username, date) => {
             const msgContainer = $("#msgs-container");            
-            if (sender.id == location.pathname.split('/')[3]) {                
+            if (senderId == location.pathname.split('/')[3]) {                
                 msgContainer.prepend(`<div style="margin-bottom: -20px;font-size: 23px;" class="yours messages">
                 <span class="sm-msg">${date}</span>
                 <div class="message last" onclick="toggleDate(event)">

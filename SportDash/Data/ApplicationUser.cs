@@ -22,6 +22,7 @@ namespace SportDash.Data
         public bool Safe { get; set; }
         public bool Toilet { get; set; }
         public bool ForLadies { get; set; }
+        public bool HasNewMsgs { get; set; } = false;
 
         public List<Question> Questions { get; set; }
         public List<Comment> Comments { get; set; }
