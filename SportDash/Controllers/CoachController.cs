@@ -13,32 +13,29 @@ using SportDash.ViewModels;
 
 namespace SportDash.Controllers
 {
-    public class GymController : Controller
+    public class CoachController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthorizationService _authorizationService;
         private readonly IUserRepository _userRepository;
         private readonly IImageRepository _imageRepository;
-        private readonly IGymPricesRepository _gymPriceRepository;
         private readonly IReviewRepository _reviewRepository;
         private readonly IMessageRepository _messageRepository;
 
-        public GymController(UserManager<ApplicationUser> userManager,
-                                    SignInManager<ApplicationUser> signInManager,
-                                    IAuthorizationService authorizationService,
-                                    IUserRepository userRepository,
-                                    IImageRepository imageRepository,
-                                    IGymPricesRepository gymPriceRepository,
-                                    IReviewRepository reviewRepository,
-                                    IMessageRepository messageRepository)
+        public CoachController(UserManager<ApplicationUser> userManager,
+                               SignInManager<ApplicationUser> signInManager,
+                               IAuthorizationService authorizationService,
+                               IUserRepository userRepository,
+                               IImageRepository imageRepository,
+                               IReviewRepository reviewRepository,
+                               IMessageRepository messageRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authorizationService = authorizationService;
             _userRepository = userRepository;
             _imageRepository = imageRepository;
-            _gymPriceRepository = gymPriceRepository;
             _reviewRepository = reviewRepository;
             _messageRepository = messageRepository;
         }
@@ -48,10 +45,10 @@ namespace SportDash.Controllers
         {
             var dataModel = new DataViewModel();
             var user = await _userManager.GetUserAsync(User);
-            dataModel.ControllerName = "Gym";
+            dataModel.ControllerName = "Coach";
             dataModel.isCurrentUser = false;
 
-            if (User.IsInRole("GymManager") && (id == null || user.Id == id))
+            if (User.IsInRole("CoachPolicy") && (id == null || user.Id == id))
             {
                 dataModel.CurrentUser = user;
                 dataModel.isCurrentUser = true;
@@ -74,7 +71,7 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "GymPolicy")]
+        [Authorize(Policy = "CoachPolicy")]
         public IActionResult EditEntityName(string newName)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
@@ -101,7 +98,7 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "GymPolicy")]
+        [Authorize(Policy = "CoachPolicy")]
         public async Task<IActionResult> AddNewImage(IFormFile file)
         {
             var image = new Image();
@@ -112,7 +109,7 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "GymPolicy")]
+        [Authorize(Policy = "CoachPolicy")]
         public async Task<IActionResult> DeleteImage(int id)
         {
             await _imageRepository.DeleteImage(id);
@@ -130,11 +127,11 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditPricePerPeriod(GymPrices gymPrice)
+        public IActionResult DeleteReview(int id)
         {
-            var IsEntered = _gymPriceRepository.AddOrEditPricePerPeriod(gymPrice);
-
-            return Ok(new JsonResult(IsEntered));
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            _reviewRepository.DeleteReview(id);
+            return Ok();
         }
     }
 }
