@@ -156,25 +156,23 @@
 </section>
 
 <script>
+    //$('#txtSearch').autocomplete({
+    //    source: function (request, response) {
+    //        $.ajax({
+    //            url: '/Search/Search',
+    //            type: 'GET',
+    //            data: { searchString: $('#txtSearch').val() },
+    //            success: function (result) {
+    //                response($.map(result, function (item) {
 
-
-            //$('#txtSearch').autocomplete({
-            //    source: function (request, response) {
-            //        $.ajax({
-            //            url: '/Search/Search',
-            //            type: 'GET',
-            //            data: { searchString: $('#txtSearch').val() },
-            //            success: function (result) {
-            //                response($.map(result, function (item) {
-
-            //                    return {
-            //                        label:item.Name,value:item.Value
-            //                    }
-            //                }))
-            //            }
-            //        });
-            //    }
-            //});
+    //                    return {
+    //                        label:item.Name,value:item.Value
+    //                    }
+    //                }))
+    //            }
+    //        });
+    //    }
+    //});
 
     $('#cat').change(function()
     {
@@ -203,92 +201,51 @@
     });
 
 
-
     $('#search-price').change(function () {
+        var location = $("#search-location option:selected").text();
+        var sportType = $("#search-sportType option:selected").text();
         var price = $("#search-price option:selected").text();
         console.log(price);
         $.ajax({
-            url: '/Search/SearchByPrice',
+            url: '/Search/AllSearches',
             type: 'GET',
-            dataType: 'json',
+            dataType: 'text',
             data: {
-                price: price
+                price: price,
+                location: location,
+                sportType: sportType
             },
-            success: function (res) {
-                var target = $('#playground-body');
-                target.empty();
-                if (res.length == 0) {
-                    target.append(`<h1>there is no playgrounds with the same price.</h1><hr />`);
-                }
-                else {
-                    for (var i = 0; i < res.length; i++) {
-                        var item = res[i];
-                        target.append(`
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <img src="~/images/01202005310546396911.jpeg" />
-                                    <div class="card-body">
-                                        <a class="btn btn-info col-12 py-4 my-1 bg-elephant h2" href="playground/index/${item.id}">
-                                            <h5>${item.fullName}</h5>
-                                        </a>
-                                        <p class="card-text">${item.location}</p>
-                                    </div>
-                                </div>
-                            </div>
-                         <hr />`)
-                    }
-                }
+            success: function (result) {
+                $('#search-container').html(result);
             }
         });
     });
-
 
 
     $('#search-sportType').change(function () {
+        var location = $("#search-location option:selected").text();
+        var price = $("#search-price option:selected").text();
         var sportType = $("#search-sportType option:selected").text();
         console.log(sportType);
         $.ajax({
-            url: '/Search/SearchBySportType',
+            url: '/Search/AllSearches',
             type: 'GET',
-            dataType: 'json',
+            dataType: 'text',
             data: {
-                sportType: sportType
+                sportType: sportType,
+                location: location,
+                price: price
             },
-            success: function (res) {
-                var target = $('#playground-body');
-                target.empty();
-                if (res.length == 0) {
-                    target.append(`<h1>there is no playgrounds for ${sportType}</h1><hr />`);
-                }
-                else {
-                    for (var i = 0; i < res.length; i++) {
-                        var item = res[i];
-                        target.append(`
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <img src="~/images/01202005310546396911.jpeg" />
-                                    <div class="card-body">
-                                        <a class="btn btn-info col-12 py-4 my-1 bg-elephant h2" href="playground/index/${item.id}">
-                                            <h5>${item.fullName}</h5>
-                                        </a>
-                                        <p class="card-text">${item.location}</p>
-                                    </div>
-                                </div>
-                            </div>
-                         <hr />`)
-                    }
-                }
+            success: function (result) {
+                $('#search-container').html(result);
             }
         });
     });
-
 
 
     $('#search-btn').click(function (e) {
         e.preventDefault();
         const txt = $("#txtSearch").val();
-
-        console.log(txt)
         if (txt != null) {
             $.ajax({
                 url: '/Search/SearchResult',
@@ -296,62 +253,29 @@
                 data: { searchString: txt },
                 dataType: "text",
                 success: function (result) {
-                    console.log(result);
                     $('#search-container').html(result);
-                   
                 }
             });
+        }
+    });
 
 
     $('#search-location').change(function () {
+        var price = $("#search-price option:selected").text();
+        var sportType = $("#search-sportType option:selected").text();
         var location = $("#search-location option:selected").text();
-        console.log(location);
         $.ajax({
-            url: '/Search/SearchByLocation',
+            url: '/Search/AllSearches',
             type: 'GET',
-            dataType: 'json',
+            dataType: 'text',
             data: {
-                location: location
+                location: location,
+                price: price,
+                sportType: sportType
             },
-            success: function (res) {
-                console.log(res.length);
-                console.log(res);
-                var target = $('#playground-body');
-                target.empty();
-                if (res.length == 0) {
-                    target.append(`<h1>there is no playgrounds for ${location}</h1><hr />`);
-                }
-                else {
-                    for (var i = 0; i < res.length; i++) {
-                        var item = res[i];
-                        console.log(item);
-                        target.append(`
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <img src="~/images/01202005310546396911.jpeg" />
-                                    <div class="card-body">
-                                        <a class="btn btn-info col-12 py-4 my-1 bg-elephant h2" href="playground/index/${item.id}">
-                                            <h5>${item.fullName}</h5>
-                                        </a>
-                                        <p class="card-text">${item.location}</p>
-                                    </div>
-                                </div>
-                            </div>
-                         <hr />`)
-                    }
-                }
+            success: function (result) {
+                $('#search-container').html(result);
             }
         });
     });
-    @*$('#price').change(function () {
-        var price = $("#price option:selected").text();
-        $.ajax({
-        url: '@Url.Action("SearchByPrice", "search")' + "/" + select,
-        type: 'POST',
-        data: { price : price},
-        success: function(result) {
-            console.log(result);
-        }
-      });
-    })*@
 </script>

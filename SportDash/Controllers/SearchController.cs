@@ -113,7 +113,6 @@ namespace SportDash.Controllers
         [HttpGet]
         public IActionResult SearchResult(string searchString)
         {
-           
             if (!string.IsNullOrWhiteSpace(searchString))
             {
                 searchString = searchString.ToLower();
@@ -128,91 +127,74 @@ namespace SportDash.Controllers
             return PartialView("_SearchResult", searchVM);
         }
 
-        public IActionResult SearchByCategory (string category)
+        public IActionResult AllSearches(string location,string price,string sportType)
         {
-            return  RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult SearchByPrice(string price)
-        {
-            string[] numbers = Regex.Split(price, @"\D+");
-            var startPrice = 0;
-            var toPrice=0;
-            var playgroundPrices = new List<string>(); //all playgrounds Id 
-            var gymPrices = new List<string>(); //all gyms Id 
-            var filteredPlaygrounds = new List<ApplicationUser>();
-            var filteredGyms = new List<ApplicationUser>();
-            if (price.Contains("Under"))
+            if (!location.Contains("All"))
             {
-                startPrice = int.Parse(numbers[1]);
-                playgroundPrices = _context.playgroundPrices.Where(p => p.Price < startPrice).Select(p => p.PlaygroundId).Distinct().ToList();
-                gymPrices = _context.GymPrices.Where(g => g.Subscribtion_Price < startPrice).Select(g => g.GymId).Distinct().ToList();
+                playgrounds = playgrounds.Where(p => p.Location == location).ToList();
+                trainers = trainers.Where(p => p.Location == location).ToList();
+                gyms = gyms.Where(p => p.Location == location).ToList();
             }
-            else if(price.Contains("Over"))
-            {
-                startPrice = int.Parse(numbers[1]);
-                playgroundPrices = _context.playgroundPrices.Where(p => p.Price > startPrice).Select(p => p.PlaygroundId).Distinct().ToList();
-                gymPrices = _context.GymPrices.Where(g => g.Subscribtion_Price > startPrice).Select(g => g.GymId).Distinct().ToList();
-            }
-            else if (price.Contains("All"))
-            {
-                filteredPlaygrounds = playgrounds;
-                filteredGyms = gyms;
-            }
-            else
-            {
-                startPrice = int.Parse(numbers[0]);
-                toPrice = int.Parse(numbers[1]);
-                playgroundPrices = _context.playgroundPrices.Where(p => p.Price >= startPrice && p.Price<=toPrice).Select(p => p.PlaygroundId).Distinct().ToList();
-                gymPrices = _context.GymPrices.Where(g => g.Subscribtion_Price >= startPrice && g.Subscribtion_Price<=toPrice).Select(g => g.GymId).Distinct().ToList();
-            }
-            foreach (var p in playgroundPrices)
-            {
-                filteredPlaygrounds.Add(_context.Users.Find(p));
-            }
-            foreach (var g in gymPrices)
-            {
-                filteredGyms.Add(_context.Users.Find(g));
-            }
-            searchVM.Playgrounds = filteredPlaygrounds;
-            searchVM.Gyms = filteredGyms;
-            return Ok(searchVM.Playgrounds);
-        }
-
-        public IActionResult SearchBySportType(string sportType)
-        {
-            var filteredPlaygrounds = playgrounds;
-            var filteredTrainers = trainers;
-            var filteredGyms = gyms;
             if (!sportType.Contains("All"))
             {
                 GamesCategory e = (GamesCategory)Enum.Parse(typeof(GamesCategory), sportType);
-                filteredPlaygrounds = playgrounds.Where(p => p.SportType == e).ToList();
-                filteredTrainers = trainers.Where(p => p.SportType == e).ToList();
-                filteredGyms = gyms.Where(p => p.SportType == e).ToList();
+                playgrounds = playgrounds.Where(p => p.SportType == e).ToList();
+                trainers = trainers.Where(p => p.SportType == e).ToList();
+                gyms = gyms.Where(p => p.SportType == e).ToList();
             }
-            searchVM.Playgrounds = filteredPlaygrounds;
-            searchVM.Gyms = filteredGyms;
-            searchVM.Trainers = filteredTrainers;
-            return Ok(searchVM.Playgrounds);
-        }
-
-        public IActionResult SearchByLocation(string location)
-        {
-            var filteredPlaygrounds = playgrounds;
-            var filteredTrainers = trainers;
-            var filteredGyms = gyms;
-            if (!location.Contains("All"))
+            if(!price.Contains("All"))
             {
-                filteredPlaygrounds = playgrounds.Where(p => p.Location == location).ToList();
-                filteredTrainers = trainers.Where(p => p.Location==location).ToList();
-                filteredGyms = gyms.Where(p => p.Location==location).ToList();
+                string[] numbers = Regex.Split(price, @"\D+");
+                var startPrice = 0;
+                var toPrice = 0;
+                var playgroundPrices = new List<string>(); //all playgrounds Id
+                var gymPrices = new List<string>(); //all gyms Id 
+                if (price.Contains("Under"))
+                {
+                    startPrice = int.Parse(numbers[1]);
+                    playgroundPrices = _context.playgroundPrices.Where(p => p.Price < startPrice).Select(p => p.PlaygroundId).Distinct().ToList();
+                    gymPrices = _context.GymPrices.Where(g => g.Subscribtion_Price < startPrice).Select(g => g.GymId).Distinct().ToList();
+                }
+                else if (price.Contains("Over"))
+                {
+                    startPrice = int.Parse(numbers[1]);
+                    playgroundPrices = _context.playgroundPrices.Where(p => p.Price > startPrice).Select(p => p.PlaygroundId).Distinct().ToList();
+                    gymPrices = _context.GymPrices.Where(g => g.Subscribtion_Price > startPrice).Select(g => g.GymId).Distinct().ToList();
+                }
+                else
+                {
+                    startPrice = int.Parse(numbers[0]);
+                    toPrice = int.Parse(numbers[1]);
+                    playgroundPrices = _context.playgroundPrices.Where(p => p.Price >= startPrice && p.Price <= toPrice).Select(p => p.PlaygroundId).Distinct().ToList();
+                    gymPrices = _context.GymPrices.Where(g => g.Subscribtion_Price >= startPrice && g.Subscribtion_Price <= toPrice).Select(g => g.GymId).Distinct().ToList();
+                }
+                foreach (var pp in playgroundPrices)
+                {
+                    foreach (var pg in playgrounds)
+                    {
+                        if (pg.Id == pp)
+                        {
+                            playgrounds.Remove(pg);
+                            break;
+                        }
+                    }
+                }
+                foreach (var gp in gymPrices)
+                {
+                    foreach (var g in gyms)
+                    {
+                        if (g.Id == gp)
+                        {
+                            playgrounds.Remove(g);
+                            break;
+                        }
+                    }
+                }
             }
-            searchVM.Playgrounds = filteredPlaygrounds;
-            searchVM.Gyms = filteredGyms;
-            searchVM.Trainers = filteredTrainers;
-            return Ok(searchVM.Playgrounds);
+            searchVM.Playgrounds = playgrounds;
+            searchVM.Gyms = gyms;
+            searchVM.Trainers = trainers;
+            return PartialView("_SearchResult", searchVM);
         }
-
     }
 }
