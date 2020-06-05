@@ -4,52 +4,136 @@
     ViewData["Title"] = "Register";
 }
 
-<section class="container pt-4">
-    <h2 class="text-center">@ViewData["Title"]</h2>
-    <div class="d-flex justify-content-center py-2">
-        <div class="col-md-5">
-            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <div class="form-group">
-                    <label asp-for="Input.FullName"></label>
-                    <input asp-for="Input.FullName" class="form-control" />
-                    <span asp-validation-for="Input.FullName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" class="form-control" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Input.ConfirmPassword"></label>
-                    <input asp-for="Input.ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                </div>
-                @*<div class="form-group">
-                    <label asp-for="Location"></label>
-                    <select asp-for="Location" class="form-control">
-                        <option value="">Select...</option>
-                    </select>
-                </div>*@
-                <div class="form-group">
-                    <label asp-for="SelectedRole"></label>
-                    <select asp-for="SelectedRole" onchange="renderSportTypes(event)" class="custom-select my-1 mr-sm-2" asp-items="Model.roles">
-                        <option value="">Select...</option>
-                    </select>
-                    <span asp-validation-for="SelectedRole" class="text-danger"></span>
-                </div>
-                <div class="form-group" id="sportTypes">
-
-                </div>
-                <button type="submit" class="btn btn-primary">Register</button>
-            </form>
+<section class="container my-4">
+    <div class="d-flex justify-content-center">
+        <div class="col-8 bg-white p-5 rounded">
+            <h2 class="text-center mb-4 text-elephant">@ViewData["Title"]</h2>
+            <div class="d-flex justify-content-center">
+                <form asp-route-returnUrl="@Model.ReturnUrl" method="post" class="col-lg-12">
+                    <div class="form-row mb-3">
+                        <div class="col">
+                            <input asp-for="Input.FullName" class="form-control" placeholder="Full name" />
+                            <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <input asp-for="Input.Email" class="form-control" placeholder="E-mail" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col">
+                            <input asp-for="Input.Password" class="form-control" placeholder="Password" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row mb-2">
+                        <div class="col">
+                            <select asp-for="Input.Location" class="custom-select my-1 mr-sm-2" asp-items="Model.locations">
+                                <option value="">Select your location ...</option>
+                            </select>
+                            <span asp-validation-for="Input.Location" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <select asp-for="SelectedRole" onchange="renderSportTypes(event)" class="custom-select my-1 mr-sm-2" asp-items="Model.roles">
+                                <option value="">Create an account as ...</option>
+                            </select>
+                            <span asp-validation-for="SelectedRole" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row mb-2">
+                        <div class="col" id="sport-type" hidden>
+                            <select asp-for="Input.SportType" class="custom-select my-1 mr-sm-2" asp-items="Model.SportTypeOptions">
+                                <option value="">Select Sport Type ...</option>
+                            </select>
+                        </div>
+                        <div class="col" id="ball-renting" hidden>
+                            <select asp-for="Input.BallRenting" class="custom-select my-1 mr-sm-2" asp-items="Model.BallRentingOptions">
+                                <option value="">Ball Renting ...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row mb-2" id="common1" hidden>
+                        <div class="col">
+                            <select asp-for="Input.LockerRoom" class="custom-select my-1 mr-sm-2" asp-items="Model.LockerRoomOptions">
+                                <option value="">Locker Room ...</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select asp-for="Input.Safe" class="custom-select my-1 mr-sm-2" asp-items="Model.SafeOptions">
+                                <option value="">Safe for Belongings ...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row mb-2" id="common2" hidden>
+                        <div class="col">
+                            <select asp-for="Input.Toilet" class="custom-select my-1 mr-sm-2" asp-items="Model.ToiletOptions">
+                                <option value="">Toilet ...</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select asp-for="Input.ForLadies" class="custom-select my-1 mr-sm-2" asp-items="Model.ForLadiesOptions">
+                                <option value="">For Ladies ...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Register</button>
+                </form>
+            </div>
         </div>
     </div>
 </section>
+
+
+<!-- #region extra -->
+@*<section class="">
+        <div class="container d-flex justify-content-center">
+            <div class="col-9">
+                <h3 class="py-4">Apply as a Employee</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="First Name *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Last Name *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Password *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Confirm Password *" value="" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Your Email *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" minlength="10" maxlength="10" name="txtEmpPhone" class="form-control" placeholder="Your Phone *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option class="hidden" selected disabled>Please select your Sequrity Question</option>
+                                <option>What is your Birthdate?</option>
+                                <option>What is Your old Phone Number</option>
+                                <option>What is your Pet Name?</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Enter Your Answer *" value="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>*@
+<!-- #endregion -->
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
@@ -60,21 +144,25 @@
         function renderSportTypes(event) {
             let selectedValue = event.target.value;
             if (selectedValue == "PlaygroundManager") {
-                sportTypes.innerHTML = `
-                                    <div class="form-group">
-                                        <label>Select Sport Type</label>
-                                        <select name="Input.SportType" class="custom-select my-1 mr-sm-2">
-                                            <option value="0">FootBall</option>
-                                            <option value="1">BasketBall</option>
-                                            <option value="2">VolleyBall</option>
-                                            <option value="3">Tennis</option>
-                                            <option value="4">Others</option>
-                                        </select>
-                                    </div>
-                                `;
-            }
-            else {
-                sportTypes.innerHTML = "";
+                document.getElementById('sport-type').hidden = false;
+                document.getElementById('ball-renting').hidden = false;
+                document.getElementById('common1').hidden = false;
+                document.getElementById('common2').hidden = false;
+            } else if (selectedValue == "GymManager") {
+                document.getElementById('ball-renting').hidden = true;
+                document.getElementById('sport-type').hidden = true;
+                document.getElementById('common1').hidden = false;
+                document.getElementById('common2').hidden = false;
+            } else if (selectedValue == "Coach") {
+                document.getElementById('ball-renting').hidden = true;
+                document.getElementById('common1').hidden = true;
+                document.getElementById('common2').hidden = true;
+                document.getElementById('sport-type').hidden = false;
+            } else {
+                document.getElementById('sport-type').hidden = true;
+                document.getElementById('ball-renting').hidden = true;
+                document.getElementById('common1').hidden = true;
+                document.getElementById('common2').hidden = true;
             }
         }
     </script>

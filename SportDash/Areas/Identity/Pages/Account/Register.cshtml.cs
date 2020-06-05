@@ -46,6 +46,16 @@ namespace SportDash.Areas.Identity.Pages.Account
                 Value = a.Name.ToString(),
                 Text = a.Name
             }).ToList();
+
+            var lists = new RegistrationLists();
+
+            locations = lists.locations;
+            SportTypeOptions = lists.SportTypeOptions;
+            BallRentingOptions = lists.availability;
+            LockerRoomOptions = lists.availability;
+            SafeOptions = lists.availability;
+            ToiletOptions = lists.availability;
+            ForLadiesOptions = lists.availability;
         }
 
         [BindProperty]
@@ -53,14 +63,21 @@ namespace SportDash.Areas.Identity.Pages.Account
 
         [BindProperty]
         [Required]
-        [Display(Name="Create an account as")]
+        [Display(Name = "Create an account as")]
         public string SelectedRole { get; set; }
 
         public List<SelectListItem> roles { get; set; }
+        public List<SelectListItem> locations { get; set; }
+        public List<SelectListItem> SportTypeOptions { get; set; }
+        public List<SelectListItem> BallRentingOptions { get; set; }
+        public List<SelectListItem> LockerRoomOptions { get; set; }
+        public List<SelectListItem> SafeOptions { get; set; }
+        public List<SelectListItem> ToiletOptions { get; set; }
+        public List<SelectListItem> ForLadiesOptions { get; set; }
 
         public string ReturnUrl { get; set; }
 
-        
+
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class InputModel
@@ -76,11 +93,13 @@ namespace SportDash.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-           
-            //[Required]
-            //[Display(Name = "Location")]
-            //public string Location { get; set; }
-
+            [Required]
+            public string Location { get; set; }
+            public bool BallRenting { get; set; }
+            public bool LockerRoom { get; set; }
+            public bool Safe { get; set; }
+            public bool Toilet { get; set; }
+            public bool ForLadies { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -106,7 +125,20 @@ namespace SportDash.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FullName = Input.FullName, SportType = Input.SportType ,Category= SelectedRole};
+                var user = new ApplicationUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    FullName = Input.FullName,
+                    Location = Input.Location,
+                    SportType = Input.SportType,
+                    Category = SelectedRole,
+                    BallRenting = Input.BallRenting,
+                    LockerRoom = Input.LockerRoom,
+                    Safe = Input.Safe,
+                    Toilet = Input.Toilet,
+                    ForLadies = Input.ForLadies
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -146,6 +178,6 @@ namespace SportDash.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }        
+        }
     }
 }

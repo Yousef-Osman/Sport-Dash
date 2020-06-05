@@ -82,7 +82,6 @@ namespace SportDash.Controllers
         public IActionResult EditEntityName(string newName)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            //var newName = "Idiot";
             _userRepository.EditFullName(userId, newName);
             return RedirectToAction(nameof(Index));
         }
