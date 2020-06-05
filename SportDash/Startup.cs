@@ -9,6 +9,7 @@ using SportDash.Data;
 using SportDash.Models;
 using SportDash.Repository;
 using SportDash.Hubs;
+using System;
 
 namespace SportDash
 {
@@ -34,6 +35,7 @@ namespace SportDash
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPlaygroundReservationRepository, PlaygroundReservationRepository>();
             services.AddScoped<IPlaygroundPriceRepository, PlaygroundPriceRepository>();
+            services.AddScoped<IConnectedUsersRepository, ConnectedUsersRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -61,7 +63,10 @@ namespace SportDash
                 options.AddPolicy("NormalUserPolicy", policy => { policy.RequireRole("NormalUser"); });
             });
 
-            services.AddSignalR();
+            services.AddSignalR(config =>
+            {
+                config.KeepAliveInterval = TimeSpan.FromSeconds(3600);                
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

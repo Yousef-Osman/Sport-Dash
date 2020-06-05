@@ -14,22 +14,35 @@ namespace SportDash.Controllers
     public class MessagesController : Controller
     {
         private readonly IMessageRepository messageRepository;
-        private readonly UserManager<ApplicationUser> userManager;        
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IUserRepository userRepository;
 
-        public MessagesController(IMessageRepository messageRepository, UserManager<ApplicationUser> userManager)
+        public MessagesController(
+            IMessageRepository messageRepository, 
+            UserManager<ApplicationUser> userManager,
+            IUserRepository userRepository)
         {
             this.messageRepository = messageRepository;
             this.userManager = userManager;
+            this.userRepository = userRepository;
         }
 
         public async Task<IActionResult> Index()
         {
             var currentUser = await userManager.GetUserAsync(User);
+            userRepository.ChangeMsgsStatus(currentUser, false);
             // getting the most recent 5 messages
             var msgs = messageRepository.GetMessagesR(currentUser.Id)
                                         .OrderByDescending(m => m.MessageDate)
                                         .GroupBy(m => m.Sender.UserName).Take(5);
             return View(msgs);
+        }
+
+        public async Task<IActionResult> ChangeMsgStatus()
+        {
+            var currentUser = await userManager.GetUserAsync(User);
+            userRepository.ChangeMsgsStatus(currentUser, false);
+            return Ok();
         }
 
         public async Task<IActionResult> GetAll()

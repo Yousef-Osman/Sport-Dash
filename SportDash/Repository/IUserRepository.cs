@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SportDash.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,5 +10,7 @@ namespace SportDash.Repository
     {
         string GetFullName(string id);
         void EditFullName(string id, string newName);
+        ApplicationUser GetUserById(string id);
+        void ChangeMsgsStatus(ApplicationUser reciever, bool value);
     }
 }

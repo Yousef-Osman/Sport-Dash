@@ -17,11 +17,12 @@ namespace SportDash.Data
         public string Location { get; set; }
         public string Category { get; set; }
         public string Size { get; set; }
-        public bool BallRenting { get; set; }
-        public bool LockerRoom { get; set; }
-        public bool Safe { get; set; }
-        public bool Toilet { get; set; }
-        public bool ForLadies { get; set; }
+        public bool? BallRenting { get; set; }
+        public bool? LockerRoom { get; set; }
+        public bool? Safe { get; set; }
+        public bool? Toilet { get; set; }
+        public bool? ForLadies { get; set; }
+        public bool HasNewMsgs { get; set; } = false;
 
         public List<Question> Questions { get; set; }
         public List<Comment> Comments { get; set; }

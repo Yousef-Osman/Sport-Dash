@@ -17,36 +17,48 @@ namespace SportDash.Hubs
         private readonly IMessageRepository messageRepository;
         private readonly ApplicationDbContext dbContext;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IUserRepository userRepository;
 
-        public ChatHub(IMessageRepository messageRepository, ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public ChatHub(
+            IMessageRepository messageRepository, 
+            ApplicationDbContext dbContext, 
+            UserManager<ApplicationUser> userManager,
+            IUserRepository userRepository)
         {
             this.messageRepository = messageRepository;
             this.dbContext = dbContext;
             this.userManager = userManager;
+            this.userRepository = userRepository;
         }
 
         public async override Task OnConnectedAsync()
-        {            
-            var user = await userManager.GetUserAsync(Context.User);
-            var connectedUser = await dbContext.ConnectedUsers.FirstOrDefaultAsync(u => u.UserId == user.Id);
-            if(connectedUser == null)
+        {
+            try
             {
-                dbContext.ConnectedUsers.Add(new Models.ConnectedUser
+                var user = await userManager.GetUserAsync(Context.User);
+                var connectedUser = await dbContext.ConnectedUsers.FirstOrDefaultAsync(u => u.UserId == user.Id);
+                if (connectedUser == null)
                 {
-                    ConnectionId = Context.ConnectionId,
-                    UserId = user.Id
-                });
+                    dbContext.ConnectedUsers.Add(new Models.ConnectedUser
+                    {
+                        ConnectionId = Context.ConnectionId,
+                        UserId = user.Id
+                    });
+                }
+                else
+                {
+                    await Disconnect();
+                    dbContext.ConnectedUsers.Add(new Models.ConnectedUser
+                    {
+                        ConnectionId = Context.ConnectionId,
+                        UserId = user.Id
+                    });
+                }
+                await dbContext.SaveChangesAsync();
             }
-            else
+            catch (Exception)
             {
-                await Disconnect();
-                dbContext.ConnectedUsers.Add(new Models.ConnectedUser
-                {
-                    ConnectionId = Context.ConnectionId,
-                    UserId = user.Id
-                });
             }
-            await dbContext.SaveChangesAsync();
         }
 
         public async Task Disconnect()
@@ -59,12 +71,18 @@ namespace SportDash.Hubs
 
         public async override Task OnDisconnectedAsync(Exception exception)
         {
-            var user = await userManager.GetUserAsync(Context.User);
-            var userConnection = await dbContext.ConnectedUsers.FirstOrDefaultAsync(u => u.UserId == user.Id);
-            if (userConnection != null)
+            try
             {
-                dbContext.ConnectedUsers.Remove(userConnection);
-                await dbContext.SaveChangesAsync();
+                var user = await userManager.GetUserAsync(Context.User);
+                var userConnection = await dbContext.ConnectedUsers.FirstOrDefaultAsync(u => u.UserId == user.Id);
+                if (userConnection != null)
+                {
+                    dbContext.ConnectedUsers.Remove(userConnection);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
             }
         }
 
@@ -75,12 +93,13 @@ namespace SportDash.Hubs
             var recieverConnection = await dbContext.ConnectedUsers.FirstOrDefaultAsync(u => u.UserId == reciever.Id);
             if(recieverConnection != null)
             {
-                await Clients.Client(recieverConnection.ConnectionId).SendAsync("recMsg", msg, sender);
-                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender);
+                await Clients.Client(recieverConnection.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.UserName, DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"));
+                userRepository.ChangeMsgsStatus(reciever, true);
+                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.UserName, DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"));
             }
             else
             {
-                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender);
+                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.UserName, DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"));
             }
             messageRepository.PostMessage(new Models.Message
             {
