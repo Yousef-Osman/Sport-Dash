@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SportDash.Migrations
 {
-    public partial class R : Migration
+    public partial class rebuilddatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,11 +45,12 @@ namespace SportDash.Migrations
                     Location = table.Column<string>(nullable: true),
                     Category = table.Column<string>(nullable: true),
                     Size = table.Column<string>(nullable: true),
-                    BallRenting = table.Column<bool>(nullable: false),
-                    LockerRoom = table.Column<bool>(nullable: false),
-                    Safe = table.Column<bool>(nullable: false),
-                    Toilet = table.Column<bool>(nullable: false),
-                    ForLadies = table.Column<bool>(nullable: false)
+                    BallRenting = table.Column<bool>(nullable: true),
+                    LockerRoom = table.Column<bool>(nullable: true),
+                    Safe = table.Column<bool>(nullable: true),
+                    Toilet = table.Column<bool>(nullable: true),
+                    ForLadies = table.Column<bool>(nullable: true),
+                    HasNewMsgs = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -208,6 +209,7 @@ namespace SportDash.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
+                    IsProfileImg = table.Column<bool>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -412,11 +414,11 @@ namespace SportDash.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "fa14a6fe-9e38-4ac9-aac2-cf077d96adf7", "dbe4578e-3dec-4eea-a806-e43342e92502", "ClubManager", "CLUBMANAGER" },
-                    { "4f116479-56ad-402d-bc9b-f47b43510e03", "2d104fdc-f4dc-4fcf-96a9-91d1531ad920", "PlaygroundManager", "PLAYGROUNDMANAGER" },
-                    { "b416c13b-4b04-4c36-92ce-2b6416d142e8", "957762a3-266b-49a9-975c-063ae46258f4", "GymManager", "GYMMANAGER" },
-                    { "4ff4269e-2232-4c78-8597-9e2bd072cd24", "dbe5958d-1ba9-40c0-8a0f-031341959d0a", "Coach", "COACH" },
-                    { "59a925d3-4bd0-4b9c-9314-9dc990dcc436", "80fb1e9b-d570-4083-a1db-76e01e7f3999", "NormalUser", "NORMALUSER" }
+                    { "6488a1c3-ddaa-45d4-8e97-41b17010e239", "75033e70-1a54-4032-b231-83644cefc60f", "ClubManager", "CLUBMANAGER" },
+                    { "579f8a77-f0e5-47bc-87e4-7bf5bb2c252e", "1949f7d0-1346-4a9d-8607-2e36cc3744ed", "PlaygroundManager", "PLAYGROUNDMANAGER" },
+                    { "c57b41f6-8980-4b0a-b433-5b6747e2d86f", "f44878bb-eaa7-40c5-bcf8-d612c0dc95b6", "GymManager", "GYMMANAGER" },
+                    { "809aab1a-a9ed-452c-9c8d-926e5bd28c9f", "06744f8a-05b4-46e0-904d-eb1a2357126d", "Coach", "COACH" },
+                    { "f8facde3-1f7d-48b4-ad37-91c1de23a2c9", "07f8a4da-e33c-4278-8e6c-211d4364b1db", "NormalUser", "NORMALUSER" }
                 });
 
             migrationBuilder.CreateIndex(

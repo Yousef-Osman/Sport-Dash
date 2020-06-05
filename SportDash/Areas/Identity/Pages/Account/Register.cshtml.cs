@@ -95,11 +95,11 @@ namespace SportDash.Areas.Identity.Pages.Account
 
             [Required]
             public string Location { get; set; }
-            public bool BallRenting { get; set; }
-            public bool LockerRoom { get; set; }
-            public bool Safe { get; set; }
-            public bool Toilet { get; set; }
-            public bool ForLadies { get; set; }
+            public bool? BallRenting { get; set; } = false;
+            public bool? LockerRoom { get; set; } = false;
+            public bool? Safe { get; set; } = false;
+            public bool? Toilet { get; set; } = false;
+            public bool? ForLadies { get; set; } = false;
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -123,6 +123,13 @@ namespace SportDash.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            Input.BallRenting = Input.BallRenting ?? false;
+            Input.LockerRoom = Input.LockerRoom ?? false;
+            Input.Safe = Input.Safe ?? false;
+            Input.Toilet = Input.Toilet ?? false;
+            Input.ForLadies = Input.ForLadies ?? false;
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
