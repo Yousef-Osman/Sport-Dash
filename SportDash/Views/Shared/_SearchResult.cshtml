@@ -5,7 +5,7 @@
     <div id="playgrounds" class="container p-3">
         <h2>Playgrounds</h2>
         <div class="row">
-            @if (Model.Playgrounds.Count != 0)
+            @if (Model.Playgrounds.Count > 0)
             {
                 foreach (var item in Model.Playgrounds)
                 {
@@ -15,7 +15,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">@item.FullName</h5>
                                 <p class="card-text">@item.Location</p>
-                                @if (item.GymPrices != null)
+                                @if (item.PlaygroundPrices.Count > 0)
                                 {
                                     var temp = item.PlaygroundPrices[0].Price;
 
@@ -44,7 +44,7 @@
     <div id="gyms" class="container p-3">
         <h2>Gyms</h2>
         <div class="row">
-            @if (Model.Gyms.Count != 0)
+            @if (Model.Gyms.Count > 0)
             {
                 foreach (var item in Model.Gyms)
                 {
@@ -54,7 +54,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">@item.FullName</h5>
                                 <p class="card-text">@item.Location</p>
-                                @if (item.GymPrices != null)
+                                @if (item.GymPrices.Count > 0)
                                 {
                                     var temp1 = item.GymPrices[0].Subscribtion_Price;
 
@@ -83,7 +83,7 @@
     <div id="trainers" class="container p-3">
         <h2>Coaches</h2>
         <div class="row">
-            @if (Model.Trainers.Count != 0)
+            @if (Model.Trainers.Count > 0)
             {
                 foreach (var item in Model.Trainers)
                 {

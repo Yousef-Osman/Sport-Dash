@@ -137,7 +137,7 @@ namespace SportDash.Controllers
         {
             var playgroundId = _userManager.GetUserId(User);
             var acceptedReservation = _reservationRepository.GetRequests(playgroundId).FirstOrDefault(r => r.Id == id);
-            await NotifyUser(playgroundId, acceptedReservation, "Sorry, your reservation request has been rejected");
+            await NotifyUser(playgroundId, acceptedReservation, $"Sorry, your reservation request has been rejected  for {acceptedReservation.Date} day from {acceptedReservation.StartTime} to {acceptedReservation.EndTime}");
             _reservationRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
@@ -179,7 +179,7 @@ namespace SportDash.Controllers
             var acceptedReservation = _reservationRepository.GetAll(playgroundId).FirstOrDefault(r => r.Id == id);
 
             // notifing the accepted request user whether their request to reserve is accepted or not
-            await NotifyUser(playgroundId, acceptedReservation, "Your reservation request has been approved");
+            await NotifyUser(playgroundId, acceptedReservation, $"Your reservation request has been approved for {acceptedReservation.Date} day from {acceptedReservation.StartTime} to {acceptedReservation.EndTime}");
 
             //check for another requests and delete the requests with the same time of another reservation            
             var remainingRequests = _reservationRepository.GetRequests(playgroundId);
@@ -188,7 +188,7 @@ namespace SportDash.Controllers
                 if (_reservationRepository.IsValid(r) == false)
                 {
                     // notifing the other users that thier requests have been rejected
-                    await NotifyUser(playgroundId, r, "Sorry, your reservation request has been rejected");
+                    await NotifyUser(playgroundId, r, $"Sorry, your reservation request has been rejected  for {r.Date} day from {r.StartTime} to {r.EndTime}" );
                     _reservationRepository.Delete(r.Id);
                 }                    
             }
