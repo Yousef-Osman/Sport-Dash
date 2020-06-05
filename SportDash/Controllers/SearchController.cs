@@ -21,7 +21,7 @@ namespace SportDash.Controllers
         private List<ApplicationUser> trainers;
         private List<ApplicationUser> playgrounds;
         private List<ApplicationUser> gyms;
-        private DataViewModel searchVM;
+        private SearchViewModel searchVM;
         
         public SearchController(UserManager<ApplicationUser> User , ApplicationDbContext context)
         {
@@ -30,7 +30,7 @@ namespace SportDash.Controllers
             trainers = _context.Users.Where(a => a.Category == "Coach").ToList();
             playgrounds = _context.Users.Include(a=>a.PlaygroundPrices).Where(a => a.Category == "PlaygroundManager").ToList();
             gyms = _context.Users.Include(a => a.GymPrices).Where(a => a.Category == "GymManager").ToList();
-            searchVM = new DataViewModel();
+            searchVM = new SearchViewModel();
         }
       
         public IActionResult Index()
