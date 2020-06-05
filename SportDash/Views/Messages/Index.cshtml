@@ -9,27 +9,30 @@
 }
 else
 {
-    <div class="container mt-3 mb-5">
-        <h3>Recent Messages</h3>
-        <div id="all-msgs"> 
-            @foreach (var message in Model)
-            {
-                <div style="background: #fff;" class="mt-3 round-borders media border p-3">
-                    <div class="media-body">
-                        <h4>
-                            <a asp-action="Message" asp-controller="Playground" asp-route-id="@(message.FirstOrDefault().SenderId)">@message.Key</a>
-                            <small> <i>@message.FirstOrDefault().MessageDate</i></small>
-                        </h4>
-                        <p>@message.FirstOrDefault().Body</p>
-                        <div class="container">
-                            <button class="btn bg-elephant" style="color: #fff;" onclick="sendData('@message.FirstOrDefault().SenderId')" data-toggle="modal" data-target="#replayModal">Replay</button>
-                        </div>
+<div class="container mt-3 mb-5">
+    <h3>Recent Messages</h3>
+    <div id="all-msgs">
+        @foreach (var message in Model)
+        {
+            <div id="_@(message.FirstOrDefault().SenderId)" style="background: #fff;" class="mt-3 round-borders media border p-3">
+                <div class="media-body">
+                    <h4>
+                        <a asp-action="Message" asp-controller="Playground" asp-route-id="@(message.FirstOrDefault().SenderId)">@message.Key</a>
+                        <small> <i>@message.FirstOrDefault().MessageDate</i></small>
+                    </h4>
+                    <p>@message.FirstOrDefault().Body</p>
+                    <div class="container">
+                        <button class="btn bg-elephant" style="color: #fff;" onclick="sendData('@message.FirstOrDefault().SenderId')" data-toggle="modal" data-target="#replayModal">Replay</button>
                     </div>
                 </div>
-            }
-        </div>
-        <button class="btn btn-primary w-100 mt-4" onclick="loadAll(event)">Load All...</button>
+            </div>
+        }
     </div>
+    @if (Model.Count() > 5)
+    {
+        <button style="background: #1cc8a0;color: #102b3e;" class="btn w-100 mt-4" onclick="loadAll(event)">Load All...</button>
+    }
+</div>
 }
 
 
@@ -53,8 +56,8 @@ else
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" onclick="replay()" class="btn btn-primary" data-dismiss="modal">Send</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" onclick="replay()" class="btn bg-elephant" style="color: #fff;" data-dismiss="modal">Send</button>
+                <button type="button" class="btn bg-Geyser" data-dismiss="modal">Close</button>
             </div>
 
         </div>
@@ -86,25 +89,25 @@ else
             })
         }
 
-        connection.on("recMsg", function (res, sender) {
-            const date = new Date();
-            const currentDate = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        connection.on("recMsg", function (res, senderId, username, date) {            
             const htmlObj = `
-                <div style="background: #fff;" class="round-borders media border p-3 mt-3">
-                <div class="media-body">
-                    <h4>
-                        <a href="/Playground/Message/${sender.id}" >${sender.userName}</a>
-                        <small> <i>${currentDate}</i></small>
-                    </h4>
-                    <p>${res}</p>
-                    <div class="container">
-                        <button class="btn btn-primary" onclick="sendData('${sender.id}')" data-toggle="modal" data-target="#replayModal">Replay</button>
+                <div id='_${senderId}' style="background: #fff;" class="round-borders media border p-3 mt-3">
+                    <div class="media-body">
+                        <h4>
+                            <a href="/Playground/Message/${senderId}" >${username}</a>
+                            <small> <i>${date}</i></small>
+                        </h4>
+                        <p>${res}</p>
+                        <div class="container">
+                            <button class="btn bg-elephant" style="color: #fff" onclick="sendData('${senderId}')" data-toggle="modal" data-target="#replayModal">Replay</button>
+                        </div>
                     </div>
                 </div>
-            </div>
             `;
-            if (sender.userName != '@(User.Identity.Name)') {                
-                $('#all-msgs').prepend(htmlObj);                
+            if (username != '@(User.Identity.Name)') {                                
+                const sentMsgs = document.querySelectorAll('#_' + senderId);
+                sentMsgs.forEach(ele => ele.remove());
+                $('#all-msgs').prepend(htmlObj);
             }
         });
     </script>

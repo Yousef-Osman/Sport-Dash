@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using SportDash.Data;
+using SportDash.Hubs;
 using SportDash.Models;
 using SportDash.Repository;
 using SportDash.ViewModels;
@@ -24,7 +26,8 @@ namespace SportDash.Controllers
         private readonly IReviewRepository _reviewRepository;
         private readonly IMessageRepository _messageRepository;
         private readonly IPlaygroundPriceRepository _playgroundPriceRepository;
-
+        private readonly IConnectedUsersRepository _connectedUsersRepository;
+        private readonly IHubContext<ChatHub> _hubContext;
 
         public PlaygroundController(UserManager<ApplicationUser> userManager,
                                     SignInManager<ApplicationUser> signInManager,
@@ -34,7 +37,9 @@ namespace SportDash.Controllers
                                     IPlaygroundReservationRepository reservationRepository,
                                     IReviewRepository reviewRepository,
                                     IMessageRepository messageRepository,
-                                    IPlaygroundPriceRepository playgroundPriceRepository)
+                                    IPlaygroundPriceRepository playgroundPriceRepository,
+                                    IConnectedUsersRepository connectedUsersRepository,
+                                    IHubContext<ChatHub> hubContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -45,6 +50,8 @@ namespace SportDash.Controllers
             _reviewRepository = reviewRepository;
             _messageRepository = messageRepository;
             _playgroundPriceRepository = playgroundPriceRepository;
+            _connectedUsersRepository = connectedUsersRepository;
+            _hubContext = hubContext;
         }
 
         //[HttpPost]
@@ -123,26 +130,60 @@ namespace SportDash.Controllers
             await _imageRepository.DeleteImage(id);
             return Ok();
         }
+
         [HttpPost]
         [Authorize(Policy = "PlaygroundPolicy")]
-        public IActionResult DeleteReservation(int id)
+        public async Task<IActionResult> DeleteReservation(int id)
         {
+            var playgroundId = _userManager.GetUserId(User);
+            var acceptedReservation = _reservationRepository.GetRequests(playgroundId).FirstOrDefault(r => r.Id == id);
+            await NotifyUser(playgroundId, acceptedReservation, "Sorry, your reservation request has been rejected");
             _reservationRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
+        private async Task NotifyUser(string playgroundId, PlaygroundReservation acceptedReservation, string msg)
+        {
+            // creating a new message and saving it to the database
+            var sentMsg = _messageRepository.PostMessage(new Message
+            {
+                Body = msg,
+                MessageDate = DateTime.Now,
+                ReceiverId = acceptedReservation.UserId,
+                SenderId = playgroundId
+            });
+            var playground = await _userManager.GetUserAsync(User);
+            // getting the conId of the reserver user and see if he is online
+            // if so, i will send a the message in real time
+            ConnectedUser receiverConnectedUser = _connectedUsersRepository.GetConnectionIdOfUser(acceptedReservation.UserId);
+            
+            if (receiverConnectedUser != null)
+            {
+                await _hubContext.Clients.Client(receiverConnectedUser.ConnectionId).SendAsync("recMsg", sentMsg.Body, playgroundId, playground.UserName, sentMsg.MessageDate.ToString("dd/MM/yyyy hh:mm:ss tt"));
+            }
+        }
+
         [HttpPost]
         [Authorize(Policy = "PlaygroundPolicy")]
-        public IActionResult AcceptReservation(int id)
+        public async Task<IActionResult> AcceptReservation(int id)
         {
             _reservationRepository.AcceptReservation(id);
-            //check for another requests and delete the requests with the same time of another reservation
-            var playgroundId = _userManager.GetUserId(HttpContext.User); 
+            var playgroundId = _userManager.GetUserId(User);
+            var acceptedReservation = _reservationRepository.GetAll(playgroundId).FirstOrDefault(r => r.Id == id);
+
+            // notifing the accepted request user whether their request to reserve is accepted or not
+            await NotifyUser(playgroundId, acceptedReservation, "Your reservation request has been approved");
+
+            //check for another requests and delete the requests with the same time of another reservation            
             var remainingRequests = _reservationRepository.GetRequests(playgroundId);
             foreach(var r in remainingRequests)
             {
                 if (_reservationRepository.IsValid(r) == false)
+                {
+                    // notifing the other users that thier requests have been rejected
+                    await NotifyUser(playgroundId, r, "Sorry, your reservation request has been rejected");
                     _reservationRepository.Delete(r.Id);
+                }                    
             }
             return RedirectToAction(nameof(Index));
         }

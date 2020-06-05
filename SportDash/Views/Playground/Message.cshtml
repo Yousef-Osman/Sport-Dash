@@ -5,14 +5,15 @@
 }
 
 <div class="container mb-5">
-    <h3 class="mt-3 p-3" style="border-radius: 40px;width: 50%;margin: 20px auto;text-transform: capitalize;padding: 20px;background: #fff;text-align: center;"><a asp-action="Index" asp-controller="Playground" asp-route-id="@Model.EntityId">@Model.CurrentPage</a></h3>
-    <div id="msgs-container" class="chat" style="width: 50% !important;margin: auto;border-radius: 25px;">
+    <h3 class="mt-3 p-3" style="border-radius: 40px;width: 70%;margin: 20px auto;text-transform: capitalize;padding: 20px;background: #fff;text-align: center;"><a asp-action="Index" asp-controller="Playground" asp-route-id="@Model.EntityId">@Model.CurrentPage</a></h3>
+    <div id="msgs-container" class="chat" style="width: 70%;margin: auto;border-radius: 25px;">
         @foreach (var msg in Model.Messages)
         {
             if (msg.Sender.UserName == User.Identity.Name)
             {
-                <div class="mine messages" style="margin-bottom: -20px;font-size: 23px;">    
-                    <div class="message last">
+                <div class="mine messages" style="margin-bottom: -20px;font-size: 23px;">
+                    <span class="sm-msg">@msg.MessageDate</span>
+                    <div class="message last" onclick="toggleDate(event)">
                         @msg.Body
                     </div>
                 </div>
@@ -20,7 +21,8 @@
             else
             {
                 <div class="yours messages" style="margin-bottom: -20px;font-size: 23px;">
-                    <div class="message last">
+                    <span class="sm-msg">@msg.MessageDate</span>
+                    <div class="message last" onclick="toggleDate(event)">                        
                         @msg.Body
                     </div>
                 </div>
@@ -28,7 +30,7 @@
         }        
     </div>
     <div class="mt-2 form-container" style="display: flex;justify-content: center;">
-        <textarea id="msg" onkeypress="sendKey(event)" class="form-control round-borders" style="width: 40%;" placeholder="Write your message here ...."></textarea>
+        <textarea id="msg" onkeypress="sendKey(event)" class="form-control round-borders" style="width: 60%;" placeholder="Write your message here ...."></textarea>
         <button onclick="send()" style="width: 9%" class="round-borders btn-elephant"><img src="~/images/send.png" /><br />Send</button>
     </div>    
 </div>
@@ -50,22 +52,34 @@
                 send();
             }
         }
-        connection.on("recMsg", (msg, sender) => {
+        connection.on("recMsg", (msg, sender, date) => {
             const msgContainer = $("#msgs-container");            
             if (sender.id == location.pathname.split('/')[3]) {                
-                msgContainer.prepend(`<div class="yours messages">
-                <div class="message last">
+                msgContainer.prepend(`<div style="margin-bottom: -20px;font-size: 23px;" class="yours messages">
+                <span class="sm-msg">${date}</span>
+                <div class="message last" onclick="toggleDate(event)">
                     ${msg}
                 </div>
             </div>`);
             }
             else {
-                msgContainer.prepend(`<div class="mine messages">
-                <div class="message last">
+                msgContainer.prepend(`<div style="margin-bottom: -20px;font-size: 23px;" class="mine messages">
+                <span class="sm-msg">${date}</span>
+                <div class="message last" onclick="toggleDate(event)">
                     ${msg}
                 </div>
             </div>`);
             }
         });
+        function toggleDate(event)
+        {
+            var dateEle = event.target.parentElement.children[0];
+            if (dateEle.style.display === 'none') {
+                dateEle.style.display = 'block';
+            }
+            else {
+                dateEle.style.display = 'none';
+            }
+        }
     </script>
 }

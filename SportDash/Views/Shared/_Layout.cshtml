@@ -38,7 +38,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a id="newMsg" class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">Messages</a>
+                                <a id="newMsg" class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">Messages <span class="badge badge-danger" id="new-msg">New</span></a>
                             </li>
                         }
                     </ul>
@@ -69,17 +69,18 @@
     @RenderSection("Scripts", required: false)
     <script>        
         const newMsg = document.querySelector("#newMsg");
-        connection.on("recMsg", function (res, sender) {
-            if (!location.pathname.includes("Message")) {
+        connection.on("recMsg", function (res) {
+            if (!location.pathname.includes("Message")) {                
                 const popup = document.querySelector(".popup");
-                popup.style.display = "block"
-                popup.innerHTML = `${sender.fullName}: ${res}`;
+                popup.style.display = "block";
+                popup.innerHTML = `New Message: ${res}`;
                 setTimeout(() => {
                     popup.style.display = "none";
                 }, 5000);
-                const sound = document.querySelector("#sound");                
-            }
-            sound.play();
+                document.querySelector("#new-msg").style.display = "inline";
+                const sound = document.querySelector("#sound");
+                sound.play();
+            }            
         });        
     </script>
 </body>
