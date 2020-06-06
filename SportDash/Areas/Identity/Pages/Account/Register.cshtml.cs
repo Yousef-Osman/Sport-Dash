@@ -86,7 +86,7 @@ namespace SportDash.Areas.Identity.Pages.Account
             [Display(Name = "Full Name")]
             public string FullName { get; set; }
 
-            public GamesCategory SportType { get; set; }
+            public GamesCategory? SportType { get; set; }
 
             [Required]
             [EmailAddress]
@@ -124,6 +124,7 @@ namespace SportDash.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
+            Input.SportType = Input.SportType ?? null;
             Input.BallRenting = Input.BallRenting ?? false;
             Input.LockerRoom = Input.LockerRoom ?? false;
             Input.Safe = Input.Safe ?? false;
