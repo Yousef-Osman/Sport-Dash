@@ -71,11 +71,14 @@ else
         function sendData(senderId) {
             sender = senderId;
         }
-        function replay() {
+        async function replay() {
             const replayMsg = document.querySelector("#replay");
             if (replayMsg.value !== "") {
+                if (connection.connectionState == 0) {
+                    await connection.start();
+                }
                 connection.invoke("SendMsg", replayMsg.value, sender);
-                replayMsg.value = "";
+                replayMsg.value = "";             
             }
         }
         function loadAll(event) {

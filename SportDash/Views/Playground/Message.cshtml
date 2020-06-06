@@ -37,13 +37,16 @@
 
 @section Scripts{ 
     <script>
-        const msgIn = document.querySelector("#msg");
-        msgIn.focus();
-        function send() {
-            const msgIn = document.querySelector("#msg");
-            if (msgIn.value != "") {
-                connection.invoke("SendMsg", msgIn.value, location.pathname.split('/')[3]);
-                msgIn.value = "";
+        const msg = document.querySelector("#msg");
+        msg.focus();
+        function send() {            
+            var msgIn = msg.value.replace(/<\/?[^>]+(>|$)/g, "");
+            if (msgIn != "") {
+                if (connection.connectionState == 0) {
+                    connection.start();
+                }
+                connection.invoke("SendMsg", msgIn, location.pathname.split('/')[3]);
+                msg.value = "";             
             }
         }
         function sendKey(event) {            
