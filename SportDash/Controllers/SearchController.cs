@@ -18,9 +18,9 @@ namespace SportDash.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _User;
-        private List<ApplicationUser> trainers;
-        private List<ApplicationUser> playgrounds;
-        private List<ApplicationUser> gyms;
+        List<ApplicationUser> trainers;
+        List<ApplicationUser> playgrounds;
+        List<ApplicationUser> gyms;
         private SearchViewModel searchVM;
         
         public SearchController(UserManager<ApplicationUser> User , ApplicationDbContext context)
@@ -168,26 +168,22 @@ namespace SportDash.Controllers
                     playgroundPrices = _context.playgroundPrices.Where(p => p.Price >= startPrice && p.Price <= toPrice).Select(p => p.PlaygroundId).Distinct().ToList();
                     gymPrices = _context.GymPrices.Where(g => g.Subscribtion_Price >= startPrice && g.Subscribtion_Price <= toPrice).Select(g => g.GymId).Distinct().ToList();
                 }
-                foreach (var pp in playgroundPrices)
+                for(int i = 0; i < playgrounds.Count; i++)
                 {
-                    foreach (var pg in playgrounds)
+                    var check = playgroundPrices.Contains(playgrounds[i].Id);
+                    if (check == false)
                     {
-                        if (pg.Id == pp)
-                        {
-                            playgrounds.Remove(pg);
-                            break;
-                        }
+                        playgrounds.Remove(playgrounds[i]);
+                        i--;
                     }
                 }
-                foreach (var gp in gymPrices)
+                for (int i = 0; i < gyms.Count; i++)
                 {
-                    foreach (var g in gyms)
+                    var check = gymPrices.Contains(gyms[i].Id);
+                    if (check == false)
                     {
-                        if (g.Id == gp)
-                        {
-                            playgrounds.Remove(g);
-                            break;
-                        }
+                        gyms.Remove(gyms[i]);
+                        i--;
                     }
                 }
             }
