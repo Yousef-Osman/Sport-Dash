@@ -41,7 +41,7 @@
             @*<p class="col-10" style="font-size:1.2em">@Model.Entity.Size</p>*@
             <h3>Location:</h3>
             <p class="col-10" style="font-size:1.2em">Alexandria, @Model.Entity.Location</p>
-            @if (Model.isCurrentUser == true)
+            @if (Model.IsAdmin == true)
             {
                 <input type="button" value="Edit" class="btn btn-info bg-Mountain" data-toggle="modal" data-target="#editInfoModal" />
             }

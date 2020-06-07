@@ -51,7 +51,7 @@
             <div class="prices medium bold">
                 <p>@subType</p>
             </div>
-            @if (Model.DataViewModel.isCurrentUser)
+            @if (Model.DataViewModel.IsAdmin)
             {
                 <div>
                     <button id="btn_@Model.GymPrice.Subscribtion_Type" class="Time rounded op_button">Edit Price</button>

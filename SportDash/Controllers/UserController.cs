@@ -41,12 +41,12 @@ namespace SportDash.Controllers
             var dataModel = new DataViewModel();
             var user = await _userManager.GetUserAsync(User);
             dataModel.ControllerName = "User";
-            dataModel.isCurrentUser = false;
+            dataModel.IsAdmin = false;
 
             if (User.IsInRole("User") && (id == null || user.Id == id))
             {
                 dataModel.CurrentUser = user;
-                dataModel.isCurrentUser = true;
+                dataModel.IsAdmin = true;
             }
             else if (_signInManager.IsSignedIn(User) && id != null)
             {
