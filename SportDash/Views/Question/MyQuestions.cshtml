@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "MyQuestions";
+}
+
+@using SportDash.ViewModels;
+@model MyQuestionsViewModel
+
+@{
+    DataViewModel dataViewModel = Model.DataViewModel;
+    dataViewModel.isCurrentUser = false;
+}
+    <div class="container prices bg-elephant py-4">
+        <h1>MyQuestions</h1>
+        @foreach (Question question in Model.Questions)
+        {
+            SportDash.ViewModels.QuestionViewModel questionViewModel = new SportDash.ViewModels.QuestionViewModel()
+            {
+                DataViewModel = dataViewModel,
+                Question = question
+            };
+            @await Component.InvokeAsync("QuestionVComponent", questionViewModel)
+            <a href='@Url.Action("Question", "Question")/@question.Id'class="btn btn-primary" role="button" aria-disabled="true">
+                Visit            
+            @*    <img src='@Url.Content("~/Content/Images/MyLinkImage.png")' />*@
+            </a>
+        }
+    </div>

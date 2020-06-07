@@ -1,0 +1,108 @@
+﻿
+@model SportDash.ViewModels.QuestionViewModel
+
+<div class="row m-3">
+    <div class="row p-3 text-dark bg-white rounded">
+        <img class="profile-image" style="width:64px;height:64px;" src="@("/images/user-icon.jpg")" asp-append-version="true">
+        <div class="ml-3">
+                @{
+                    string GetDate(DateTime dateTime)
+                    {
+                        string meridiem;
+                        string Hour;
+                        if (dateTime.Hour >= 12)
+                        {
+                            meridiem = "PM";
+                            if (dateTime.Hour == 12)
+                            {
+                                Hour = $"{dateTime.Hour}";
+                            }
+                            else
+                            {
+                                Hour = $"{dateTime.Hour - 12}";
+                            }
+                        }
+                        else
+                        {
+                            meridiem = "AM";
+                            Hour = $"{dateTime.Hour}";
+                        }
+                        return $"{dateTime.Year}-{dateTime.Month}-{dateTime.Day} " +
+                            $"{Hour}:{dateTime.Minute}:{dateTime.Second} {meridiem}";
+                    }
+                }
+                <p>@Model.Question.User.UserName</p>
+                <p>@GetDate(Model.Question.CreationTime)</p>
+                <p id="Question_Body">@Model.Question.Body</p>
+                <i id="Last_Update" style="display:block">Last Updated: @GetDate(Model.Question.LastUpdateTime)</i>
+                @if (Model.DataViewModel.isCurrentUser)
+                {
+                    <button id="Edit" class="btn btn-primary">Edit</button>
+                }
+                <button id="Save" class="btn btn-primary d-none">Save</button>
+        </div>
+    </div>
+</div>
+<script>
+    let Edit = document.getElementById("Edit");
+    let Save = document.getElementById("Save");
+    if (Edit != null) {
+        Edit.addEventListener("click", () => {
+            let element = document.getElementById("Question_Body");
+            let parent = element.parentElement;
+            let Text = element.innerText;
+            element.parentElement.removeChild(element);
+            //let txtElement = document.createTextNode(Text);
+            //element = document.createElement("input");
+            //let attribute = document.createAttribute("type");
+            //element.appendChild(txtElement);
+            //element.setAttribute("type", "textfiled");
+            let frag = document.createRange().createContextualFragment(`<textarea class="form-control animated" cols = "50" id = "Question_Body" placeholder = "Ask us..." rows = "5">${Text}</textarea >`);
+            parent.insertBefore(frag, Edit);
+            //parent.appendChild(element);
+            Save.classList.remove("d-none");
+            Edit.classList.add("d-none");
+
+        });
+    }
+    if (Save != null) {
+        Save.addEventListener("click", () => {
+            SendEdit();
+
+        });
+    }
+    function SendEdit() {
+        var dateTime = getDateString();
+        $.ajax({
+            method: "POST",
+            url: '/@Model.DataViewModel.ControllerName/EditQuestion',
+            data: {
+                "question": {
+                    "Id":`@Model.Question.Id`,
+                    "Body": `${document.getElementById("Question_Body").value}`,
+                    "CreationTime": `@Model.Question.LastUpdateTime`,
+                    "LastUpdateTime": `${dateTime}`,
+                    "UserId": `@Model.DataViewModel.CurrentUser.Id`,
+                    "Category": `${@((int)Model.Question.Category)}`
+                }
+            },
+            success: () => {
+                alert("Posted");
+                let element = document.getElementById("Question_Body");
+                let parent = element.parentElement;
+                let Text = element.value;
+                element.parentElement.removeChild(element);
+                let frag = document.createRange().createContextualFragment(`<p id="Question_Body">${Text}</p>`);
+                let Last_Update = document.getElementById("Last_Update");
+                Last_Update.innerText = "Last Updated: " + dateTime;
+                parent.insertBefore(frag, Last_Update);
+                Save.classList.add("d-none");
+                Edit.classList.remove("d-none");
+            },
+            error: () => {
+                alert("Error");
+            }
+        });
+    }
+
+</script>

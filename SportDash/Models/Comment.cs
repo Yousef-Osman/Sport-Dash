@@ -16,11 +16,12 @@ namespace SportDash.Models
         public string Body { get; set; }
         public DateTime DateTime { get; set; }
 
-        [ForeignKey("User")]
+        [ForeignKey(nameof(User))]
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
 
+        [ForeignKey(nameof(Question))]
         public int QuestionId { get; set; }
+        public ApplicationUser User { get; set; }
         public Question Question { get; set; }
 
     }

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SportDash.Repository
 {
-    interface ICommentRepository
+    public interface ICommentRepository
     {
-        public List<Comment> GetAllComments(int qestID);
+        public List<Comment> GetAllCommentsForQuestion(int qestID);
         public Comment GetComment(int id);
         public void Update(int id, Comment com);
         public void Delete(int id);
-        public void AddComment(Comment comment);
+        public Comment AddComment(Comment comment);
     }
 }

@@ -1,0 +1,49 @@
+﻿
+@model SportDash.ViewModels.DataViewModel
+
+<div class="ml-0 justify-content-center row prices bg-elephant py-4">
+    <img class="profile-image" style="width:64px;height:64px;" src="@("/images/user-icon.jpg")" asp-append-version="true">
+    <div class="ml-3">
+        @*<div><p>Name</p></div>*@
+        @*<div><p>Date</p></div>*@
+        <div>
+            @Html.DropDownList("Question_Category",
+                                new SelectList(Enum.GetValues(typeof(QuestionAbout))),
+                                "Select Category",
+                                new { @class = "form-control" })
+
+            <textarea class="form-control animated" cols="50" id="Question" placeholder="Ask us..." rows="5"></textarea>
+            <button id="Ask" class="btn btn-primary">Ask</button>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    let Ask = document.getElementById("Ask");
+    Ask.addEventListener("click", () => {
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date + ' ' + time;
+        $.ajax({
+            method: "POST",
+            url:'/@Model.ControllerName/Ask',
+            data: {
+                "Body": `${document.getElementById("Question").value}`,
+                "CreationTime": `${dateTime}`,
+                "LastUpdateTime": `${dateTime}`,
+                "UserId": `@Model.CurrentUser.Id`,
+                "Category": `${document.getElementById("Question_Category").selectedIndex-1}`
+            },
+            success: ()=>{
+                alert("Posted");
+            },
+            error: ()=>{
+                alert("Error");
+            }
+        })
+    });
+</script>

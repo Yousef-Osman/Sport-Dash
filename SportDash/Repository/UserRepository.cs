@@ -32,5 +32,11 @@ namespace SportDash.Repository
             _context.Update(user);
             _context.SaveChanges();
         }
+
+        public ApplicationUser GetApplicationUser(string id)
+        {
+            var user = _context.Users.SingleOrDefault(i => i.Id == id);
+            return user;
+        }
     }
 }

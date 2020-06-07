@@ -1,0 +1,151 @@
+﻿
+@using SportDash.ViewModels
+@model CategoryQuestionsViewModel
+
+<h1>Category</h1>
+
+<ul class="nav nav-tabs nav-justified">
+    <li class="nav-item active">
+        <a class="nav-link" href="#">Club</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Playground</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Gym</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Trainer</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Training Program</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Others</a>
+    </li>
+</ul>
+
+<div id="Questions_Container">
+
+</div>
+
+<script>
+    let questionsContainer = document.getElementById("Questions_Container");
+    function FillQuestions(value) {
+        //debugger;
+        let questions = value;
+        let userName;
+        let creationTime;
+        let questionBody;
+        let lastUpdateTime;
+        let questionId;
+        questionsContainer.innerHTML = "";
+        let fragment = document.createRange().createContextualFragment("");
+        for (let question of questions) {
+            let questionElementHTML =
+            `<div class="row m-3">
+                <div class="row p-3 text-dark bg-white rounded">
+                    <img class="profile-image" style="width:64px;height:64px;" src="@("/images/user-icon.jpg")" asp-append-version="true">
+                    <div class="ml-3">
+                            <p>${question.user.userName}</p>
+                            <p>${question.creationTime}</p>
+                            <p>${question.body}</p>
+                            <i style="display:block">Last Updated: ${question.lastUpdateTime}</i>
+                    </div>
+
+                </div>
+            </div>            
+            <div class="d-flex ml-3">
+
+                <a href='@Url.Action("Question", "Question")/${question.id}'class="btn btn-primary align-self-center"  role="button" aria-disabled="true">
+                                    Visit
+                    </a>
+            </div>`;
+            fragment.appendChild(document.createRange().createContextualFragment(questionElementHTML));
+        }
+        questionsContainer.insertBefore(fragment, questionsContainer.firstChild);
+
+        //questionsContainer.insertAdjacentElement('afterbegin', fragment);
+
+    }
+    let category;
+    let navItems = document.getElementsByClassName("nav-item");
+    let response;
+    for (let item of navItems) {
+        item.addEventListener("click", (e) => {
+            document.querySelector(".active").classList.remove("active");
+            item.classList.add("active");
+            category = item.innerText;
+            //console.log(category);
+            getQuestion();
+        });
+        //item.classList.remove("active");
+    }
+    //$(".nav li").on("click", () => {
+    //    $(".nav li").removeClass("active");
+    //    $(this).addClass("active");
+    //    Category = $(this).first().text();
+    //    getQuestion();
+    //});
+
+    function getQuestion(cat) {
+        let About
+        if (cat != null) {
+            About = cat;
+        }
+        else {
+            About = getCategoryNumber();
+        }
+        if (About != -1) {
+            $.ajax({
+                method: "GET",
+                url: '/@Model.DataViewModel.ControllerName/GetByCategory',
+                data: {
+                    "CategoryId": `${About}`
+                },
+                success: onGettingSuccess,
+                error: () => {
+                    alert("Error");
+                }
+            });
+        }
+
+    }
+
+    function onGettingSuccess(data) {
+        response = data.value;
+        console.log(data);
+        FillQuestions(response);
+    }
+
+    function getCategoryNumber() {
+        let About = -1;
+        if (category === "Club") {
+            About = 0;
+        }
+        else if (category === "Playground") {
+            About = 1;
+        }
+        else if (category === "Gym") {
+            About = 2;
+        }
+        else if (category === "Trainer") {
+            About = 3;
+        }
+        else if (category === "Training Program") {
+            About = 4;
+        }
+        else if (category === "Others") {
+            About = 5;
+        }
+        return About;
+    }
+
+    function getDateString() {
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return date + ' ' + time;
+    }
+    getQuestion(0);
+</script>

@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace SportDash.Repository
 {
-    interface IQuestionRepository
+    public interface IQuestionRepository
     {
-        public List<Question> GetAllQuestion();
+        public List<Question> GetQuestionByUser(String id);
+        public List<Question> GetQuestionByCategory(QuestionAbout category);
         public Question GetQuestion(int id);
-        public void Update(int id, Question quest);
+        public bool Update(Question quest);
         public void Delete(int id);
-        public void Ask(Question question);
+        public Question Ask(Question question);
     }
 }

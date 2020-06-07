@@ -7,41 +7,41 @@ using System.Threading.Tasks;
 
 namespace SportDash.Repository
 {
-    public class QuestionRepoitory:IQuestionRepository
+    public class QuestionRepoitory : IQuestionRepository
     {
         ApplicationDbContext _context;
         public QuestionRepoitory(ApplicationDbContext context)
         {
             _context = context;
         }
-        public List<Question> GetAllQuestion()
-        {
-            //var questions = _context.Questions.ToList();
-            //if (questions != null)
-            //{
-            //      return questions;
-            //}
 
-            return new List<Question>();
+        public List<Question> GetQuestionByUser(String userId)
+        {
+            List<Question> questions = _context.Questions.Where(question => question.UserId == userId).ToList();
+            return questions;
+        }
+
+        public List<Question> GetQuestionByCategory(QuestionAbout category)
+        {
+            List<Question> questions = _context.Questions.Where(question => question.Category == category).ToList();
+            return questions;
         }
         public Question GetQuestion(int id)
         {
-            //var question = _context.Questions.Find(id).FirstOrDefault();
-            //if (question != null)
-            //{
-            //      return question;
-            //}
-            return new Question();
+            var question = _context.Questions.Find(id);
+            return question;
         }
-        public void Update(int id , Question quest)
+        public bool Update(Question Updatedquestion)
         {
-            //var question = _context.Questions.Find(id).FirstOrDefault();
-            //if (question != null)
-            //{
-            //    question.Body = quest.Body;
-            //    question.DateTime = DateTime.Now;
-            //    _context.SaveChanges();
-            //}
+            var question = _context.Questions.Find(Updatedquestion.Id);
+            if (question != null)
+            {
+                question.Body = Updatedquestion.Body;
+                question.LastUpdateTime = Updatedquestion.LastUpdateTime;
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
         public void Delete(int id)
         {
@@ -52,10 +52,11 @@ namespace SportDash.Repository
             //    _context.SaveChanges();
             //}
         }
-        public void Ask(Question question)
+        public Question Ask(Question question)
         {
-            //_context.Questions.Add(question);
-            //_context.SaveChanges();
+            _context.Questions.Add(question);
+            _context.SaveChanges();
+            return question;
         }
     }
 }

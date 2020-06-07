@@ -14,13 +14,13 @@ namespace SportDash.Repository
         {
             _context = context;
         }
-        public List<Comment> GetAllComments(int qestID)
+        public List<Comment> GetAllCommentsForQuestion(int qestID)
         {
-            //var comments = _context.Comments.Where(c=>c.QuestionId == qestID).ToList();
-            //if (comments != null)
-            //{
-            //      return comments;
-            //}
+            var comments = _context.Comments.Where(c => c.QuestionId == qestID).ToList();
+            if (comments != null)
+            {
+                return comments;
+            }
             return new List<Comment>();
         }
         public Comment GetComment(int id)
@@ -51,10 +51,11 @@ namespace SportDash.Repository
             //    _context.SaveChanges();
             //}
         }
-        public void AddComment(Comment comment)
+        public Comment AddComment(Comment comment)
         {
-            //_context.Comments.Add(comment);
-            //_context.SaveChanges();
+            _context.Comments.Add(comment);
+            _context.SaveChanges();
+            return comment;
         }
 
     }

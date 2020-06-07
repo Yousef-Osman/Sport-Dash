@@ -24,10 +24,10 @@ namespace SportDash.Models
         //Ask about (Category ex..Clubs , Playgrounds , etc..)
         public QuestionAbout Category { get; set; }
         public string Body { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime CreationTime { get; set; }
+        public DateTime LastUpdateTime { get; set; }
         public List<Comment> Comments { get; set; }
-
-        [ForeignKey("User")]
+        [ForeignKey(nameof(User))]
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
     }
