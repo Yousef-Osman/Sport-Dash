@@ -9,30 +9,40 @@
 }
 else
 {
-<div class="container mt-3 mb-5">
-    <h3>Recent Messages</h3>
-    <div id="all-msgs">
-        @foreach (var message in Model)
-        {
-            <div id="_@(message.FirstOrDefault().SenderId)" style="background: #fff;" class="mt-3 round-borders media border p-3">
-                <div class="media-body">
-                    <h4>
-                        <a asp-action="Message" asp-controller="Playground" asp-route-id="@(message.FirstOrDefault().SenderId)">@message.Key</a>
-                        <small> <i>@message.FirstOrDefault().MessageDate</i></small>
-                    </h4>
-                    <p>@message.FirstOrDefault().Body</p>
-                    <div class="container">
-                        <button class="btn bg-elephant" style="color: #fff;" onclick="sendData('@message.FirstOrDefault().SenderId')" data-toggle="modal" data-target="#replayModal">Replay</button>
+    <div class="container-fluid row mt-3 mb-5">
+        <div class="col-4" style="overflow-y: auto;height: 523px">
+            <div id="all-msgs">
+                @foreach (var message in Model)
+                {
+                    <div id="_@(message.FirstOrDefault().SenderId)" style="background: #fff;" class="media border p-3">
+                        <div class="media-body">
+                            <h4>
+                                <a asp-action="Message" asp-controller="Playground" asp-route-id="@(message.FirstOrDefault().SenderId)">@message.Key</a>
+                                <small> <i>@message.FirstOrDefault().MessageDate</i></small>
+                            </h4>
+                            <p>@message.FirstOrDefault().Body</p>
+                            <div class="container">
+                                <button class="btn bg-elephant" style="color: #fff;" onclick="sendData('@message.FirstOrDefault().SenderId')" data-toggle="modal" data-target="#replayModal">Replay</button>
+                                <button class="btn bg-Geyser" onclick="miniChat('@(message.FirstOrDefault().SenderId)')">Open</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
-        }
+            @if (Model.Count() > 5)
+            {
+                <button style="background: #1cc8a0;color: #102b3e;" class="btn w-100 mt-4" onclick="loadAll(event)">Load All...</button>
+            }
+        </div>
+        <div class="col-8" id="mini-chat">
+            <div style="display: flex;align-items: center;justify-content: center">
+                <h2 style="text-align: center;color: #808080">Click Open To Start Chatting</h2>
+            </div>
+        </div>
     </div>
-    @if (Model.Count() > 5)
-    {
-        <button style="background: #1cc8a0;color: #102b3e;" class="btn w-100 mt-4" onclick="loadAll(event)">Load All...</button>
-    }
-</div>
+    <div id="loader" style="opacity: 0.8;background: #fff;padding: 20px;border-radius: 12px;z-index: 9;display: none;position: absolute;left: 500px;top: 500px;">
+        <h4>Loading...</h4>
+    </div>
 }
 
 
@@ -78,7 +88,7 @@ else
                     await connection.start();
                 }
                 connection.invoke("SendMsg", replayMsg.value, sender);
-                replayMsg.value = "";             
+                replayMsg.value = "";
             }
         }
         function loadAll(event) {
@@ -91,10 +101,65 @@ else
                 }
             })
         }
+        let idOfSender = '';
+        function miniChat(senderId) {
+            idOfSender = senderId;
+            const loader = document.querySelector("#loader");
+            loader.style.left = window.innerWidth / 2 + "px";
+            loader.style.top = window.innerHeight / 2 + "px";
+            loader.style.display = 'block';
+            $.ajax({
+                url: '/Messages/MiniChat?senderId=' + senderId,
+                method: 'GET',
+                success: function (data) {
+                    const chatContainer = document.querySelector('#mini-chat');
+                    loader.style.display = 'none';
+                    chatContainer.innerHTML = data;                    
+                }
+            })
+        }
+
+        function send() {
+            const msg = document.querySelector("#msg");
+            var msgIn = msg.value.replace(/<\/?[^>]+(>|$)/g, "");
+            if (msgIn != "") {
+                if (connection.connectionState == 0) {
+                    connection.start();
+                }
+                else {
+                    connection.invoke("SendMsg", msgIn, idOfSender);
+                    msg.value = "";
+                }                
+            }
+            msg.focus();
+        }
+        function sendKey(event) {
+            if (event.key == "Enter") {
+                event.preventDefault();
+                send();
+            }
+        }
 
         connection.on("recMsg", function (res, senderId, username, date) {
+            const msgContainer = $("#msgs-container");
+            if (senderId == idOfSender) {
+                msgContainer.prepend(`<div style="margin-bottom: -20px;font-size: 23px;" class="yours messages">
+                <span class="sm-msg">${date}</span>
+                <div class="message last" onclick="toggleDate(event)">
+                    ${res}
+                </div>
+            </div>`);
+            }
+            else {
+                msgContainer.prepend(`<div style="margin-bottom: -20px;font-size: 23px;" class="mine messages">
+                <span class="sm-msg">${date}</span>
+                <div class="message last" onclick="toggleDate(event)">
+                    ${res}
+                </div>
+            </div>`);
+            }
             const htmlObj = `
-                <div id='_${senderId}' style="background: #fff;" class="round-borders media border p-3 mt-3">
+                <div id='_${senderId}' style="background: #fff;" class="media border p-3">
                     <div class="media-body">
                         <h4>
                             <a href="/Playground/Message/${senderId}" >${username}</a>
@@ -103,15 +168,34 @@ else
                         <p>${res}</p>
                         <div class="container">
                             <button class="btn bg-elephant" style="color: #fff" onclick="sendData('${senderId}')" data-toggle="modal" data-target="#replayModal">Replay</button>
+                            <button class="btn bg-Geyser" onclick="miniChat('${senderId}')">Open</button>
                         </div>
                     </div>
                 </div>
             `;
-            if (username != '@(User.Identity.Name)') {                                
+            if (username != '@(User.Identity.Name)') {
                 const sentMsgs = document.querySelectorAll('#_' + senderId);
                 sentMsgs.forEach(ele => ele.remove());
                 $('#all-msgs').prepend(htmlObj);
             }
         });
+        window.oncontextmenu = function () {
+            return false;
+        }
+        window.onkeydown = function (e) {
+            if (e.key == 'F12') {
+                return false
+            }
+            return true;
+        }
+        function toggleDate(event) {
+            var dateEle = event.target.parentElement.children[0];
+            if (dateEle.style.display === 'none') {
+                dateEle.style.display = 'block';
+            }
+            else {
+                dateEle.style.display = 'none';
+            }
+        }
     </script>
 }

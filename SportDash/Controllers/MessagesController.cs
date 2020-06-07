@@ -54,5 +54,23 @@ namespace SportDash.Controllers
                                         .GroupBy(m => m.Sender.UserName);
             return PartialView("_AllMessages", msgs);
         }
+
+        public async Task<IActionResult> MiniChat(string senderId)
+        {
+            var playgroundReciver = await userManager.FindByIdAsync(senderId);
+            if (playgroundReciver == null) return NotFound();
+
+            var currentUser = await userManager.GetUserAsync(User);
+            var allMessages = messageRepository.GetMessages(currentUser.Id, playgroundReciver.Id).OrderByDescending(m => m.MessageDate);
+
+            MessagingViewModel messagingViewModel = new MessagingViewModel
+            {
+                CurrentPage = playgroundReciver.FullName,
+                EntityId = senderId,
+                Messages = allMessages
+            };
+
+            return PartialView("_MiniChat", messagingViewModel);
+        }
     }
 }

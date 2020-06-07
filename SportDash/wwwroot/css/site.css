@@ -63,6 +63,7 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    user-select: none;
 }
 
 .footer {
@@ -353,3 +354,4 @@ background-color: rgb(28, 200, 160);//green degree */
     }
 }
 
+/* loading icon */

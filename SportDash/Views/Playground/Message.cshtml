@@ -45,8 +45,10 @@
                 if (connection.connectionState == 0) {
                     connection.start();
                 }
-                connection.invoke("SendMsg", msgIn, location.pathname.split('/')[3]);
-                msg.value = "";             
+                else {
+                    connection.invoke("SendMsg", msgIn, location.pathname.split('/')[3]);
+                    msg.value = "";
+                }                
             }
         }
         function sendKey(event) {            
