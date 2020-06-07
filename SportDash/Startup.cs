@@ -56,11 +56,11 @@ namespace SportDash
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ClubPolicy", policy => { policy.RequireRole("ClubManager"); });
-                options.AddPolicy("PlaygroundPolicy", policy => { policy.RequireRole("PlaygroundManager"); });
-                options.AddPolicy("GymPolicy", policy => { policy.RequireRole("GymManager"); });
+                options.AddPolicy("ClubPolicy", policy => { policy.RequireRole("Club"); });
+                options.AddPolicy("PlaygroundPolicy", policy => { policy.RequireRole("Playground"); });
+                options.AddPolicy("GymPolicy", policy => { policy.RequireRole("Gym"); });
                 options.AddPolicy("CoachPolicy", policy => { policy.RequireRole("Coach"); });
-                options.AddPolicy("NormalUserPolicy", policy => { policy.RequireRole("NormalUser"); });
+                options.AddPolicy("UserPolicy", policy => { policy.RequireRole("User"); });
             });
 
             services.AddSignalR(config =>

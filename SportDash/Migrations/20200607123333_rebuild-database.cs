@@ -42,6 +42,7 @@ namespace SportDash.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FullName = table.Column<string>(nullable: true),
                     SportType = table.Column<int>(nullable: true),
+                    biography = table.Column<string>(nullable: true),
                     Location = table.Column<string>(nullable: true),
                     Category = table.Column<string>(nullable: true),
                     Size = table.Column<string>(nullable: true),
@@ -414,11 +415,10 @@ namespace SportDash.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "6488a1c3-ddaa-45d4-8e97-41b17010e239", "75033e70-1a54-4032-b231-83644cefc60f", "ClubManager", "CLUBMANAGER" },
-                    { "579f8a77-f0e5-47bc-87e4-7bf5bb2c252e", "1949f7d0-1346-4a9d-8607-2e36cc3744ed", "PlaygroundManager", "PLAYGROUNDMANAGER" },
-                    { "c57b41f6-8980-4b0a-b433-5b6747e2d86f", "f44878bb-eaa7-40c5-bcf8-d612c0dc95b6", "GymManager", "GYMMANAGER" },
-                    { "809aab1a-a9ed-452c-9c8d-926e5bd28c9f", "06744f8a-05b4-46e0-904d-eb1a2357126d", "Coach", "COACH" },
-                    { "f8facde3-1f7d-48b4-ad37-91c1de23a2c9", "07f8a4da-e33c-4278-8e6c-211d4364b1db", "NormalUser", "NORMALUSER" }
+                    { "310edc67-cf78-4cba-a893-d91b169dbf06", "c0eac748-70b0-4c09-98f2-e57f483eee8f", "Playground", "PLAYGROUND" },
+                    { "ff923a32-0069-4b89-85c2-e600def44772", "650ddf30-c891-4189-8f19-28e2e3a97ca7", "Gym", "GYM" },
+                    { "ba65c369-6919-4c39-966d-f14e40187505", "0927ef77-2d3a-44ee-bbc1-e96f87c0bf98", "Coach", "COACH" },
+                    { "ea17b1b5-76b8-4ada-bbfc-3c7449917b76", "6b2e2d6a-b7e5-4280-afa8-241229338219", "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(

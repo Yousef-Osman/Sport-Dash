@@ -24,7 +24,7 @@ namespace SportDash.Repository
         #region Old Code
         //public IEnumerable<ApplicationUser> GetAll()
         //{
-        //    return dbContext.Users.Where(u => u.ClubId == null && u.RoleName == "PlaygroundManager").ToList();
+        //    return dbContext.Users.Where(u => u.ClubId == null && u.RoleName == "Playground").ToList();
         //}
 
         //public IEnumerable<ApplicationUser> GetPlaygroundsOfClub(string clubId)

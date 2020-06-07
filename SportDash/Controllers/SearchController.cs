@@ -28,8 +28,8 @@ namespace SportDash.Controllers
             _User = User;
             _context = context;
             trainers = _context.Users.Where(a => a.Category == "Coach").ToList();
-            playgrounds = _context.Users.Include(a=>a.PlaygroundPrices).Where(a => a.Category == "PlaygroundManager").ToList();
-            gyms = _context.Users.Include(a => a.GymPrices).Where(a => a.Category == "GymManager").ToList();
+            playgrounds = _context.Users.Include(a=>a.PlaygroundPrices).Where(a => a.Category == "Playground").ToList();
+            gyms = _context.Users.Include(a => a.GymPrices).Where(a => a.Category == "Gym").ToList();
             searchVM = new SearchViewModel();
         }
       
@@ -39,8 +39,8 @@ namespace SportDash.Controllers
 
             searchVM.Category = new List<SelectListItem>
             {
-              new SelectListItem { Text = "PlaygroundManager", Value = "1" },
-              new SelectListItem { Text = "GymManager", Value = "2" },
+              new SelectListItem { Text = "Playground", Value = "1" },
+              new SelectListItem { Text = "Gym", Value = "2" },
               new SelectListItem { Text = "Coach", Value = "3" }
             };
 

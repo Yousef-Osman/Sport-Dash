@@ -51,7 +51,7 @@ namespace SportDash.Controllers
             dataModel.ControllerName = "Gym";
             dataModel.isCurrentUser = false;
 
-            if (User.IsInRole("GymManager") && (id == null || user.Id == id))
+            if (User.IsInRole("Gym") && (id == null || user.Id == id))
             {
                 dataModel.CurrentUser = user;
                 dataModel.isCurrentUser = true;

@@ -191,7 +191,7 @@
     $('#cat').change(function()
     {
         var category = $("#cat option:selected").text();
-        if (category == "PlaygroundManager") {
+        if (category == "Playground") {
             $('#trainers').hide();
             $('#gyms').hide();
             $('#playgrounds').show();
@@ -202,7 +202,7 @@
             $('#gyms').hide();
             $('#trainers').show();
         }
-        else if (category == "GymManager") {
+        else if (category == "Gym") {
             $('#playgrounds').hide();
             $('#trainers').hide();
             $('#gyms').show();

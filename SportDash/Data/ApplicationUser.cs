@@ -14,6 +14,7 @@ namespace SportDash.Data
         [PersonalData]
         public string FullName { get; set; }        
         public GamesCategory? SportType { get; set; }
+        public string biography { get; set; }
         public string Location { get; set; }
         public string Category { get; set; }
         public string Size { get; set; }
