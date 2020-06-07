@@ -35,7 +35,7 @@
                 <p>@GetDate(Model.Question.CreationTime)</p>
                 <p id="Question_Body">@Model.Question.Body</p>
                 <i id="Last_Update" style="display:block">Last Updated: @GetDate(Model.Question.LastUpdateTime)</i>
-                @if (Model.DataViewModel.isCurrentUser)
+                @if (Model.DataViewModel.IsAdmin)
                 {
                     <button id="Edit" class="btn btn-primary">Edit</button>
                 }

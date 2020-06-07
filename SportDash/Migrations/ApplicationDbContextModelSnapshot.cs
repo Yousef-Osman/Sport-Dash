@@ -48,38 +48,31 @@ namespace SportDash.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fa14a6fe-9e38-4ac9-aac2-cf077d96adf7",
-                            ConcurrencyStamp = "dbe4578e-3dec-4eea-a806-e43342e92502",
-                            Name = "ClubManager",
-                            NormalizedName = "CLUBMANAGER"
+                            Id = "129bec9e-348d-4bab-ab40-4628806559a8",
+                            ConcurrencyStamp = "10f1aeb8-4b24-41f6-bc5e-3a9e7b6e813f",
+                            Name = "Playground",
+                            NormalizedName = "PLAYGROUND"
                         },
                         new
                         {
-                            Id = "4f116479-56ad-402d-bc9b-f47b43510e03",
-                            ConcurrencyStamp = "2d104fdc-f4dc-4fcf-96a9-91d1531ad920",
-                            Name = "PlaygroundManager",
-                            NormalizedName = "PLAYGROUNDMANAGER"
+                            Id = "980ece19-8b81-49e6-b1f8-23b661f48376",
+                            ConcurrencyStamp = "1a3361c0-36e8-46ad-b8ce-4443e46f0c62",
+                            Name = "Gym",
+                            NormalizedName = "GYM"
                         },
                         new
                         {
-                            Id = "b416c13b-4b04-4c36-92ce-2b6416d142e8",
-                            ConcurrencyStamp = "957762a3-266b-49a9-975c-063ae46258f4",
-                            Name = "GymManager",
-                            NormalizedName = "GYMMANAGER"
-                        },
-                        new
-                        {
-                            Id = "4ff4269e-2232-4c78-8597-9e2bd072cd24",
-                            ConcurrencyStamp = "dbe5958d-1ba9-40c0-8a0f-031341959d0a",
+                            Id = "2fd26df8-e7d3-489e-bc66-86dd5c6ef177",
+                            ConcurrencyStamp = "660bee89-9c6f-45fe-8507-176505b5ce19",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "59a925d3-4bd0-4b9c-9314-9dc990dcc436",
-                            ConcurrencyStamp = "80fb1e9b-d570-4083-a1db-76e01e7f3999",
-                            Name = "NormalUser",
-                            NormalizedName = "NORMALUSER"
+                            Id = "7c7d5d6d-1661-4ef0-a9c4-fd5a721f7fd1",
+                            ConcurrencyStamp = "6f988f50-b914-48fe-a14b-771e67086df7",
+                            Name = "User",
+                            NormalizedName = "USER"
                         });
                 });
 

@@ -53,12 +53,12 @@ namespace SportDash.Controllers
             var user = await _userManager.GetUserAsync(User);
             //Console.WriteLine(User.IsInRole(""));
             dataModel.ControllerName = "Question";
-            dataModel.isCurrentUser = false;
+            dataModel.IsAdmin = false;
 
             if (_signInManager.IsSignedIn(User))
             {
                 dataModel.CurrentUser = user;
-                dataModel.isCurrentUser = true;
+                dataModel.IsAdmin = true;
             }
             else
             {
@@ -93,11 +93,11 @@ namespace SportDash.Controllers
                             if (question.UserId == user.Id)
                             {
                                 //for editing question if it is his/her.
-                                dataModel.isCurrentUser = true;
+                                dataModel.IsAdmin = true;
                             }
                             else
                             {
-                                dataModel.isCurrentUser = false;
+                                dataModel.IsAdmin = false;
                             }
 
                             List<Comment> comments = _commentRepository.GetAllCommentsForQuestion(Id);
@@ -148,7 +148,7 @@ namespace SportDash.Controllers
                 //question exists with provided id
                 dataModel.ControllerName = "Question";
                 dataModel.CurrentUser = user;
-                dataModel.isCurrentUser = true;
+                dataModel.IsAdmin = true;
                 MyQuestionsViewModel myQuestionsViewModel = new MyQuestionsViewModel()
                 {
                     DataViewModel = dataModel,
