@@ -57,32 +57,6 @@ namespace SportDash.Models
                 new SelectListItem {Text = "Not Available", Value= "false"},
                 new SelectListItem {Text = "Available", Value= "true"},
             };
-
-            #region extra
-            //LockerRoomOptions = new List<SelectListItem>
-            //{
-            //    new SelectListItem {Text = "Not Available", Value= "false"},
-            //    new SelectListItem {Text = "Available", Value= "true"},
-            //};
-
-            //SafeOptions = new List<SelectListItem>
-            //{
-            //    new SelectListItem {Text = "Not Available", Value= "false"},
-            //    new SelectListItem {Text = "Available", Value= "true"},
-            //};
-
-            //ToiletOptions = new List<SelectListItem>
-            //{
-            //    new SelectListItem {Text = "Not Available", Value= "false"},
-            //    new SelectListItem {Text = "Available", Value= "true"},
-            //};
-
-            //ForLadiesOptions = new List<SelectListItem>
-            //{
-            //    new SelectListItem {Text = "Not Available", Value= "false"},
-            //    new SelectListItem {Text = "Available", Value= "true"},
-            //};
-            #endregion
         }
     }
 }

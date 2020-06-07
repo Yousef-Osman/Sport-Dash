@@ -60,12 +60,12 @@ namespace SportDash.Controllers
             var dataModel = new DataViewModel();
             var user = await _userManager.GetUserAsync(User);
             dataModel.ControllerName = "Playground";
-            dataModel.isCurrentUser = false;
+            dataModel.IsAdmin = false;
 
-            if (User.IsInRole("PlaygroundManager") && (id == null || user.Id == id))
+            if (User.IsInRole("Playground") && (id == null || user.Id == id))
             {
                 dataModel.CurrentUser = user;
-                dataModel.isCurrentUser = true;
+                dataModel.IsAdmin = true;
             }
             else if (_signInManager.IsSignedIn(User) && id != null)
             {
@@ -198,7 +198,7 @@ namespace SportDash.Controllers
         public IActionResult AddReservation(PlaygroundReservation reservation)
         {
             bool res = true;
-            if (User.IsInRole("PlaygroundManager"))
+            if (User.IsInRole("Playground"))
             {
                 reservation.Status = "Accepted";
                 reservation.PlaygroundId = _userManager.GetUserId(HttpContext.User);
@@ -223,7 +223,7 @@ namespace SportDash.Controllers
         public IActionResult SearchByDate(DateTime date , string playgroundId)
         {
             string userId = null;
-            if (User.IsInRole("PlaygroundManager"))
+            if (User.IsInRole("Playground"))
             {
                 userId = _userManager.GetUserId(HttpContext.User);
                 if (userId != playgroundId)

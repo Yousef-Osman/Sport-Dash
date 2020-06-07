@@ -41,12 +41,12 @@ namespace SportDash.Controllers
             var dataModel = new DataViewModel();
             var user = await _userManager.GetUserAsync(User);
             dataModel.ControllerName = "User";
-            dataModel.isCurrentUser = false;
+            dataModel.IsAdmin = false;
 
-            if (User.IsInRole("NormalUser") && (id == null || user.Id == id))
+            if (User.IsInRole("User") && (id == null || user.Id == id))
             {
                 dataModel.CurrentUser = user;
-                dataModel.isCurrentUser = true;
+                dataModel.IsAdmin = true;
             }
             else if (_signInManager.IsSignedIn(User) && id != null)
             {
@@ -66,7 +66,7 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "NormalUserPolicy")]
+        [Authorize(Policy = "UserPolicy")]
         public IActionResult EditEntityName(string newName)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
@@ -93,7 +93,7 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "NormalUserPolicy")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> AddNewImage(IFormFile file)
         {
             var image = new Image();
@@ -104,7 +104,7 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "NormalUserPolicy")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> DeleteImage(int id)
         {
             await _imageRepository.DeleteImage(id);

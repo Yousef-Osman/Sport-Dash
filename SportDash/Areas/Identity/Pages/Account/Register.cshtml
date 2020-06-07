@@ -140,15 +140,15 @@
     <script>
         const sportTypes = document.querySelector("#sportTypes");
         // this method is used to show or hide the sport types dropdown
-        // only if the user selected the PlaygroundManager Role
+        // only if the user selected the Playground Role
         function renderSportTypes(event) {
             let selectedValue = event.target.value;
-            if (selectedValue == "PlaygroundManager") {
+            if (selectedValue == "Playground") {
                 document.getElementById('sport-type').hidden = false;
                 document.getElementById('ball-renting').hidden = false;
                 document.getElementById('common1').hidden = false;
                 document.getElementById('common2').hidden = false;
-            } else if (selectedValue == "GymManager") {
+            } else if (selectedValue == "Gym") {
                 document.getElementById('ball-renting').hidden = true;
                 document.getElementById('sport-type').hidden = true;
                 document.getElementById('common1').hidden = false;

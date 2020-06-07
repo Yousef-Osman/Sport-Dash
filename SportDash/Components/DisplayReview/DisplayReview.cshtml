@@ -3,9 +3,6 @@
 @{
     Layout = null;
 }
-<section class="bg-elephant" style="height:200px">
-
-</section>
 
 <section>
     <div class="container pb-4 my-5">
@@ -30,7 +27,7 @@
 
             }
         </div>
-        @if (User.IsInRole("NormalUser"))
+        @if (User.IsInRole("User"))
         {
             <div class="row">
                 <div class="col-md-4">

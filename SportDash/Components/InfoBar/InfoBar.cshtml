@@ -1,0 +1,138 @@
+﻿@model SportDash.ViewModels.DataViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@*<section class="bg-elephant">
+        <div class="container d-flex justify-content-between" >
+            <div class="col-md-6 py-5 text-Geyser remove-spacing-x">
+                <div>
+                    <h3>Bio:</h3>
+                    <p class="col-10 remove-spacing-x">Some random text to show how cool that playground is and why you should visit it you and your friends</p>
+                    <h3>Location:</h3>
+                    <p>Sidi Gaber</p>
+                </div>
+                <div class="col-12 d-flex justify-content-between remove-spacing-x">
+                    <div class="col-3 text-center">
+                        <img src="~/images/site/ball.png" class="col-12 "/>
+                        <p>Ball renting</p>
+                    </div>
+                    <div class="col-3 text-center">
+                        <img src="~/images/site/locker.png" class="col-12"/>
+                        <p>Locker Room</p>
+                    </div>
+                    <div class="col-3 text-center">
+                        <img src="~/images/site/toilet.png" class="col-12"/>
+                        <p>Toilet</p>
+                    </div>
+                    <div class="col-3 text-center">
+                        <img src="~/images/site/lady.png" class="col-12"/>
+                        <p>For ladies</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 py-5">
+                <img src="~/images/site/balls.png" class="col-12"/>
+            </div>
+        </div>
+    </section>*@
+
+<section class="bg-elephant">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center text-Geyser" style="min-height: 350px">
+        <div class="col-md-6 py-5 remove-spacing-x">
+            <h3>Bio:</h3>
+            <p class="col-10">Some random text to show how cool that playground is and why you should visit it you and your friends</p>
+            @*<p class="col-10" style="font-size:1.2em">@Model.Entity.Size</p>*@
+            <h3>Location:</h3>
+            <p class="col-10" style="font-size:1.2em">Alexandria, @Model.Entity.Location</p>
+            @if (Model.IsAdmin == true)
+            {
+                <input type="button" value="Edit" class="btn btn-info bg-Mountain" data-toggle="modal" data-target="#editInfoModal" />
+            }
+        </div>
+        <div class="col-md-6 py-5 d-flex justify-content-between remove-spacing-x">
+            @if (Model.Entity.BallRenting == true)
+            {
+                <div class="col-3 text-center remove-spacing-x">
+                    <img src="~/images/site/ball.png" class="col-12 " />
+                    <p>Ball renting</p>
+                </div>
+            }
+            @if (Model.Entity.LockerRoom == true)
+            {
+                <div class="col-3 text-center remove-spacing-x">
+                    <img src="~/images/site/locker.png" class="col-12" />
+                    <p>Locker Room</p>
+                </div>
+            }
+            @if (Model.Entity.Toilet == true)
+            {
+                <div class="col-3 text-center remove-spacing-x">
+                    <img src="~/images/site/toilet.png" class="col-12" />
+                    <p>Toilet</p>
+                </div>
+            }
+            @if (Model.Entity.ForLadies == true)
+            {
+                <div class="col-3 text-center remove-spacing-x">
+                    <img src="~/images/site/lady.png" class="col-12" />
+                    <p>For ladies</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="editInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row mb-2">
+                    <div class="col">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.locations">
+                            <option value="">Select your location ...</option>
+                        </select>
+                    </div>
+                    <div class="col" id="ball-renting">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.BallRentingOptions">
+                            <option value="">Ball Renting ...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row mb-2" id="common1">
+                    <div class="col">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.LockerRoomOptions">
+                            <option value="">Locker Room ...</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.SafeOptions">
+                            <option value="">Safe for Belongings ...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row mb-2" id="common2">
+                    <div class="col">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.ToiletOptions">
+                            <option value="">Toilet ...</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.ForLadiesOptions">
+                            <option value="">For Ladies ...</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success text-white" data-dismiss="modal" id="edit-btn">Confirm</button>
+                <button type="button" class="btn btn-secondary" id="edit-name-btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

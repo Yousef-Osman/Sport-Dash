@@ -30,10 +30,28 @@
                         <li class="nav-item">
                             <a id="newMsg" class="nav-link text-dark" asp-controller="Search" asp-action="Index">Search</a>
                         </li>
-                        @if (User.IsInRole("PlaygroundManager"))
+                        @if (User.IsInRole("Playground"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Playground" asp-action="Index" asp-route-id="">Playground</a>
+                                <a class="nav-link text-dark" asp-controller="Playground" asp-action="Index" asp-route-id="">Profile</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Gym"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Gym" asp-action="Index" asp-route-id="">Profile</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Coach"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Coach" asp-action="Index" asp-route-id="">Profile</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="Index" asp-route-id="">Profile</a>
                             </li>
                         }
                         @if (User.Identity.IsAuthenticated)
