@@ -33,7 +33,25 @@
                         @if (User.IsInRole("PlaygroundManager"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Playground" asp-action="Index" asp-route-id="">Playground</a>
+                                <a class="nav-link text-dark" asp-controller="Playground" asp-action="Index" asp-route-id="">Profile</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("GymManager"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Gym" asp-action="Index" asp-route-id="">Profile</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Coach"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Coach" asp-action="Index" asp-route-id="">Profile</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("NormalUser"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="Index" asp-route-id="">Profile</a>
                             </li>
                         }
                         @if (User.Identity.IsAuthenticated)
