@@ -10,6 +10,18 @@ namespace SportDash.ViewModels
 {
     public class DataViewModel
     {
+        public DataViewModel()
+        {
+            var lists = new RegistrationLists();
+
+            locations = lists.locations;
+            SportTypeOptions = lists.SportTypeOptions;
+            BallRentingOptions = lists.availability;
+            LockerRoomOptions = lists.availability;
+            SafeOptions = lists.availability;
+            ToiletOptions = lists.availability;
+            ForLadiesOptions = lists.availability;
+        }
         public ApplicationUser CurrentUser { get; set; }
         public ApplicationUser Entity { get; set; }
         public bool IsAdmin { get; set; }
@@ -21,5 +33,13 @@ namespace SportDash.ViewModels
         public IEnumerable<PlaygroundReservation> Requests { get; set; }
         public IEnumerable<PlaygroundReservation> AllReservations { get; set; }
         public IEnumerable<PlaygroundPrice> PlaygroundPrices { get; set; }
+
+        public List<SelectListItem> locations { get; set; }
+        public List<SelectListItem> SportTypeOptions { get; set; }
+        public List<SelectListItem> BallRentingOptions { get; set; }
+        public List<SelectListItem> LockerRoomOptions { get; set; }
+        public List<SelectListItem> SafeOptions { get; set; }
+        public List<SelectListItem> ToiletOptions { get; set; }
+        public List<SelectListItem> ForLadiesOptions { get; set; }
     }
 }
