@@ -9,7 +9,7 @@ a.navbar-brand {
 
 /* Provide sufficient contrast against white background */
 a {
-    color: #0366d6;
+    color: #0366d6;    
 }
 
 .btn-primary {
@@ -63,6 +63,7 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    user-select: none;
 }
 
 .footer {
@@ -204,10 +205,12 @@ background-color: rgb(28, 200, 160);//green degree */
     left: 10px;
     width: 300px;
     height: 100px;
-    background: #0ff677;
-    color: #fff;
+    background: #fff;
+    color: #102b3e;
     display: none;
     padding: 20px;
+    border-radius: 30px;
+    font-size: 20px;
     box-shadow: 2px 1px #ddd;
 }
 
@@ -218,9 +221,9 @@ background-color: rgb(28, 200, 160);//green degree */
     padding: 10px;
     height: 350px;
     overflow-y: auto;
-    background: #fff;
+    background: lightblue;    
     margin-top: 10px;
-    border-radius: 40px !important;     
+    border-radius: 40px !important;
 }
 
 .messages {
@@ -235,7 +238,8 @@ background-color: rgb(28, 200, 160);//green degree */
     margin-top: 3px !important;
     margin-bottom: 3px !important;
     display: inline-block !important;
-    font-size: 35px !important;
+    font-size: 23px !important;
+    cursor: pointer;
 }
 
 .yours {
@@ -246,7 +250,7 @@ background-color: rgb(28, 200, 160);//green degree */
     margin-right: 25% !important;
     background-color: #eee !important;
     position: relative !important;     
-    font-size: 35px !important;
+    font-size: 23px !important;
 }
 
 .yours .message.last:before {
@@ -269,7 +273,7 @@ background-color: rgb(28, 200, 160);//green degree */
     left: -10px !important;
     width: 10px !important;
     height: 10px !important;
-    background: white !important;
+    background: lightblue !important;
     border-bottom-right-radius: 10px !important;
 }
 
@@ -306,7 +310,7 @@ background-color: rgb(28, 200, 160);//green degree */
     right: -10px !important;
     width: 10px !important;
     height: 20px !important;
-    background: white !important;
+    background: lightblue !important;
     border-bottom-left-radius: 10px !important;
 }
 
@@ -324,3 +328,35 @@ background-color: rgb(28, 200, 160);//green degree */
 .form-container{
     display: flex;        
 }
+
+.sm-msg{
+    color: #000;
+    font-size: 12px;
+    display: none;
+}
+#new-msg{
+    display: inline;
+}
+
+@media only screen and (max-width: 600px) {
+    .chat *{
+        font-size: 14px !important;
+    }
+    .chat .message {
+        font-size: 14px !important;
+    }    
+    .form-container{
+        justify-content: space-between;
+    }
+    .form-container textarea{
+        width: 50% !important;
+    }
+    .sm-msg{
+        font-size: 10px !important;
+    }
+    .form-container .btn-elephant{
+        width: 20% !important;
+    }
+}
+
+/* loading icon */

@@ -12,5 +12,7 @@ namespace SportDash.Repository
         void EditFullName(string id, string newName);
 
         public ApplicationUser GetApplicationUser(string id);
+        ApplicationUser GetUserById(string id);
+        void ChangeMsgsStatus(ApplicationUser reciever, bool value);
     }
 }

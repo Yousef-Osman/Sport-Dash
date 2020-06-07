@@ -1,4 +1,5 @@
 ﻿@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,16 +30,44 @@
                         <li class="nav-item">
                             <a id="newMsg" class="nav-link text-dark" asp-controller="Search" asp-action="Index">Search</a>
                         </li>
-                        @if (User.IsInRole("PlaygroundManager"))
+                        @if (User.IsInRole("Playground"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Playground" asp-action="Index" asp-route-id="">Playground</a>
+                                <a class="nav-link text-dark" asp-controller="Playground" asp-action="Index" asp-route-id="">Profile</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Gym"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Gym" asp-action="Index" asp-route-id="">Profile</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Coach"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Coach" asp-action="Index" asp-route-id="">Profile</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="Index" asp-route-id="">Profile</a>
                             </li>
                         }
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a id="newMsg" class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">Messages</a>
+                                <a id="newMsg" class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">
+                                    Messages
+                                    @if ((await UserManager.GetUserAsync(User)).HasNewMsgs)
+                                    {
+                                        <span class="badge badge-danger" style="display: inline" id="new-msg">New</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger" style="display: none" id="new-msg">New</span>
+                                    }
+                                </a>
                             </li>
                         }
                     </ul>
@@ -64,23 +93,29 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
     <script src="~/js/signalr.js"></script>
     <script src="~/js/chat.js"></script>
     @RenderSection("Scripts", required: false)
-    <script>        
+    <script>
         const newMsg = document.querySelector("#newMsg");
-        connection.on("recMsg", function (res, sender) {
-            if (!location.pathname.includes("Message")) {
-                const popup = document.querySelector(".popup");
-                popup.style.display = "block"
-                popup.innerHTML = `${sender.fullName}: ${res}`;
-                setTimeout(() => {
-                    popup.style.display = "none";
-                }, 5000);
-                const sound = document.querySelector("#sound");                
+        //if (connection.connectionState == 0) {
+        //    connection.start();
+        //}
+        connection.on("recMsg", function (res) {
+            if (!location.pathname.includes("Message")) {                
+                document.querySelector("#new-msg").style.display = "inline";
+                const sound = document.querySelector("#sound");
+                sound.play();
             }
-            sound.play();
+            else {
+                $.ajax({
+                    url: '/Messages/ChangeMsgStatus',
+                    method: 'GET',
+                    success: function () {
+                        document.querySelector("#new-msg").style.display = "none";
+                    }
+                })
+            }
         });        
     </script>
 </body>

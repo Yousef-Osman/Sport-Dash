@@ -2,67 +2,113 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SportDash.Data;
 using SportDash.Models;
 using SportDash.Repository;
+using SportDash.ViewModels;
 
 namespace SportDash.Controllers
 {
     public class UserController : Controller
     {
-
-        private readonly IReviewRepository _IR;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IUserRepository _userRepository;
+        private readonly IImageRepository _imageRepository;
+        private readonly IMessageRepository _messageRepository;
 
-        public UserController(IReviewRepository IR, 
-                              UserManager<ApplicationUser> userManager)
+        public UserController(UserManager<ApplicationUser> userManager,
+                                    SignInManager<ApplicationUser> signInManager,
+                                    IAuthorizationService authorizationService,
+                                    IUserRepository userRepository,
+                                    IImageRepository imageRepository,
+                                    IMessageRepository messageRepository)
         {
-            _IR = IR;
             _userManager = userManager;
+            _signInManager = signInManager;
+            _userRepository = userRepository;
+            _imageRepository = imageRepository;
+            _messageRepository = messageRepository;
         }
 
-        public IActionResult Index()
+        //[HttpPost]
+        public async Task<IActionResult> Index(string id)
         {
-            return View();
-        }
+            var dataModel = new DataViewModel();
+            var user = await _userManager.GetUserAsync(User);
+            dataModel.ControllerName = "User";
+            dataModel.IsAdmin = false;
 
+            if (User.IsInRole("User") && (id == null || user.Id == id))
+            {
+                dataModel.CurrentUser = user;
+                dataModel.IsAdmin = true;
+            }
+            else if (_signInManager.IsSignedIn(User) && id != null)
+            {
+                dataModel.CurrentUser = user;
+                dataModel.Entity = await _userManager.FindByIdAsync(id);
+            }
+            else if (id != null)
+            {
+                dataModel.Entity = await _userManager.FindByIdAsync(id);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(dataModel);
+        }
 
         [HttpPost]
-        public IActionResult Add(Review R)
+        [Authorize(Policy = "UserPolicy")]
+        public IActionResult EditEntityName(string newName)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            //R.ReviewerId = _userManager.GetUserId(HttpContext.User);
-            //R.TargetId = "b6bf071e-32fe-4b3f-b8ec-57ddc6737e8";
-            _IR.PostReview(R);
-            return Ok("Done");
+            var userId = _userManager.GetUserId(HttpContext.User);
+            _userRepository.EditFullName(userId, newName);
+            return RedirectToAction(nameof(Index));
         }
 
-        //[HttpPost]
-        //public IActionResult Delete(int id)
-        //{
-        //    var sport = repository.Find(id);
-        //    if (sport == null) return NotFound();
-        //    repository.Delete(sport);
-        //    return Ok("Done");
-        //}
+        public async Task<IActionResult> Message(string id)
+        {
+            var playgroundReciver = await _userManager.FindByIdAsync(id);
+            if (playgroundReciver == null) return NotFound();
 
-        //public IActionResult Edit(int id)
-        //{
-        //    var sport = repository.Find(id);
-        //    if (sport == null) return NotFound();
-        //    return PartialView("_Edit", sport);
-        //}
+            var currentUser = await _userManager.GetUserAsync(User);
+            var allMessages = _messageRepository.GetMessages(currentUser.Id, playgroundReciver.Id).OrderByDescending(m => m.MessageDate);
 
-        //[HttpPost]
-        //public IActionResult Edit(int id, Sport sport)
-        //{
-        //    var oldSport = repository.Find(id);
-        //    if (sport == null) return NotFound();
-        //    oldSport.Sports = sport.Sports;
-        //    repository.Edit(oldSport);
-        //    return RedirectToAction(nameof(Index));
-        //}
+            MessagingViewModel messagingViewModel = new MessagingViewModel
+            {
+                CurrentPage = playgroundReciver.FullName,
+                EntityId = id,
+                Messages = allMessages
+            };
+
+            return View(messagingViewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "UserPolicy")]
+        public async Task<IActionResult> AddNewImage(IFormFile file)
+        {
+            var image = new Image();
+            image.ImageFile = file;
+            var userId = _userManager.GetUserId(HttpContext.User);
+            await _imageRepository.CreateImage(image, userId);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "UserPolicy")]
+        public async Task<IActionResult> DeleteImage(int id)
+        {
+            await _imageRepository.DeleteImage(id);
+            return Ok();
+        }
     }
 }

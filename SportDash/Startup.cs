@@ -9,6 +9,7 @@ using SportDash.Data;
 using SportDash.Models;
 using SportDash.Repository;
 using SportDash.Hubs;
+using System;
 
 namespace SportDash
 {
@@ -34,6 +35,7 @@ namespace SportDash
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPlaygroundReservationRepository, PlaygroundReservationRepository>();
             services.AddScoped<IPlaygroundPriceRepository, PlaygroundPriceRepository>();
+            services.AddScoped<IConnectedUsersRepository, ConnectedUsersRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -54,14 +56,17 @@ namespace SportDash
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ClubPolicy", policy => { policy.RequireRole("ClubManager"); });
-                options.AddPolicy("PlaygroundPolicy", policy => { policy.RequireRole("PlaygroundManager"); });
-                options.AddPolicy("GymPolicy", policy => { policy.RequireRole("GymManager"); });
+                options.AddPolicy("ClubPolicy", policy => { policy.RequireRole("Club"); });
+                options.AddPolicy("PlaygroundPolicy", policy => { policy.RequireRole("Playground"); });
+                options.AddPolicy("GymPolicy", policy => { policy.RequireRole("Gym"); });
                 options.AddPolicy("CoachPolicy", policy => { policy.RequireRole("Coach"); });
-                options.AddPolicy("NormalUserPolicy", policy => { policy.RequireRole("NormalUser"); });
+                options.AddPolicy("UserPolicy", policy => { policy.RequireRole("User"); });
             });
 
-            services.AddSignalR();
+            services.AddSignalR(config =>
+            {
+                config.KeepAliveInterval = TimeSpan.FromSeconds(3600);                
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

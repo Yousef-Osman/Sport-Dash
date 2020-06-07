@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SportDash.Data;
 using SportDash.Models;
+using SportDash.Repository;
 using SportDash.ViewModels;
 
 namespace SportDash.Controllers
@@ -19,57 +21,26 @@ namespace SportDash.Controllers
         List<ApplicationUser> trainers;
         List<ApplicationUser> playgrounds;
         List<ApplicationUser> gyms;
+        private SearchViewModel searchVM;
+        
         public SearchController(UserManager<ApplicationUser> User , ApplicationDbContext context)
         {
             _User = User;
             _context = context;
-             trainers = _context.Users.Where(a => a.Category == "Coach").ToList();
-             playgrounds = _context.Users.Include(a=>a.PlaygroundPrices).Where(a => a.Category == "PlaygroundManager").ToList();
-             gyms = _context.Users.Include(a => a.GymPrices).Where(a => a.Category == "GymManager").ToList();
+            trainers = _context.Users.Where(a => a.Category == "Coach").ToList();
+            playgrounds = _context.Users.Include(a=>a.PlaygroundPrices).Where(a => a.Category == "Playground").ToList();
+            gyms = _context.Users.Include(a => a.GymPrices).Where(a => a.Category == "Gym").ToList();
+            searchVM = new SearchViewModel();
         }
       
-        public async Task<IActionResult> Index(string entityCategory , string entityPrice , string entityLocation , string searchString)
+        public IActionResult Index()
         {
-
-
-            // Use LINQ to get list of genres.
-            //IQueryable<string> categoryQuery = _context.Users.Select(a => a.Category);
-            //IQueryable<string> PriceQuery = _context.Users.Select(a => a.Email);
             IQueryable<string> locationQuery = _context.Users.Select(a => a.Location);
-           // IQueryable<string> SportCategoryQuery = _context.Users.Select(a => a.FullName);
 
-
-            //var trainers = _context.Users.Where(a=>a.Category == "Trainer").Select(a=>a);
-            //var Playgrounds = _context.Users.Where(a=>a.Category == "Playground").Select(a=>a);
-            //var Gyms = _context.Users.Where(a=>a.Category == "Gym").Select(a=>a);
-
-
-            //if (!string.IsNullOrEmpty(searchString))
-            //{
-            //    trainers = _context.Users.Where(a => a.Category == "Trainer" && a.FullName.Contains(searchString));
-            //    Playgrounds = _context.Users.Where(a => a.Category == "Playground" && a.FullName.Contains(searchString));
-            //    Gyms = _context.Users.Where(a => a.Category == "Gym" && a.FullName.Contains(searchString));
-            //}
-
-            //if (!string.IsNullOrEmpty(entityCategory))
-            //{
-            //    if(entityCategory == "Trainers")
-            //    trainers = _context.Users.Where(a => a.Category == "Trainer" && a.FullName.Contains(searchString));
-            //    Playgrounds = _context.Users.Where(a => a.Category == "Playground" && a.FullName.Contains(searchString));
-            //    Gyms = _context.Users.Where(a => a.Category == entityCategory);
-            //    movies = movies.Where(x => x. == movieGenre);
-            //}
-
-
-
-
-
-            var searchVM = new DataViewModel();
-
-            searchVM.Category = new List<SelectListItem> 
-            { 
-              new SelectListItem { Text = "PlaygroundManager", Value = "1" }, 
-              new SelectListItem { Text = "GymManager", Value = "2" }, 
+            searchVM.Category = new List<SelectListItem>
+            {
+              new SelectListItem { Text = "Playground", Value = "1" },
+              new SelectListItem { Text = "Gym", Value = "2" },
               new SelectListItem { Text = "Coach", Value = "3" }
             };
 
@@ -81,7 +52,35 @@ namespace SportDash.Controllers
               new SelectListItem { Text = "Over 200", Value = "4" }
             };
 
-            searchVM.Location = new SelectList(await locationQuery.Distinct().ToListAsync());
+            searchVM.Location = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Abo Kier", Value= "1"},
+                new SelectListItem {Text = "Alexandria", Value= "2"},
+                new SelectListItem {Text = "Anfoshy", Value= "3"},
+                new SelectListItem {Text = "Azarita", Value= "4"},
+                new SelectListItem {Text = "Bahary ", Value= "5"},
+                new SelectListItem {Text = "Bakous ", Value= "6"},
+                new SelectListItem {Text = "Bolkli", Value= "7"},
+                new SelectListItem {Text = "Ebrahimia", Value= "8"},
+                new SelectListItem {Text = "El-Agamy", Value= "9"},
+                new SelectListItem {Text = "El-Amrya", Value= "10"},
+                new SelectListItem {Text = "El-Asafra", Value= "11"},
+                new SelectListItem {Text = "El-Atareen", Value= "12"},
+                new SelectListItem {Text = "El-Dekhila", Value= "13"},
+                new SelectListItem {Text = "El-Hadara", Value= "14"},
+                new SelectListItem {Text = "El-Kabary", Value= "15"},
+                new SelectListItem {Text = "El-Mamoura", Value= "16"},
+                new SelectListItem {Text = "El-Mandara", Value= "17"},
+                new SelectListItem {Text = "El-Manshia", Value= "18"},
+                new SelectListItem {Text = "El-Max", Value= "19"},
+                new SelectListItem {Text = "El-Montaza", Value= "20"},
+                new SelectListItem {Text = "El-Saraya ", Value= "21"},
+                new SelectListItem {Text = "El-Shatby", Value= "22"},
+                new SelectListItem {Text = "El-Siouf", Value= "23"},
+                new SelectListItem {Text = "El-Wardiaan", Value= "24"},
+                new SelectListItem {Text = "Gleam", Value= "25"},
+                new SelectListItem {Text = "Janklies", Value= "26"}
+            };
 
             searchVM.SportType = new List<SelectListItem>
             {
@@ -92,57 +91,106 @@ namespace SportDash.Controllers
               new SelectListItem { Text = GamesCategory.Others.ToString() , Value = ((int)GamesCategory.BasketBall).ToString() }
             };
 
-            searchVM.Trainers = trainers.ToList();
-            searchVM.Playgrounds = playgrounds.ToList();
-            searchVM.Gyms = gyms.ToList();
-            
-
+            searchVM.Playgrounds = playgrounds;
+            searchVM.Gyms = gyms;
+            searchVM.Trainers = trainers;
             return View(searchVM);
         }
 
-        [HttpGet]
-        public IActionResult Search(string searchString)
-        {
-            var newTrainers = trainers.Where(a=>a.FullName.Contains(searchString)).Select(a => a.FullName);
-            var newPlaygrounds = playgrounds.Where(a =>a.FullName.Contains(searchString)).Select(a => a.FullName);
-            var newGyms = gyms.Where(a => a.FullName.Contains(searchString)).Select(a => a.FullName);
-            var alldata = new List<string>();
-            alldata.AddRange(newTrainers);
-            alldata.AddRange(newPlaygrounds);
-            alldata.AddRange(newGyms);
-            return Ok(alldata);
-        }
+        //[HttpGet]
+        //public IActionResult AutoCompleteSearch(string searchString)
+        //{
+        //    var newTrainers = trainers.Where(a=>a.FullName.Contains(searchString)).Select(a => a.FullName);
+        //    var newPlaygrounds = playgrounds.Where(a =>a.FullName.Contains(searchString)).Select(a => a.FullName);
+        //    var newGyms = gyms.Where(a => a.FullName.Contains(searchString)).Select(a => a.FullName);
+        //    var alldata = new List<string>();
+        //    alldata.AddRange(newTrainers);
+        //    alldata.AddRange(newPlaygrounds);
+        //    alldata.AddRange(newGyms);
+        //    return Ok(alldata);
+        //}
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult SearchResult(string searchString)
         {
-            var newTrainers = trainers.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
-            var newPlaygrounds = playgrounds.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
-            var newGyms = gyms.Where(a => a.FullName.Contains(searchString) || a.Location.Contains(searchString) || a.SportType.ToString().Contains(searchString)).ToList();
-            var alldata = new List<string>();
-            return RedirectToAction(nameof(Index));
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                searchString = searchString.ToLower();
+                trainers = trainers.Where(a => a.FullName.ToLower().Contains(searchString)).ToList();
+                playgrounds = playgrounds.Where(a => a.FullName.ToLower().Contains(searchString)).ToList();
+                gyms = gyms.Where(a => a.FullName.ToLower().Contains(searchString)).ToList();
+                searchVM.Trainers = trainers.ToList();
+                searchVM.Playgrounds = playgrounds.ToList();
+                searchVM.Gyms = gyms.ToList();
+            }
+
+            return PartialView("_SearchResult", searchVM);
         }
 
-
-        public IActionResult SearchByCategory (string category)
+        public IActionResult AllSearches(string location,string price,string sportType)
         {
-            return  RedirectToAction(nameof(Index));
+            if (!location.Contains("All"))
+            {
+                playgrounds = playgrounds.Where(p => p.Location == location).ToList();
+                trainers = trainers.Where(p => p.Location == location).ToList();
+                gyms = gyms.Where(p => p.Location == location).ToList();
+            }
+            if (!sportType.Contains("All"))
+            {
+                GamesCategory e = (GamesCategory)Enum.Parse(typeof(GamesCategory), sportType);
+                playgrounds = playgrounds.Where(p => p.SportType == e).ToList();
+                trainers = trainers.Where(p => p.SportType == e).ToList();
+                gyms = gyms.Where(p => p.SportType == e).ToList();
+            }
+            if(!price.Contains("All"))
+            {
+                string[] numbers = Regex.Split(price, @"\D+");
+                var startPrice = 0;
+                var toPrice = 0;
+                var playgroundPrices = new List<string>(); //all playgrounds Id
+                var gymPrices = new List<string>(); //all gyms Id 
+                if (price.Contains("Under"))
+                {
+                    startPrice = int.Parse(numbers[1]);
+                    playgroundPrices = _context.playgroundPrices.Where(p => p.Price < startPrice).Select(p => p.PlaygroundId).Distinct().ToList();
+                    gymPrices = _context.GymPrices.Where(g => g.Subscribtion_Price < startPrice).Select(g => g.GymId).Distinct().ToList();
+                }
+                else if (price.Contains("Over"))
+                {
+                    startPrice = int.Parse(numbers[1]);
+                    playgroundPrices = _context.playgroundPrices.Where(p => p.Price > startPrice).Select(p => p.PlaygroundId).Distinct().ToList();
+                    gymPrices = _context.GymPrices.Where(g => g.Subscribtion_Price > startPrice).Select(g => g.GymId).Distinct().ToList();
+                }
+                else
+                {
+                    startPrice = int.Parse(numbers[0]);
+                    toPrice = int.Parse(numbers[1]);
+                    playgroundPrices = _context.playgroundPrices.Where(p => p.Price >= startPrice && p.Price <= toPrice).Select(p => p.PlaygroundId).Distinct().ToList();
+                    gymPrices = _context.GymPrices.Where(g => g.Subscribtion_Price >= startPrice && g.Subscribtion_Price <= toPrice).Select(g => g.GymId).Distinct().ToList();
+                }
+                for(int i = 0; i < playgrounds.Count; i++)
+                {
+                    var check = playgroundPrices.Contains(playgrounds[i].Id);
+                    if (check == false)
+                    {
+                        playgrounds.Remove(playgrounds[i]);
+                        i--;
+                    }
+                }
+                for (int i = 0; i < gyms.Count; i++)
+                {
+                    var check = gymPrices.Contains(gyms[i].Id);
+                    if (check == false)
+                    {
+                        gyms.Remove(gyms[i]);
+                        i--;
+                    }
+                }
+            }
+            searchVM.Playgrounds = playgrounds;
+            searchVM.Gyms = gyms;
+            searchVM.Trainers = trainers;
+            return PartialView("_SearchResult", searchVM);
         }
-
-        public IActionResult SearchByPrice(string price)
-        {
-            return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult SearchBySportType(string sportType)
-        {
-            return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult SearchByLocation(string location)
-        {
-            return RedirectToAction(nameof(Index));
-        }
-
     }
 }

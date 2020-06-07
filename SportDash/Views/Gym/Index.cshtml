@@ -3,6 +3,8 @@
     ViewData["Title"] = "Index";
 }
 
-@*@await Component.InvokeAsync("TitleBar", new { dataModel = Model })*@
+@await Component.InvokeAsync("TitleBar", new { dataModel = Model })
+@await Component.InvokeAsync("ImageGallery", new { dataModel = Model })
+@await Component.InvokeAsync("Reservation", new { dataModel = Model })
 @await Component.InvokeAsync("GymPricesSection", new { dataViewModel = Model })
-@*@await Component.InvokeAsync("try1")*@
+@await Component.InvokeAsync("DisplayReview", new { dataModel = Model })
