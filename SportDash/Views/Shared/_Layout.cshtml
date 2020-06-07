@@ -96,16 +96,13 @@
     <script src="~/js/signalr.js"></script>
     <script src="~/js/chat.js"></script>
     @RenderSection("Scripts", required: false)
-    <script>        
+    <script>
         const newMsg = document.querySelector("#newMsg");
+        //if (connection.connectionState == 0) {
+        //    connection.start();
+        //}
         connection.on("recMsg", function (res) {
-            if (!location.pathname.includes("Message")) {
-                //const popup = document.querySelector(".popup");
-                //popup.style.display = "block";
-                //popup.innerHTML = `New Message: ${res}`;
-                //setTimeout(() => {
-                //    popup.style.display = "none";
-                //}, 5000);
+            if (!location.pathname.includes("Message")) {                
                 document.querySelector("#new-msg").style.display = "inline";
                 const sound = document.querySelector("#sound");
                 sound.play();

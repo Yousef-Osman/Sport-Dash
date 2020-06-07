@@ -100,6 +100,7 @@ namespace SportDash.Hubs
             else
             {
                 await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.UserName, DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"));
+                userRepository.ChangeMsgsStatus(reciever, true);
             }
             messageRepository.PostMessage(new Models.Message
             {
