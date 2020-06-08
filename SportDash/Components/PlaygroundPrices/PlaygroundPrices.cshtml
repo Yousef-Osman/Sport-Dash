@@ -30,7 +30,6 @@
             </div>
             @* Make buutons disapear if not admin *@
             <div class="d-flex">
-                @*btn btn-info bg-Mountain col-md-12 text-elephant*@
                 <button id="Update_@i" class="align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Update</button>
                 <button id="Delete_@i" class="align-self-center btn btn-info text-Geyser  mr-2 bg-elephant">Delete</button>
                 <button id="Save_@i" class="d-none align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Save</button>
@@ -263,7 +262,7 @@
                 console.log(document.getElementById("from_"+currId).value);
                 let Data = {
                     "NewPlaygroundPrice": {
-                        "playgroundId": `@Model.CurrentUser.Id`,
+                        "playgroundId": `@Model.Entity.Id`,
                         "Start": `${document.getElementById("from_"+currId).value}`,
                         "End": `${document.getElementById("to_"+currId).value}`,
                         "Price": `${document.getElementById("price_"+currId).value}`
@@ -284,7 +283,7 @@
                     console.log(to_value);
                     console.log(price_value);
                     revertEditUI(last_id, from_value, to_value, price_value);
-                    sourcearray.push({ id: jsonData.id, playgroundId: `@Model.CurrentUser.Id`, start: from_value, end: to_value, price: price_value });
+                    sourcearray.push({ id: jsonData.id, playgroundId: `@Model.Entity.Id`, start: from_value, end: to_value, price: price_value });
                     let rowParent = document.getElementById(`row_${last_id}`).parentElement;
 
                     //rowParent is row with separator class
