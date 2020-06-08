@@ -1,35 +1,5 @@
 ﻿@model SportDash.ViewModels.MessagingViewModel
 
-@*<div>
-        <h3 class="p-3" style="width: 100% !important;text-transform: capitalize;padding: 20px;background: #fff;text-align: center;"><a asp-action="Index" asp-controller="Playground" asp-route-id="@Model.EntityId">@Model.CurrentPage</a></h3>
-        <div id="msgs-container" class="chat" style="margin-top: -10px !important;width: 100% !important;border-radius: 0 !important;height: 380px;">
-            @foreach (var msg in Model.Messages)
-            {
-                if (msg.Sender.UserName == User.Identity.Name)
-                {
-                    <div class="mine messages" style="margin-bottom: -20px;font-size: 23px;">
-                        <span class="sm-msg">@msg.MessageDate</span>
-                        <div class="message last" onclick="toggleDate(event)">
-                            @msg.Body
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="yours messages" style="margin-bottom: -20px;font-size: 23px;">
-                        <span class="sm-msg">@msg.MessageDate</span>
-                        <div class="message last" onclick="toggleDate(event)">
-                            @msg.Body
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-        <div class="mt-2 form-container" style="display: flex;justify-content: flex-start;">
-            <textarea id="msg" onkeypress="sendKey(event)" class="form-control" style="width: 90% !important;" placeholder="Write your message here ...."></textarea>
-            <button onclick="send()" style="width: 9%" class="round-borders btn-elephant"><img src="~/images/send.png" /><br />Send</button>
-        </div>
-    </div>*@
 
 <div>
     <div class="row heading">
@@ -99,8 +69,9 @@
             <a onclick="send()"><i class="fa fa-send fa-2x" aria-hidden="true"></i></a>
         </div>
     </div>
+</div>
 
-<div>
+@*<div>
     <h3 class="p-3" style="width: 100% !important;text-transform: capitalize;padding: 20px;background: #fff;text-align: center;"><a asp-action="Index" asp-controller="Playground" asp-route-id="@Model.EntityId">@Model.CurrentPage</a></h3>
     <div id="msgs-container" class="chat" style="margin-top: -10px !important;width: 100% !important;border-radius: 0 !important;height: 380px;">
         @foreach (var msg in Model.Messages)
@@ -129,4 +100,4 @@
         <textarea id="msg" onkeypress="sendKey(event)" class="form-control" style="width: 90% !important;" placeholder="Write your message here ...."></textarea>
         <button onclick="send()" style="width: 9%" class="round-borders btn-elephant"><img src="~/images/site/send.png" /><br />Send</button>
     </div>
-</div>
+</div>*@
