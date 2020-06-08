@@ -19,7 +19,7 @@
                     <a class="nav-link bg-Geyser text-elephant" data-toggle="tab" href="#requests">Requests</a>
                 </li>
             }
-            @if ((User.IsInRole("Playground") && Model.IsAdmin) || User.IsInRole("NormalUser"))
+            @if ((User.IsInRole("Playground") && Model.IsAdmin) || User.IsInRole("User"))
             {
                 <li class="nav-item text-elephant">
                     <a class="nav-link bg-Geyser text-elephant" data-toggle="tab" href="#add">Add</a>
