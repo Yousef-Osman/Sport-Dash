@@ -74,7 +74,7 @@
                                 <div class="card">
                                     <img src="~/images/obl202005231057175364.jpg" class="card-img-top" alt="...">
                                     <div class="card-body">
-                                        <h5 class="card-title">@item.FullName</h5>
+                                        <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
                                         <p class="card-text">@item.Location</p>
                                         @if (item.PlaygroundPrices.Count > 0)
                                         {
@@ -113,7 +113,7 @@
                                 <div class="card">
                                     <img src="~/images/obl202005231057175364.jpg" class="card-img-top" alt="...">
                                     <div class="card-body">
-                                        <h5 class="card-title">@item.FullName</h5>
+                                        <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
                                         <p class="card-text">@item.Location</p>
                                         @if (item.GymPrices.Count > 0)
                                         {
@@ -152,7 +152,7 @@
                                 <div class="card">
                                     <img src="~/images/user-icon.jpg" class="card-img-top" alt="...">
                                     <div class="card-body">
-                                        <h5 class="card-title">@item.FullName</h5>
+                                        <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
                                         <p class="card-text">@item.Location</p>
                                         <span>@item.SportType.Value</span>
                                     </div>

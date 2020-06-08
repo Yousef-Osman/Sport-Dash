@@ -112,7 +112,6 @@
 
    
 
-
 <script type="text/javascript" on-content-loaded="true">
     var review;
     $('#add-review').click(function (e) {
@@ -120,7 +119,7 @@
         e.preventDefault();
         const new_review = $("#staticBackdrop").find('#new-review').val();
         const new_rate = $('input[name=rating]:checked').val();
-        const current_id = "@Model.CurrentUser.Id";
+        const current_id = "@Model.Entity.Id";
         var today = new Date();
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -158,12 +157,14 @@
                         <img  width="50" height="50" class="" src="/images/user-icon.jpg" />
                     </div>
                     <div class="col-md-11 text-left">
-                        <h3>@Model.CurrentUser.FullName</h3>
+                        <h3>@Model.Entity.FullName</h3>
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star"></span>
+                    
+                        
                         <p>${response.value.rating}</p>
                         <span>${response.value.review_Date}</span>
                         <p class="h5">${response.value.comment}</p>
