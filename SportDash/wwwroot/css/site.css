@@ -193,6 +193,11 @@ background-color: rgb(28, 200, 160);//green degree */
         left: 2px;
     }
 
+
+    .checked {
+        color: orange;
+    }
+
 /* Available Sports Styling */
 * {
     -webkit-box-sizing: border-box;

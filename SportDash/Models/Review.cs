@@ -10,11 +10,11 @@ namespace SportDash.Models
 {
     public enum Rating
     {
-        Bad = 0,
-        Nice = 1,
-        Good = 2,
-        VeryGood = 3,
-        Excellent = 4     
+        Bad = 1,
+        Nice = 2,
+        Good = 3,
+        VeryGood = 4,
+        Excellent = 5     
     }
     public class Review
     {
