@@ -3,25 +3,26 @@
 }
 
 @using SportDash.ViewModels;
-@model MyQuestionsViewModel
+@model DataViewModel
 
 @{
-    DataViewModel dataViewModel = Model.DataViewModel;
-    dataViewModel.IsAdmin = false;
+    //DataViewModel dataViewModel = Model.DataViewModel;
+    Model.IsAdmin = false;
 }
-    <div class="container prices bg-elephant py-4">
-        <h1>MyQuestions</h1>
-        @foreach (Question question in Model.Questions)
-        {
-            SportDash.ViewModels.QuestionViewModel questionViewModel = new SportDash.ViewModels.QuestionViewModel()
-            {
-                DataViewModel = dataViewModel,
-                Question = question
-            };
-            @await Component.InvokeAsync("QuestionVComponent", questionViewModel)
-            <a href='@Url.Action("Question", "Question")/@question.Id'class="btn btn-primary" role="button" aria-disabled="true">
-                Visit            
+<div class="container prices bg-elephant py-4">
+    <h1>MyQuestions</h1>
+    @foreach (Question question in Model.QuestionList)
+    {
+        //SportDash.ViewModels.QuestionViewModel questionViewModel = new SportDash.ViewModels.QuestionViewModel()
+        //{
+        //    DataViewModel = dataViewModel,
+        //    Question = question
+        //};
+        Model.Question = question;
+        @await Component.InvokeAsync("QuestionVComponent", Model)
+        <a href='@Url.Action("Question", "Question")/@question.Id' class="btn btn-primary" role="button" aria-disabled="true">
+            Visit
             @*    <img src='@Url.Content("~/Content/Images/MyLinkImage.png")' />*@
-            </a>
-        }
-    </div>
+        </a>
+    }
+</div>

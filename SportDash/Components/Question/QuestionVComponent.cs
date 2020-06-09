@@ -9,9 +9,9 @@ namespace SportDash.Components.Question
 {
     public class QuestionVComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(QuestionViewModel questionViewModel)
+        public IViewComponentResult Invoke(DataViewModel dataViewModel)
         {
-            return View("/Components/Question/QuestionViewComponent.cshtml", questionViewModel);
+            return View("/Components/Question/QuestionViewComponent.cshtml", dataViewModel);
         }
 
     }

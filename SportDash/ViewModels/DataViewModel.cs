@@ -25,8 +25,18 @@ namespace SportDash.ViewModels
         public ApplicationUser CurrentUser { get; set; }
         public ApplicationUser Entity { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsSigned { get; set; }
         public string ControllerName { get; set; }
         public Review Review { get; set; }
+
+        public GymPrices GymPrice { get; set; }
+        public List<GymPrices> GymPricesList { get; set; }
+        public List<Question> QuestionList   { get; set; }
+
+        public Question Question { get; set; }
+
+
+
         public IEnumerable<Review> Reviews { get; set; }
         public IEnumerable<Image> Images { get; set; }
         public IEnumerable<PlaygroundReservation> Reservations { get; set; }

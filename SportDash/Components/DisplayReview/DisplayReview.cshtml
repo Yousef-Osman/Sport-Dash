@@ -4,7 +4,7 @@
     Layout = null;
 }
 
-<section>
+<section id="review-container">
     <div class="container pb-4 my-5">
         <h1 class="text-elephant pb-3">Reviews</h1>
         <div id="display-reviews">
@@ -16,12 +16,21 @@
                     </div>
                     <div class="col-md-11 text-left">
                         <h3>@item.Reviewer.FullName</h3>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
                         <p>@item.Rating</p>
                         <span>@item.Review_Date</span>
-                        <p>@item.Comment</p>
-                        <div class="text-right">
-                            <Button value="@item.Id" id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
-                        </div>
+                        <p class="h5">@item.Comment</p>
+
+                        @if (item.Reviewer.FullName == Model.CurrentUser.FullName)
+                        {
+                            <div class="text-right">
+                                <Button value="@item.Id" id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
+                            </div>
+                        }
                     </div>
                 </div>
 
@@ -53,12 +62,11 @@
                     <div class="modal-body">
                         <div class="row" id="post-review-box">
                             <div class="col-md-12">
-                                @*<form accept-charset="UTF-8" action="" method="post">*@
+                                
                                 <input id="ratings-hidden" name="rating" type="hidden">
                                 <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
 
-                                <div class="text-right">
-                                    @*<div class="stars starrr" data-rating="0"></div>     old star *@
+                                <div class="text-right"> 
                                     <div id="star-rating" class="rating">
                                         <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Excellent">5 stars</label>
                                         <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Very Good">4 stars</label>
@@ -67,7 +75,6 @@
                                         <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="bad">1 star</label>
                                     </div>
                                 </div>
-                                @*</form>*@
                             </div>
                         </div>
                     </div>
@@ -146,14 +153,21 @@
                 success: function (response) {
                     console.log(response);
                     $('#display-reviews').append(`<div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <img  width="50" height="50" class="" src="/images/user-icon.jpg" />
                     </div>
-                    <div class="col-md-8 text-left">
+                    <div class="col-md-11 text-left">
                         <h3>@Model.Entity.FullName</h3>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                    
+                        
                         <p>${response.value.rating}</p>
                         <span>${response.value.review_Date}</span>
-                        <p>${response.value.comment}</p>
+                        <p class="h5">${response.value.comment}</p>
                         <div class="text-right">
                         <Button id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
                         </div>
@@ -176,21 +190,9 @@
                 data: { id: review_id },
                 dataType: "text",
                 success: function (result) {
-                    console.log(result)
-                    $('#display-reviews').append(`<div class="row">
-                    <div class="col-md-2">
-                        <img  width="50" height="50" class="" src="/images/user-icon.jpg" />
-                    </div>
-                    <div class="col-md-8 text-left">
-                        <h3>@Model.Entity.FullName</h3>
-                        <p>${response.value.rating}</p>
-                        <span>${response.value.review_Date}</span>
-                        <p>${response.value.comment}</p>
-                        <div class="text-right">
-                        <Button id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
-                        </div>
-                    </div>
-                </div>`)
+                    console.log(result);
+                    location.reload();
+                    
                 }
             });
         }
