@@ -1,47 +1,53 @@
 ﻿@model SportDash.ViewModels.DataViewModel
 
-<div id="Prices_Section" class="container lightSection div-min-height mb-5">
-    <h1 class="text-elephant pb-3">Prices</h1>
+    <div id="Prices_Section" class="container lightSection div-min-height mb-5">
+        <h1 class="text-elephant pb-3">Prices</h1>
 
-    @{int i = 0;}
-    @foreach (var item in Model.PlaygroundPrices)
-    {
-        <div class="row separator">
-            <div id="row_@i" p="9" class="row col-12 col-lg-6 mx-0 px-0">
-                <div class="col-1 "></div>
-                <div id="@(item.PlaygroundId)" class="col-10 prices rounded row prices py-3 d-flex ">
-                    <div class="col-2 h-75 align-self-center">
-                        <p>From</p>
+        @{int i = 0;}
+        @foreach (var item in Model.PlaygroundPrices)
+        {
+            <div class="row separator">
+                <div id="row_@i" p="9" class="row col-12 col-lg-6 mx-0 px-0">
+                    <div class="col-1 "></div>
+                    <div id="@(item.PlaygroundId)" class="col-10 prices rounded row prices py-3 d-flex ">
+                        <div class="col-2 h-75 align-self-center">
+                            <p>From</p>
+                        </div>
+                        <div class="col-3 h-75 Time rounded align-self-center">
+                            <p id="from_@i">@item.Start</p>
+                        </div>
+                        <div class="col-1 h-75 px-0 align-self-center">
+                            <p class="text-center">To</p>
+                        </div>
+                        <div class="col-3 h-75 Time rounded align-self-center">
+                            <p id="to_@i">@item.End</p>
+                        </div>
+                        <div class="col-3 h-75 align-self-center">
+                            <p id="price_@i">@item.Price L.E</p>
+                        </div>
                     </div>
-                    <div class="col-3 h-75 Time rounded align-self-center">
-                        <p id="from_@i">@item.Start</p>
-                    </div>
-                    <div class="col-1 h-75 px-0 align-self-center">
-                        <p class="text-center">To</p>
-                    </div>
-                    <div class="col-3 h-75 Time rounded align-self-center">
-                        <p id="to_@i">@item.End</p>
-                    </div>
-                    <div class="col-3 h-75 align-self-center">
-                        <p id="price_@i">@item.Price L.E</p>
-                    </div>
+                    <div class="col-1 "></div>
                 </div>
-                <div class="col-1 "></div>
+                @* Make buutons disapear if not admin *@
+                @if (Model.IsAdmin)
+                {
+                    <div class="d-flex">
+                        <button id="Update_@i" class="align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Update</button>
+                        <button id="Delete_@i" class="align-self-center btn btn-info text-Geyser  mr-2 bg-elephant">Delete</button>
+                        <button id="Save_@i" class="d-none align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Save</button>
+                        <button id="Cancel_@i" class="d-none align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Cancel</button>
+                    </div>
+                }
+                @{i++;}
             </div>
-            @* Make buutons disapear if not admin *@
-            <div class="d-flex">
-                @*btn btn-info bg-Mountain col-md-12 text-elephant*@
-                <button id="Update_@i" class="align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Update</button>
-                <button id="Delete_@i" class="align-self-center btn btn-info text-Geyser  mr-2 bg-elephant">Delete</button>
-                <button id="Save_@i" class="d-none align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Save</button>
-                <button id="Cancel_@i" class="d-none align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Cancel</button>
-            </div>
-            @{i++;}
-        </div>
-    }
-        <button id="Add" class="btn btn-info col-lg-2 py-3 bg-Mountain text-elephant ml-3 m-4">Add</button>
-    @* Increment id after adding *@
-</div>
+        }
+
+        @if (Model.IsAdmin)
+        {
+            <button id="Add" class="btn btn-info col-lg-2 py-3 bg-Mountain text-elephant ml-3 m-4">Add</button>
+        }
+            @* Increment id after adding *@
+    </div>
 
 <script>
 
@@ -263,7 +269,7 @@
                 console.log(document.getElementById("from_"+currId).value);
                 let Data = {
                     "NewPlaygroundPrice": {
-                        "playgroundId": `@Model.CurrentUser.Id`,
+                        "playgroundId": `@Model.Entity.Id`,
                         "Start": `${document.getElementById("from_"+currId).value}`,
                         "End": `${document.getElementById("to_"+currId).value}`,
                         "Price": `${document.getElementById("price_"+currId).value}`
@@ -284,7 +290,7 @@
                     console.log(to_value);
                     console.log(price_value);
                     revertEditUI(last_id, from_value, to_value, price_value);
-                    sourcearray.push({ id: jsonData.id, playgroundId: `@Model.CurrentUser.Id`, start: from_value, end: to_value, price: price_value });
+                    sourcearray.push({ id: jsonData.id, playgroundId: `@Model.Entity.Id`, start: from_value, end: to_value, price: price_value });
                     let rowParent = document.getElementById(`row_${last_id}`).parentElement;
 
                     //rowParent is row with separator class

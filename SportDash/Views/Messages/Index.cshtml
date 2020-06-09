@@ -17,13 +17,13 @@ else
                     <div id="_@(message.FirstOrDefault().SenderId)" style="background: #fff;" class="media border p-3">
                         <div class="media-body">
                             <h4>
-                                <a asp-action="Message" asp-controller="Playground" asp-route-id="@(message.FirstOrDefault().SenderId)">@message.Key</a>
+                                <a asp-action="Message" asp-controller="Playground" asp-route-id="@(message.FirstOrDefault().SenderId)" title="Click to go to the chat page">@message.Key</a>
                                 <small> <i>@message.FirstOrDefault().MessageDate</i></small>
                             </h4>
                             <p>@message.FirstOrDefault().Body</p>
                             <div class="container">
-                                <button class="btn bg-elephant" style="color: #fff;" onclick="sendData('@message.FirstOrDefault().SenderId')" data-toggle="modal" data-target="#replayModal">Replay</button>
-                                <button class="btn bg-Geyser" onclick="miniChat('@(message.FirstOrDefault().SenderId)')">Open</button>
+                                @*<button class="btn bg-elephant" style="color: #fff;" onclick="sendData('@message.FirstOrDefault().SenderId')" data-toggle="modal" data-target="#replayModal">Replay</button>*@
+                                <button class="btn bg-Geyser" onclick="miniChat('@(message.FirstOrDefault().SenderId)')">Chat</button>
                             </div>
                         </div>
                     </div>
