@@ -1,5 +1,5 @@
 ﻿
-@model SportDash.ViewModels.QuestionViewModel
+@model SportDash.ViewModels.DataViewModel
 
 <div class="row m-3">
     <div class="row p-3 text-dark bg-white rounded">
@@ -25,7 +25,14 @@
                         else
                         {
                             meridiem = "AM";
-                            Hour = $"{dateTime.Hour}";
+                            if (dateTime.Hour == 0)
+                            {
+                                Hour = "12";
+                            }
+                            else
+                            {
+                                Hour = $"{dateTime.Hour}";
+                            }
                         }
                         return $"{dateTime.Year}-{dateTime.Month}-{dateTime.Day} " +
                             $"{Hour}:{dateTime.Minute}:{dateTime.Second} {meridiem}";
@@ -35,7 +42,7 @@
                 <p>@GetDate(Model.Question.CreationTime)</p>
                 <p id="Question_Body">@Model.Question.Body</p>
                 <i id="Last_Update" style="display:block">Last Updated: @GetDate(Model.Question.LastUpdateTime)</i>
-                @if (Model.DataViewModel.IsAdmin)
+                @if (Model.IsAdmin)
                 {
                     <button id="Edit" class="btn btn-primary">Edit</button>
                 }
@@ -75,14 +82,14 @@
         var dateTime = getDateString();
         $.ajax({
             method: "POST",
-            url: '/@Model.DataViewModel.ControllerName/EditQuestion',
+            url: '/@Model.ControllerName/EditQuestion',
             data: {
                 "question": {
                     "Id":`@Model.Question.Id`,
                     "Body": `${document.getElementById("Question_Body").value}`,
                     "CreationTime": `@Model.Question.LastUpdateTime`,
                     "LastUpdateTime": `${dateTime}`,
-                    "UserId": `@Model.DataViewModel.CurrentUser.Id`,
+                    "UserId": `@Model.CurrentUser?.Id`,
                     "Category": `${@((int)Model.Question.Category)}`
                 }
             },

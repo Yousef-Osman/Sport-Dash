@@ -3,21 +3,21 @@
     ViewData["Title"] = "Question";
 }
 
-@model SportDash.ViewModels.QuestionAndCommentsViewModel
+@model SportDash.ViewModels.DataViewModel
 <div class="container prices bg-elephant py-4">
     <h1>Question</h1>
     @{
-        SportDash.ViewModels.QuestionViewModel questionViewModel = new SportDash.ViewModels.QuestionViewModel()
-        {
-            DataViewModel = Model.DataViewModel,
-            Question = Model.Question
-        };
+        //SportDash.ViewModels.QuestionViewModel questionViewModel = new SportDash.ViewModels.QuestionViewModel()
+        //{
+        //    DataViewModel = Model.DataViewModel,
+        //    Question = Model.Question
+        //};
 
-        @await Component.InvokeAsync("QuestionVComponent", questionViewModel);
+        @await Component.InvokeAsync("QuestionVComponent", Model);
     }
     <div class="ml-5">
         <h2>Answers</h2>
-        @foreach (var item in Model.UserComment)
+        @foreach (var item in Model.Question.Comments)
         {
             string GetDate(DateTime dateTime)
             {
@@ -38,7 +38,14 @@
                 else
                 {
                     meridiem = "AM";
-                    Hour = $"{dateTime.Hour}";
+                    if (dateTime.Hour == 0)
+                    {
+                        Hour = "12";
+                    }
+                    else
+                    {
+                        Hour = $"{dateTime.Hour}";
+                    }
                 }
                 return $"{dateTime.Year}-{dateTime.Month}-{dateTime.Day} " +
                     $"{Hour}:{dateTime.Minute}:{dateTime.Second} {meridiem}";
@@ -49,31 +56,52 @@
                     <div class="ml-3">
                         <div>
                             <p>@item.User.UserName</p>
-                            <p>@GetDate(item.Comment.DateTime)</p>
-                            <p>@item.Comment.Body</p>
+                            <p>@GetDate(item.DateTime)</p>
+                            <p>@item.Body</p>
                         </div>
                     </div>
                 </div>
             </div>
         }
-
-        <div class="row">
-            <img class="profile-image profile-image-small" style="width:64px;height:64px;" src="@("/images/user-icon.jpg")" asp-append-version="true">
-            <div class="ml-2">
-                <textarea class="form-control animated" cols="50" id="Comment_Text" placeholder="Ask us..." rows="5"></textarea>
-                <button id="Comment" class="btn btn-primary">Comment</button>
+        @if (Model.IsSigned)
+        {
+            <div class="row">
+                <img class="profile-image profile-image-small" style="width:64px;height:64px;" src="@("/images/user-icon.jpg")" asp-append-version="true">
+                <div class="ml-2">
+                    <textarea class="form-control animated" cols="50" id="Comment_Text" placeholder="Ask us..." rows="5"></textarea>
+                    <button id="Comment" class="btn btn-primary">Comment</button>
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 
 <script>
 
 
-    function getDateString() {
-        var today = new Date();
+    function getDateString(myDate) {
+        var today;
+        if (myDate == null) {
+            today = new Date();
+        }
+        else {
+            today = myDate;
+        }
+        let hours = today.getHours();
+        if (hours >= 12) {
+            meridiem = " PM";
+            if (hours != 12) {
+                hours -= 12;
+            }
+        }
+        else {
+            meridiem = " AM";
+            if (hours == 0) {
+                hours = 12;
+            }
+        }
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var time = hours + ":" + today.getMinutes() + ":" + today.getSeconds() + meridiem;
         return date + ' ' + time;
     }
     let Comment = document.getElementById("Comment");
@@ -82,11 +110,11 @@
             var dateTime = getDateString();
             $.ajax({
                 method: "POST",
-                url: '/@Model.DataViewModel.ControllerName/Comment',
+                url: '/@Model.ControllerName/Comment',
                 data: {
                     "Body": `${document.getElementById("Comment_Text").value}`,
                     "DateTime": `${dateTime}`,
-                    "UserId": `@Model.DataViewModel.CurrentUser.Id`,
+                    "UserId": `@Model.CurrentUser?.Id`,
                     "QuestionId": `@Model.Question.Id`
                 },
                 success: () => {

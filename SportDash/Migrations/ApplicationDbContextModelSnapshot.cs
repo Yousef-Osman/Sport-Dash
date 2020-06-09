@@ -48,29 +48,29 @@ namespace SportDash.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "129bec9e-348d-4bab-ab40-4628806559a8",
-                            ConcurrencyStamp = "10f1aeb8-4b24-41f6-bc5e-3a9e7b6e813f",
+                            Id = "adf6f00a-6ad3-47f7-842c-48d6fee33e0f",
+                            ConcurrencyStamp = "08576a2b-406c-40bc-ba3a-6aa783d71f51",
                             Name = "Playground",
                             NormalizedName = "PLAYGROUND"
                         },
                         new
                         {
-                            Id = "980ece19-8b81-49e6-b1f8-23b661f48376",
-                            ConcurrencyStamp = "1a3361c0-36e8-46ad-b8ce-4443e46f0c62",
+                            Id = "987cc20d-a064-42a1-bb8b-d02e8739650d",
+                            ConcurrencyStamp = "ccc30e68-bf27-4bda-b54c-8b47d0444de2",
                             Name = "Gym",
                             NormalizedName = "GYM"
                         },
                         new
                         {
-                            Id = "2fd26df8-e7d3-489e-bc66-86dd5c6ef177",
-                            ConcurrencyStamp = "660bee89-9c6f-45fe-8507-176505b5ce19",
+                            Id = "81c34d12-3da9-424e-98af-18eeaf5a250f",
+                            ConcurrencyStamp = "5af8db58-e0e8-458c-adf2-12605ee0c509",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "7c7d5d6d-1661-4ef0-a9c4-fd5a721f7fd1",
-                            ConcurrencyStamp = "6f988f50-b914-48fe-a14b-771e67086df7",
+                            Id = "ed74d052-e25c-4b72-8a3a-9ff3027692a7",
+                            ConcurrencyStamp = "672de51c-2b96-48ed-b4bc-b56f29840e26",
                             Name = "User",
                             NormalizedName = "USER"
                         });
