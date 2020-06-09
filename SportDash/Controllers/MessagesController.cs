@@ -71,17 +71,6 @@ namespace SportDash.Controllers
             };
 
             return PartialView("_MiniChat", messagingViewModel);
-        }
-
-        public async Task<IActionResult> Index2()
-        {
-            var currentUser = await userManager.GetUserAsync(User);
-            userRepository.ChangeMsgsStatus(currentUser, false);
-            // getting the most recent 5 messages
-            var msgs = messageRepository.GetMessagesR(currentUser.Id)
-                                        .OrderByDescending(m => m.MessageDate)
-                                        .GroupBy(m => m.Sender.UserName).Take(5);
-            return View(msgs);
-        }
+        }        
     }
 }
