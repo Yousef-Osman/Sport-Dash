@@ -76,20 +76,28 @@ namespace SportDash.Controllers
         {
             var dataModel = new DataViewModel();
             var user = await _userManager.GetUserAsync(User);
-            if (_signInManager.IsSignedIn(User))
+
+            if (id != null)
             {
-                if (id != null)
+                //get the Question and check if Question.UserId = user.id check id 
+                int Id;
+                if (int.TryParse(id, out Id))
                 {
-                    //get the Question and check if Question.UserId = user.id check id 
-                    int Id;
-                    if (int.TryParse(id, out Id))
+
+                    Question question = _questionRepository.GetQuestion(Id);
+                    if (question != null)
                     {
-                        Question question = _questionRepository.GetQuestion(Id);
-                        if (question != null)
+                        //question exists with provided id
+                        if (question.User == null)
                         {
-                            //question exists with provided id
-                            dataModel.ControllerName = "Question";
-                            dataModel.CurrentUser = user;
+                            //which also mean this question is not of the logged user
+                            question.User = _userRepository.GetApplicationUser(question.UserId);
+                        }
+                        dataModel.ControllerName = "Question";
+                        dataModel.CurrentUser = user;
+                        if (_signInManager.IsSignedIn(User))//or if(user!=null)
+                        {
+                            dataModel.IsSigned = true;
                             if (question.UserId == user.Id)
                             {
                                 //for editing question if it is his/her.
@@ -99,43 +107,49 @@ namespace SportDash.Controllers
                             {
                                 dataModel.IsAdmin = false;
                             }
-
-                            List<Comment> comments = _commentRepository.GetAllCommentsForQuestion(Id);
-                            List<UserCommentViewModel> userCommentViewModel = new List<UserCommentViewModel>();
-                            foreach (var comment in comments)
-                            {
-                                userCommentViewModel.Add(new UserCommentViewModel() { Comment = comment, User = _userRepository.GetApplicationUser(comment.UserId) });
-                            }
-                            QuestionAndCommentsViewModel questionAndCommentsViewModel = new QuestionAndCommentsViewModel();
-                            questionAndCommentsViewModel.DataViewModel = dataModel;
-                            questionAndCommentsViewModel.Question = question;
-                            questionAndCommentsViewModel.Question.User = _userRepository.GetApplicationUser(question.UserId);
-                            questionAndCommentsViewModel.UserComment = userCommentViewModel;
-                            return View(questionAndCommentsViewModel);
                         }
                         else
                         {
-                            //logged but entered unexisting id
-                            return RedirectToAction("Index", "Home");
+                            //not logged in
+                            dataModel.IsSigned = false;
                         }
+
+                        List<Comment> comments = _commentRepository.GetAllCommentsForQuestion(Id);
+                        //List<UserCommentViewModel> userCommentViewModel = new List<UserCommentViewModel>();
+                        foreach (var comment in comments)
+                        {
+                            //userCommentViewModel.Add(new UserCommentViewModel() { Comment = comment, User = _userRepository.GetApplicationUser(comment.UserId) });
+                            comment.User = _userRepository.GetApplicationUser(comment.UserId);
+                        }
+                        question.Comments = comments;
+                        dataModel.Question = question;
+
+                        //QuestionAndCommentsViewModel questionAndCommentsViewModel = new QuestionAndCommentsViewModel();
+                        //questionAndCommentsViewModel.DataViewModel = dataModel;
+                        //questionAndCommentsViewModel.Question = question;
+                        //questionAndCommentsViewModel.Question.User = _userRepository.GetApplicationUser(question.UserId);
+                        //questionAndCommentsViewModel.UserComment = userCommentViewModel;
+                        return View(dataModel);
                     }
                     else
                     {
-                        //logged but enter unvalid id
+                        //logged but entered unexisting id
                         return RedirectToAction("Index", "Home");
                     }
                 }
                 else
                 {
-                    //logged but didn't enter id
+                    //logged but enter unvalid id
                     return RedirectToAction("Index", "Home");
                 }
             }
             else
             {
-                //not logged in
+                //logged but didn't enter id
                 return RedirectToAction("Index", "Home");
             }
+
+
         }
 
         public async Task<IActionResult> MyQuestions()
@@ -149,12 +163,13 @@ namespace SportDash.Controllers
                 dataModel.ControllerName = "Question";
                 dataModel.CurrentUser = user;
                 dataModel.IsAdmin = true;
-                MyQuestionsViewModel myQuestionsViewModel = new MyQuestionsViewModel()
-                {
-                    DataViewModel = dataModel,
-                    Questions = questions
-                };
-                return View(myQuestionsViewModel);
+                dataModel.QuestionList = questions;
+                //MyQuestionsViewModel myQuestionsViewModel = new MyQuestionsViewModel()
+                //{
+                //    DataViewModel = dataModel,
+                //    Questions = questions
+                //};
+                return View(dataModel);
             }
             else
             {
@@ -163,30 +178,27 @@ namespace SportDash.Controllers
             }
         }
 
-        
+
         public async Task<IActionResult> Category()
         {
             var dataModel = new DataViewModel();
             var user = await _userManager.GetUserAsync(User);
-            if (_signInManager.IsSignedIn(User))
-            {
-                List<Question> questions = _questionRepository.GetQuestionByCategory(QuestionAbout.Club);
-                dataModel.ControllerName = "Question";
-                CategoryQuestionsViewModel categoryQuestionsViewModel = new CategoryQuestionsViewModel()
-                {
-                    DataViewModel = dataModel,
-                    Questions = questions
-                };
-                return View(categoryQuestionsViewModel);
-            }
-            return RedirectToAction("Index", "Home");
+            //List<Question> questions = _questionRepository.GetQuestionByCategory(QuestionAbout.Club);
+            dataModel.ControllerName = "Question";
+            //CategoryQuestionsViewModel categoryQuestionsViewModel = new CategoryQuestionsViewModel()
+            //{
+            //    DataViewModel = dataModel,
+            //    Questions = questions
+            //};
+            return View(dataModel);
+
         }
 
         [HttpGet]
         public IActionResult GetByCategory(int CategoryId)
         {
             List<Question> questions = _questionRepository.GetQuestionByCategory((QuestionAbout)CategoryId);
-            
+
             foreach (var question in questions)
             {
                 question.User = _userRepository.GetApplicationUser(question.UserId);

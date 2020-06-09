@@ -2,62 +2,65 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model IEnumerable<SportDash.ViewModels.GymPriceViewModel>
+@model SportDash.ViewModels.DataViewModel
 @using SportDash.ViewModels;
 @using SportDash.Models;
 
 
-<div class="row separator lightSection">
-    <div class="col-12 mx-0">
-        <div class="col-12 col-md-6 mx-0 col-lg-3 py-3 pl-0">
-            <div class="row">
-                <div class="col-2">
-                </div>
+    <div class="row separator lightSection">
+        <div class="col-12 mx-0">
+            <div class="col-12 col-md-6 mx-0 col-lg-3 py-3 pl-0">
+                <div class="row">
+                    <div class="col-2">
+                    </div>
 
-                <div>
-                    <h3>Prices</h3>
+                    <div>
+                        <h3>Prices</h3>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    @{
-        DataViewModel DataModel = Model.ToList()[0].DataViewModel;
-        async void RenderGymPriceComponent(Subscribtion_type TargetedSubscribtionType)
-        {
-
-            bool Rendered = false;
-            if (Model.ToList()[0].GymPrice != null)
+        @{
+            //DataViewModel DataModel = Model.ToList()[0].DataViewModel;
+            async void RenderGymPriceComponent(Subscribtion_type TargetedSubscribtionType)
             {
+
+                bool Rendered = false;
+                //if (Model.ToList()[0].GymPrice != null)
+                //{
                 //there exist at least one price
-                foreach (GymPriceViewModel GPViewModel in Model)
+                foreach (GymPrices gymPrice in Model.GymPricesList)
                 {
-                    if (GPViewModel.GymPrice.Subscribtion_Type == TargetedSubscribtionType)
+                    if (gymPrice.Subscribtion_Type == TargetedSubscribtionType)
                     {
-                        @await Component.InvokeAsync("GymPrice", new { gymPriceViewModel = GPViewModel });
+                        Model.GymPrice = gymPrice;
+                        @await Component.InvokeAsync("GymPrice", Model);
                         Rendered = true;
                         break;
                     }
                 }
-            }
-            if (!Rendered)
-            {
-                GymPrices gymPrice = new GymPrices()
+                //}
+                if (!Rendered)
                 {
-                    Subscribtion_Type = TargetedSubscribtionType,
-                    GymId = DataModel.Entity.Id
-                };
+                    GymPrices gymPrice = new GymPrices()
+                    {
+                        Subscribtion_Type = TargetedSubscribtionType,
+                        GymId = Model.Entity.Id
+                    };
+                    Model.GymPrice = gymPrice;
+                    @await Component.InvokeAsync("GymPrice", Model);
 
-                GymPriceViewModel newGymPriceViewModel = new GymPriceViewModel()
-                {
-                    GymPrice = gymPrice,
-                    DataViewModel = DataModel
-                };
+                    @*GymPriceViewModel newGymPriceViewModel = new GymPriceViewModel()
+                    {
+                        GymPrice = gymPrice,
+                        DataViewModel = DataModel
+                    };
 
-                @await Component.InvokeAsync("GymPrice", new { gymPriceViewModel = newGymPriceViewModel });
+                    @await Component.InvokeAsync("GymPrice", new { gymPriceViewModel = newGymPriceViewModel });*@
 
+                }
             }
-        }
-        @*@await Component.InvokeAsync("GymPrice", new
+            @*@await Component.InvokeAsync("GymPrice", new
             {
                 gymPriceViewModel = new GymPriceViewModel()
                 {
@@ -71,13 +74,13 @@
                 },
             });*@
 
-        @*@await Component.InvokeAsync("try1");*@
+            @*@await Component.InvokeAsync("try1");*@
 
-        @*@await Component.InvokeAsync("GymPrice");*@
+            @*@await Component.InvokeAsync("GymPrice");*@
 
-        RenderGymPriceComponent(Subscribtion_type.Day);
-        RenderGymPriceComponent(Subscribtion_type.Week);
-        RenderGymPriceComponent(Subscribtion_type.Month);
-        RenderGymPriceComponent(Subscribtion_type.Year);
-    }
-</div>
+            RenderGymPriceComponent(Subscribtion_type.Day);
+            RenderGymPriceComponent(Subscribtion_type.Week);
+            RenderGymPriceComponent(Subscribtion_type.Month);
+            RenderGymPriceComponent(Subscribtion_type.Year);
+        }
+    </div>
