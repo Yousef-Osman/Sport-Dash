@@ -7,7 +7,7 @@
 <section id="review-container">
     <div class="container pb-4 my-5">
         <h1 class="text-elephant pb-3">Reviews</h1>
-        <div id="display-reviews">
+        <div id="review-container">
             @foreach (var item in Model.Reviews)
             {
                 <div class="row mb-3">
@@ -119,7 +119,7 @@
         e.preventDefault();
         const new_review = $("#staticBackdrop").find('#new-review').val();
         const new_rate = $('input[name=rating]:checked').val();
-        const current_id = "@Model.Entity.Id";
+        const current_id = "@Model.CurrentUser.Id";
         var today = new Date();
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -152,7 +152,8 @@
                 dataType: "Json",
                 success: function (response) {
                     console.log(response);
-                    $('#display-reviews').append(`<div class="row">
+                    $('#review-container').html(response);
+                    @*$('#display-reviews').append(`<div class="row">
                     <div class="col-md-1">
                         <img  width="50" height="50" class="" src="/images/user-icon.jpg" />
                     </div>
@@ -172,7 +173,7 @@
                         <Button id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
                         </div>
                     </div>
-                </div>`)
+                </div>`)*@
                 }
             });
         }

@@ -276,8 +276,14 @@ namespace SportDash.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             //R.ReviewerId = _userManager.GetUserId(HttpContext.User);
             //R.TargetId = "b6bf071e-32fe-4b3f-b8ec-57ddc6737e8";
-             var review = _reviewRepository.PostReview(R);
-            return Ok(new OkObjectResult(review));
+            // var review = _reviewRepository.PostReview(R);
+            //return Ok(new OkObjectResult(review));
+            DataViewModel reviewVM = new DataViewModel();
+            var TargetId = R.TargetId; 
+            var review = _reviewRepository.PostReview(R);
+            reviewVM.Reviews = _reviewRepository.GetReviewsOfReviewee(TargetId);
+            reviewVM.Review = review;
+            return PartialView("_DisplayAddedReview", reviewVM);
         }
 
         [HttpPost]

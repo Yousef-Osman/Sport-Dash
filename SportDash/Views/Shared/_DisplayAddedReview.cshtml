@@ -1,0 +1,31 @@
+﻿@model SportDash.ViewModels.DataViewModel
+
+    <div>
+        @foreach (var item in Model.Reviews)
+        {
+            <div class="row mb-3">
+                <div class="col-md-1">
+                    <img width="50" height="50" class="" src="~/images/user-icon.jpg" />
+                </div>
+                <div class="col-md-11 text-left">
+                    <h3>@item.Reviewer.FullName</h3>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <p>@item.Rating</p>
+                    <span>@item.Review_Date</span>
+                    <p class="h5">@item.Comment</p>
+
+                    @if (item.Reviewer.FullName == Model.CurrentUser.FullName)
+                    {
+                        <div class="text-right">
+                            <Button value="@item.Id" id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        }
+    </div>
