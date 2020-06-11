@@ -186,10 +186,10 @@
 
     .sideBar-body {
         position: relative;
-        padding: 10px !important;        
+        padding: 10px !important;
         border-bottom: 1px solid #f7f7f7;
         height: auto;
-        margin: 0 !important;        
+        margin: 0 !important;
         cursor: pointer;
     }
 
@@ -486,7 +486,7 @@
             }
 </style>
 
-<div class="container app" style="margin-bottom: 100px;">
+<div class="container app">
     <div class="row app-one">
         <div class="col-sm-4 side">
             <div class="side-one">
@@ -525,12 +525,13 @@
                                             <span class="time-meta pull-right">
                                                 @if (message.FirstOrDefault().MessageDate.Day == DateTime.Now.Day)
                                                 {
-                                                    <small> <i>@message.FirstOrDefault().MessageDate</i></small>
+                                                    <small> <i>@message.FirstOrDefault().MessageDate.ToShortTimeString()</i></small>
                                                 }
                                                 else
                                                 {
-                                                    <small> <i>@message.FirstOrDefault().MessageDate.Day</i></small>
+                                                    <small> <i>@message.FirstOrDefault().MessageDate.ToShortDateString()</i></small>
                                                 }
+
                                             </span>
                                         </div>
                                     </div>
@@ -650,7 +651,7 @@
                         <div class="row sideBar-body full-width" id="_${senderId}" onclick="miniChat('${senderId}')">
                             <div class="col-lg-2 col-sm-3 col-xs-3 sideBar-avatar">
                                 <div class="avatar-icon">
-                                    <img src="~/images/site/user-icon.jpg" />
+                                    <img src="/images/site/user-icon.jpg" />
                                 </div>
                             </div>
                             <div class="col-lg-10 col-sm-9 col-xs-9 sideBar-main">
@@ -663,7 +664,7 @@
                                     </div>
                                     <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
                                         <span class="time-meta pull-right">
-                                           <small> <i>${date.ToShortTimeString()}</i></small>
+                                           <small> <i>${date}</i></small>
                                         </span>
                                     </div>
                                 </div>
