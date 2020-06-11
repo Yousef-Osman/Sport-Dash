@@ -205,7 +205,7 @@
                 url: '/@Model.ControllerName/AddReview',
                 type: 'POST',
                 data: { R: review },
-                //dataType: "Json",
+                dataType: "text",
                 success: function (response) {
                     console.log(response);
                     $('#review-container').html(response);
