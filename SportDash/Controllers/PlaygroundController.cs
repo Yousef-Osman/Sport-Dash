@@ -271,7 +271,7 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddReview(Review R)
+        public async Task<IActionResult> AddReview(Review R)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             //R.ReviewerId = _userManager.GetUserId(HttpContext.User);
@@ -281,6 +281,7 @@ namespace SportDash.Controllers
             DataViewModel reviewVM = new DataViewModel();
             var TargetId = R.TargetId; 
             var review = _reviewRepository.PostReview(R);
+            reviewVM.CurrentUser =  await _userManager.GetUserAsync(User);
             reviewVM.Reviews = _reviewRepository.GetReviewsOfReviewee(TargetId);
             reviewVM.Review = review;
             return PartialView("_DisplayAddedReview", reviewVM);

@@ -4,35 +4,90 @@
     Layout = null;
 }
 
-<section id="review-container">
+<section>
     <div class="container pb-4 my-5">
         <h1 class="text-elephant pb-3">Reviews</h1>
         <div id="review-container">
-            @foreach (var item in Model.Reviews)
+           @foreach (var item in Model.Reviews)
             {
-                <div class="row mb-3">
-                    <div class="col-md-1">
-                        <img width="50" height="50" class="" src="~/images/user-icon.jpg" />
-                    </div>
-                    <div class="col-md-11 text-left">
-                        <h3>@item.Reviewer.FullName</h3>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <p>@item.Rating</p>
-                        <span>@item.Review_Date</span>
-                        <p class="h5">@item.Comment</p>
+                <div class="card">
 
-                        @if (item.Reviewer.FullName == Model.CurrentUser.FullName)
-                        {
-                            <div class="text-right">
-                                <Button value="@item.Id" id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
+                    <div class="card-body">
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-1">
+                                 <img width="50" height="50" class="" src="~/images/user-icon.jpg" />
                             </div>
-                        }
-                    </div>
-                </div>
+
+                            <div class="col-md-11 text-left">
+                               <h3>@item.Reviewer.FullName</h3>
+                               @if (item.Rating.ToString() == "Bad")
+                                {
+                                   <span class="fa fa-star checked"></span>
+                                   <span class="fa fa-star"></span>
+                                   <span class="fa fa-star"></span>
+                                   <span class="fa fa-star"></span>
+                                   <span class="fa fa-star"></span>
+                                }
+                                else
+                                {
+                                   if (item.Rating.ToString() == "Nice")
+                                   {
+                                      <span class="fa fa-star checked"></span>
+                                      <span class="fa fa-star checked"></span>
+                                      <span class="fa fa-star"></span>
+                                      <span class="fa fa-star"></span>
+                                      <span class="fa fa-star"></span>
+                                   }
+                                   else
+                                   {
+                                         if (item.Rating.ToString() == "Good")
+                                         {
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                         }
+                                         else
+                                         {
+                                              if (item.Rating.ToString() == "VeryGood")
+                                              {
+                                                   <span class="fa fa-star checked"></span>
+                                                   <span class="fa fa-star checked"></span>
+                                                   <span class="fa fa-star checked"></span>
+                                                   <span class="fa fa-star checked"></span>
+                                                   <span class="fa fa-star"></span>
+                                              }
+                                              else
+                                              {
+                                                   <span class="fa fa-star checked"></span>
+                                                   <span class="fa fa-star checked"></span>
+                                                   <span class="fa fa-star checked"></span>
+                                                   <span class="fa fa-star checked"></span>
+                                                   <span class="fa fa-star checked"></span>
+                                              }
+                                         }
+                                   }
+                                }
+                              @*<p>@item.Rating</p>*@
+                              <p>@item.Review_Date</p>
+                              <p class="h5">@item.Comment</p>
+                              @if (User.IsInRole("User"))
+                               {
+                                   @if (item.Reviewer.FullName == Model.CurrentUser.FullName)
+                                    {
+                                       <div class="text-right">
+                                           <Button value="@item.Id" id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
+                                       </div>
+                                    }
+                               }
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
             }
         </div>
@@ -62,11 +117,11 @@
                     <div class="modal-body">
                         <div class="row" id="post-review-box">
                             <div class="col-md-12">
-                                
+
                                 <input id="ratings-hidden" name="rating" type="hidden">
                                 <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
 
-                                <div class="text-right"> 
+                                <div class="text-right">
                                     <div id="star-rating" class="rating">
                                         <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Excellent">5 stars</label>
                                         <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Very Good">4 stars</label>
@@ -101,7 +156,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
-                        <button type="button"  id="delete-review" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                        <button type="button" id="delete-review" class="btn btn-primary" data-dismiss="modal">Yes</button>
                     </div>
                 </div>
             </div>
@@ -110,9 +165,10 @@
 </section>
 
 
-   
+@if (User.IsInRole("User"))
+{
 
-<script type="text/javascript" on-content-loaded="true">
+    <script type="text/javascript" on-content-loaded="true">
     var review;
     $('#add-review').click(function (e) {
         console.log("iam in function");
@@ -149,7 +205,7 @@
                 url: '/@Model.ControllerName/AddReview',
                 type: 'POST',
                 data: { R: review },
-                dataType: "Json",
+                //dataType: "Json",
                 success: function (response) {
                     console.log(response);
                     $('#review-container').html(response);
@@ -164,8 +220,8 @@
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star"></span>
-                    
-                        
+
+
                         <p>${response.value.rating}</p>
                         <span>${response.value.review_Date}</span>
                         <p class="h5">${response.value.comment}</p>
@@ -193,10 +249,11 @@
                 success: function (result) {
                     console.log(result);
                     location.reload();
-                    
+
                 }
             });
         }
     });
 
-</script>
+    </script>
+}
