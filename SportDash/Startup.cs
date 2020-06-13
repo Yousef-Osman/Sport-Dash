@@ -63,10 +63,7 @@ namespace SportDash
                 options.AddPolicy("UserPolicy", policy => { policy.RequireRole("User"); });
             });
 
-            services.AddSignalR(config =>
-            {
-                config.KeepAliveInterval = TimeSpan.FromSeconds(3600);                
-            });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

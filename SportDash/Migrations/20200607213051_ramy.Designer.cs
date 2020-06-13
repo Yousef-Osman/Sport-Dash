@@ -10,8 +10,8 @@ using SportDash.Data;
 namespace SportDash.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200607123333_rebuild-database")]
-    partial class rebuilddatabase
+    [Migration("20200607213051_ramy")]
+    partial class ramy
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,29 +50,29 @@ namespace SportDash.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "310edc67-cf78-4cba-a893-d91b169dbf06",
-                            ConcurrencyStamp = "c0eac748-70b0-4c09-98f2-e57f483eee8f",
+                            Id = "adf6f00a-6ad3-47f7-842c-48d6fee33e0f",
+                            ConcurrencyStamp = "08576a2b-406c-40bc-ba3a-6aa783d71f51",
                             Name = "Playground",
                             NormalizedName = "PLAYGROUND"
                         },
                         new
                         {
-                            Id = "ff923a32-0069-4b89-85c2-e600def44772",
-                            ConcurrencyStamp = "650ddf30-c891-4189-8f19-28e2e3a97ca7",
+                            Id = "987cc20d-a064-42a1-bb8b-d02e8739650d",
+                            ConcurrencyStamp = "ccc30e68-bf27-4bda-b54c-8b47d0444de2",
                             Name = "Gym",
                             NormalizedName = "GYM"
                         },
                         new
                         {
-                            Id = "ba65c369-6919-4c39-966d-f14e40187505",
-                            ConcurrencyStamp = "0927ef77-2d3a-44ee-bbc1-e96f87c0bf98",
+                            Id = "81c34d12-3da9-424e-98af-18eeaf5a250f",
+                            ConcurrencyStamp = "5af8db58-e0e8-458c-adf2-12605ee0c509",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "ea17b1b5-76b8-4ada-bbfc-3c7449917b76",
-                            ConcurrencyStamp = "6b2e2d6a-b7e5-4280-afa8-241229338219",
+                            Id = "ed74d052-e25c-4b72-8a3a-9ff3027692a7",
+                            ConcurrencyStamp = "672de51c-2b96-48ed-b4bc-b56f29840e26",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -481,7 +481,10 @@ namespace SportDash.Migrations
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastUpdateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -681,7 +684,7 @@ namespace SportDash.Migrations
             modelBuilder.Entity("SportDash.Models.Question", b =>
                 {
                     b.HasOne("SportDash.Data.ApplicationUser", "User")
-                        .WithMany("Questions")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 

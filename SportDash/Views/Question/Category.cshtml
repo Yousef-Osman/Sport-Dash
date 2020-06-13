@@ -1,34 +1,35 @@
 ﻿
 @using SportDash.ViewModels
-@model CategoryQuestionsViewModel
+@model DataViewModel
 
-<h1>Category</h1>
+<div class="container">
+    <h1>Category</h1>
 
-<ul class="nav nav-tabs nav-justified">
-    <li class="nav-item active">
-        <a class="nav-link" href="#">Club</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Playground</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Gym</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Trainer</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Training Program</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Others</a>
-    </li>
-</ul>
+    <ul class="nav nav-tabs nav-justified">
+        <li class="nav-item active">
+            <a class="nav-link" href="#">Club</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Playground</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Gym</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Trainer</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Training Program</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Others</a>
+        </li>
+    </ul>
 
-<div id="Questions_Container">
+    <div id="Questions_Container">
 
+    </div>
 </div>
-
 <script>
     let questionsContainer = document.getElementById("Questions_Container");
     function FillQuestions(value) {
@@ -40,21 +41,25 @@
         let lastUpdateTime;
         let questionId;
         questionsContainer.innerHTML = "";
-        let fragment = document.createRange().createContextualFragment("");
+        let fragment = document.createRange().createContextualFragment(""); 
         for (let question of questions) {
+            creationTime = new Date(question.creationTime);
+            creationTime = getDateString(creationTime);
+            lastUpdateTime = new Date(question.lastUpdateTime);
+            lastUpdateTime = getDateString(lastUpdateTime);
             let questionElementHTML =
             `<div class="row m-3">
                 <div class="row p-3 text-dark bg-white rounded">
                     <img class="profile-image" style="width:64px;height:64px;" src="@("/images/user-icon.jpg")" asp-append-version="true">
                     <div class="ml-3">
                             <p>${question.user.userName}</p>
-                            <p>${question.creationTime}</p>
+                            <p>${creationTime}</p>
                             <p>${question.body}</p>
-                            <i style="display:block">Last Updated: ${question.lastUpdateTime}</i>
+                            <i style="display:block">Last Updated: ${lastUpdateTime}</i>
                     </div>
 
                 </div>
-            </div>            
+            </div>
             <div class="d-flex ml-3">
 
                 <a href='@Url.Action("Question", "Question")/${question.id}'class="btn btn-primary align-self-center"  role="button" aria-disabled="true">
@@ -99,7 +104,7 @@
         if (About != -1) {
             $.ajax({
                 method: "GET",
-                url: '/@Model.DataViewModel.ControllerName/GetByCategory',
+                url: '/@Model.ControllerName/GetByCategory',
                 data: {
                     "CategoryId": `${About}`
                 },
@@ -141,10 +146,29 @@
         return About;
     }
 
-    function getDateString() {
-        var today = new Date();
+    function getDateString(myDate) {
+        var today;
+        if (myDate == null) {
+            today = new Date();
+        }
+        else {
+            today = myDate;
+        }
+        let hours = today.getHours();
+        if (hours >= 12) {
+            meridiem = " PM";
+            if (hours != 12) {
+                hours -= 12;
+            }            
+        }
+        else {
+            meridiem = " AM";
+            if (hours == 0) {
+                hours = 12;
+            }
+        }
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var time = hours + ":" + today.getMinutes() + ":" + today.getSeconds() + meridiem;
         return date + ' ' + time;
     }
     getQuestion(0);

@@ -51,5 +51,20 @@ namespace SportDash.Repository
             _context.Entry(reciever).State = EntityState.Modified;
             _context.SaveChanges();
         }
+
+        public ApplicationUser EditApplicationUser(ApplicationUser user, ApplicationUser infoData)
+        {
+            user.biography = infoData.biography ?? user.biography;
+            user.Location = infoData.Location ?? user.Location;
+            user.Location = (infoData.Location.Contains("Select")) ? user.Location : infoData.Location;
+            user.BallRenting = infoData.BallRenting ?? user.BallRenting;
+            user.LockerRoom = infoData.LockerRoom ?? user.LockerRoom;
+            user.Toilet = infoData.Toilet ?? user.Toilet;
+            user.ForLadies = infoData.ForLadies ?? user.ForLadies;
+
+            _context.Update(user);
+            _context.SaveChanges();
+            return user;
+        }
     }
 }

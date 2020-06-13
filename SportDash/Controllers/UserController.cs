@@ -100,7 +100,11 @@ namespace SportDash.Controllers
             image.ImageFile = file;
             var userId = _userManager.GetUserId(HttpContext.User);
             await _imageRepository.CreateImage(image, userId);
-            return Ok();
+
+            var dataModel = new DataViewModel();
+            dataModel.Images = _imageRepository.GetImages(userId);
+            dataModel.IsAdmin = true;
+            return PartialView("_Images", dataModel);
         }
 
         [HttpPost]
@@ -108,7 +112,12 @@ namespace SportDash.Controllers
         public async Task<IActionResult> DeleteImage(int id)
         {
             await _imageRepository.DeleteImage(id);
-            return Ok();
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            var dataModel = new DataViewModel();
+            dataModel.Images = _imageRepository.GetImages(userId);
+            dataModel.IsAdmin = true;
+            return PartialView("_Images", dataModel);
         }
     }
 }

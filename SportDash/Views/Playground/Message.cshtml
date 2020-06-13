@@ -3,43 +3,574 @@
 @{
     ViewData["Title"] = "Live Chat";
 }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
 
-<div class="container mb-5">
-    <h3 class="mt-3 p-3" style="border-radius: 40px;width: 70%;margin: 20px auto;text-transform: capitalize;padding: 20px;background: #fff;text-align: center;"><a asp-action="Index" asp-controller="Playground" asp-route-id="@Model.EntityId">@Model.CurrentPage</a></h3>
-    <div id="msgs-container" class="chat" style="width: 70%;margin: auto;border-radius: 25px;">
-        @foreach (var msg in Model.Messages)
-        {
-            if (msg.Sender.UserName == User.Identity.Name)
-            {
-                <div class="mine messages" style="margin-bottom: -20px;font-size: 23px;">
-                    <span class="sm-msg">@msg.MessageDate</span>
-                    <div class="message last" onclick="toggleDate(event)">
-                        @msg.Body
+    body {
+        /*background: url("http://shurl.esy.es/y") no-repeat fixed center;*/
+        background-size: cover;
+    }
+
+    .fa-2x {
+        font-size: 1.5em;
+    }
+
+    .ellipsis {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .msg-container {
+        max-height: 350px;
+    }
+
+    .side-bar-container {
+        max-height: 470px;
+    }
+
+    .app {
+        position: relative;
+        overflow: hidden;
+        top: 19px;
+        height: calc(100% - 38px);
+        margin: auto;
+        padding: 0;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .06), 0 2px 5px 0 rgba(0, 0, 0, .2);
+    }
+
+    .app-one {
+        background-color: #f7f7f7;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .06), 0 2px 5px 0 rgba(0, 0, 0, .2);
+    }
+
+    .side {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+    }
+
+    .side-one {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+        position: relative;
+        display: block;
+        top: 0;
+    }
+
+    .side-two {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+        position: relative;
+        top: -100%;
+        left: -100%;
+        -webkit-transition: left 0.3s ease;
+        transition: left 0.3s ease;
+    }
+
+
+    .heading {
+        padding: 10px 16px 10px 15px;
+        margin: 0;
+        height: 60px;
+        width: 100%;
+        background-color: #eee;
+        z-index: 1000;
+    }
+
+    .heading-avatar {
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .heading-avatar-icon img {
+        border-radius: 50%;
+        height: 40px;
+        width: 40px;
+    }
+
+    .heading-name {
+        padding: 0 !important;
+        cursor: pointer;
+    }
+
+    .heading-name-meta {
+        font-weight: 700;
+        font-size: 100%;
+        padding: 5px;
+        padding-bottom: 0;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #000;
+        display: block;
+    }
+
+    .heading-online {
+        display: none;
+        padding: 0 5px;
+        font-size: 12px;
+        color: #93918f;
+    }
+
+    .heading-compose {
+        padding: 0;
+    }
+
+        .heading-compose i {
+            text-align: center;
+            padding: 5px;
+            color: #93918f;
+            cursor: pointer;
+        }
+
+    .heading-dot {
+        padding: 0;
+        margin-left: 10px;
+    }
+
+        .heading-dot i {
+            text-align: right;
+            padding: 5px;
+            color: #93918f;
+            cursor: pointer;
+        }
+
+    .searchBox {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 60px;
+        width: 100%;
+    }
+
+    .searchBox-inner {
+        height: 100%;
+        width: 100%;
+        padding: 10px !important;
+        background-color: #fbfbfb;
+    }
+
+
+        /*#searchBox-inner input {
+          box-shadow: none;
+        }*/
+
+        .searchBox-inner input:focus {
+            outline: none;
+            border: none;
+            box-shadow: none;
+        }
+
+    .sideBar {
+        padding: 0 !important;
+        margin: 0 !important;
+        background-color: #fff;
+        overflow-y: auto;
+        border: 1px solid #f7f7f7;
+        height: calc(100% - 120px);
+    }
+
+    .sideBar-body {
+        position: relative;
+        padding: 10px !important;
+        border-bottom: 1px solid #f7f7f7;
+        height: 72px;
+        margin: 0 !important;
+        cursor: pointer;
+    }
+
+        .sideBar-body:hover {
+            background-color: #f2f2f2;
+        }
+
+    .sideBar-avatar {
+        text-align: center;
+        padding: 0 !important;
+    }
+
+    .avatar-icon img {
+        border-radius: 50%;
+        height: 49px;
+        width: 49px;
+    }
+
+    .sideBar-main {
+        padding: 0 !important;
+    }
+
+        .sideBar-main .row {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+    .sideBar-name {
+        padding: 10px !important;
+    }
+
+    .name-meta {
+        font-size: 100%;
+        padding: 1% !important;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #000;
+    }
+
+    .sideBar-time {
+        padding: 10px !important;
+    }
+
+    .time-meta {
+        text-align: right;
+        font-size: 12px;
+        padding: 1% !important;
+        color: rgba(0, 0, 0, .4);
+        vertical-align: baseline;
+    }
+
+    /*New Message*/
+
+    .newMessage {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 100%;
+        position: relative;
+        left: -100%;
+    }
+
+    .newMessage-heading {
+        padding: 10px 16px 10px 15px !important;
+        margin: 0 !important;
+        height: 100px;
+        width: 100%;
+        background-color: #00bfa5;
+        z-index: 1001;
+    }
+
+    .newMessage-main {
+        padding: 10px 16px 0 15px !important;
+        margin: 0 !important;
+        height: 60px;
+        margin-top: 30px !important;
+        width: 100%;
+        z-index: 1001;
+        color: #fff;
+    }
+
+    .newMessage-title {
+        font-size: 18px;
+        font-weight: 700;
+        padding: 10px 5px !important;
+    }
+
+    .newMessage-back {
+        text-align: center;
+        vertical-align: baseline;
+        padding: 12px 5px !important;
+        display: block;
+        cursor: pointer;
+    }
+
+        .newMessage-back i {
+            margin: auto !important;
+        }
+
+    .composeBox {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 60px;
+        width: 100%;
+    }
+
+    .composeBox-inner {
+        height: 100%;
+        width: 100%;
+        padding: 10px !important;
+        background-color: #fbfbfb;
+    }
+
+        .composeBox-inner input:focus {
+            outline: none;
+            border: none;
+            box-shadow: none;
+        }
+
+    .compose-sideBar {
+        padding: 0 !important;
+        margin: 0 !important;
+        background-color: #fff;
+        overflow-y: auto;
+        border: 1px solid #f7f7f7;
+        height: calc(100% - 160px);
+    }
+
+    /*Conversation*/
+
+    .conversation {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 100%;
+        /*width: 100%;*/
+        border-left: 1px solid rgba(0, 0, 0, .08);
+        /*overflow-y: auto;*/
+    }
+
+    .message {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: url("w.jpg") no-repeat fixed center;
+        background-size: cover;
+        overflow-y: auto;
+        border: 1px solid #f7f7f7;
+        height: calc(100% - 120px);
+    }
+
+    .message-previous {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto;
+        width: 100%;
+    }
+
+    .previous {
+        font-size: 15px;
+        text-align: center;
+        padding: 10px !important;
+        cursor: pointer;
+    }
+
+        .previous a {
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+    .message-body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: auto;
+        height: auto;
+    }
+
+    .message-main-receiver {
+        /*padding: 10px 20px;*/
+        max-width: 60%;
+    }
+
+    .message-main-sender {
+        padding: 3px 20px !important;
+        margin-left: 40% !important;
+        max-width: 60%;
+    }
+
+    .message-text {
+        margin: 0 !important;
+        padding: 5px !important;
+        word-wrap: break-word;
+        font-weight: 200;
+        font-size: 14px;
+        padding-bottom: 0 !important;
+    }
+
+    .message-time {
+        margin: 0 !important;
+        margin-left: 50px !important;
+        font-size: 12px;
+        text-align: right;
+        color: #9a9a9a;
+    }
+
+    .receiver {
+        width: auto !important;
+        padding: 4px 10px 7px !important;
+        border-radius: 10px 10px 10px 0;
+        background: #ffffff;
+        font-size: 12px;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+        word-wrap: break-word;
+        display: inline-block;
+    }
+
+    .sender {
+        float: right;
+        width: auto !important;
+        background: #dcf8c6;
+        border-radius: 10px 10px 0 10px;
+        padding: 4px 10px 7px !important;
+        font-size: 12px;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+        display: inline-block;
+        word-wrap: break-word;
+    }
+
+
+    /*Reply*/
+
+    .reply {
+        height: 60px;
+        width: 100%;
+        background-color: #f5f1ee;
+        padding: 10px 5px 10px 5px !important;
+        margin: 0 !important;
+        z-index: 1000;
+    }
+
+    .reply-emojis {
+        padding: 5px !important;
+    }
+
+        .reply-emojis i {
+            text-align: center;
+            padding: 5px 5px 5px 5px !important;
+            color: #93918f;
+            cursor: pointer;
+        }
+
+    .reply-recording {
+        padding: 5px !important;
+    }
+
+        .reply-recording i {
+            text-align: center;
+            padding: 5px !important;
+            color: #93918f;
+            cursor: pointer;
+        }
+
+    .reply-send {
+        padding: 5px !important;
+    }
+
+        .reply-send i {
+            text-align: center;
+            padding: 5px !important;
+            color: #93918f;
+            cursor: pointer;
+        }
+
+    .reply-main {
+        padding: 2px 5px !important;
+    }
+
+        .reply-main textarea {
+            width: 100%;
+            resize: none;
+            overflow: hidden;
+            padding: 5px !important;
+            outline: none;
+            border: none;
+            text-indent: 5px;
+            box-shadow: none;
+            height: 100%;
+            font-size: 16px;
+        }
+
+            .reply-main textarea:focus {
+                outline: none;
+                border: none;
+                text-indent: 5px;
+                box-shadow: none;
+            }
+</style>
+
+
+<div class="container app" style="width: 60%;">
+    <div class="app-one">
+        <div class="conversation">
+            <div class="text-center">
+                <div>
+                    <div class="row heading">
+                        <div class="heading-avatar">
+                            <div class="heading-avatar-icon">
+                                <img src="~/images/site/user-icon.jpg" />
+                            </div>
+                        </div>
+                        <div class="heading-name">
+                            <a class="heading-name-meta text-secondary">
+                                @Model.CurrentPage
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style="height: 350px;" class="row message full-width" id="conversation">
+                        <div class="row message-previous">
+                            <div class="col-sm-12 previous">
+                                <a onclick="previous(this)" id="ankitjain28" name="20">
+                                    Show Previous Message!
+                                </a>
+                            </div>
+                        </div>
+
+                        <div id="msgs-container" class="msg-container">
+                            @foreach (var msg in Model.Messages.Reverse())
+                            {
+                                if (msg.Sender.UserName == User.Identity.Name)
+                                {
+                                    <div class="row message-body">
+                                        <div class="col-sm-12 message-main-sender">
+                                            <div class="sender">
+                                                <div class="message-text">
+                                                    @msg.Body
+                                                </div>
+                                                <span class="message-time pull-right">
+                                                    @msg.MessageDate
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="row message-body">
+                                        <div class="col-sm-12 message-main-receiver">
+                                            <div class="receiver">
+                                                <div class="message-text">
+                                                    @msg.Body
+                                                </div>
+                                                <span class="message-time pull-right">
+                                                    @msg.MessageDate
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row reply">
+                        <div class="col-sm-11 col-xs-9 reply-main">
+                            <textarea class="form-control" rows="1" id="msg" onkeypress="sendKey(event)" placeholder="Type a message ..."></textarea>
+                        </div>
+                        <div class="col-sm-1 col-xs-1 reply-send">
+                            <a onclick="send()"><i class="fa fa-send fa-2x" aria-hidden="true"></i></a>
+                        </div>
                     </div>
                 </div>
-            }
-            else
-            {
-                <div class="yours messages" style="margin-bottom: -20px;font-size: 23px;">
-                    <span class="sm-msg">@msg.MessageDate</span>
-                    <div class="message last" onclick="toggleDate(event)">                        
-                        @msg.Body
-                    </div>
-                </div>
-            }
-        }        
+            </div>
+        </div>
     </div>
-    <div class="mt-2 form-container" style="display: flex;justify-content: center;">
-        <textarea id="msg" onkeypress="sendKey(event)" class="form-control round-borders" style="width: 60%;" placeholder="Write your message here ...."></textarea>
-        <button onclick="send()" style="width: 9%" class="round-borders btn-elephant"><img src="~/images/send.png" /><br />Send</button>
-    </div>    
 </div>
 
-@section Scripts{ 
+
+@section Scripts{
     <script>
         const msg = document.querySelector("#msg");
         msg.focus();
-        function send() {            
+        function send() {
             var msgIn = msg.value.replace(/<\/?[^>]+(>|$)/g, "");
             if (msgIn != "") {
                 if (connection.connectionState == 0) {
@@ -48,36 +579,49 @@
                 else {
                     connection.invoke("SendMsg", msgIn, location.pathname.split('/')[3]);
                     msg.value = "";
-                }                
+                }
             }
         }
-        function sendKey(event) {            
+        function sendKey(event) {
             if (event.key == "Enter") {
                 event.preventDefault();
                 send();
             }
         }
-        connection.on("recMsg", (msg, senderId, username, date) => {
-            const msgContainer = $("#msgs-container");            
-            if (senderId == location.pathname.split('/')[3]) {                
-                msgContainer.prepend(`<div style="margin-bottom: -20px;font-size: 23px;" class="yours messages">
-                <span class="sm-msg">${date}</span>
-                <div class="message last" onclick="toggleDate(event)">
-                    ${msg}
-                </div>
-            </div>`);
+        connection.on("recMsg", (res, senderId, username, date) => {
+            const msgContainer = $("#msgs-container");
+            if (senderId == location.pathname.split('/')[3]) {
+                msgContainer.append(`
+                    <div class="row message-body" id="scroll-element">
+                        <div class="col-sm-12 message-main-receiver">
+                            <div class="receiver">
+                                <div class="message-text">${res}</div>
+                                <span class="message-time pull-right">${date}</span>
+                            </div>
+                        </div>
+                    </div>`);
+                let newMsg = document.getElementById('scroll-element');
+                newMsg.scrollIntoView();
+                newMsg.removeAttribute("id");
             }
             else {
-                msgContainer.prepend(`<div style="margin-bottom: -20px;font-size: 23px;" class="mine messages">
-                <span class="sm-msg">${date}</span>
-                <div class="message last" onclick="toggleDate(event)">
-                    ${msg}
-                </div>
-            </div>`);
-            }
+                msgContainer.append(`
+                    <div class="row message-body" id="scroll-element">
+                        <div class="col-sm-12 message-main-sender">
+                            <div class="sender">
+                                <div class="message-text">${res}</div>
+                                <span class="message-time pull-right">${date}</span>
+                            </div>
+                        </div>
+                    </div>`);
+                let newMsg = document.getElementById('scroll-element');
+                newMsg.scrollIntoView(true, {
+                    behavior: "smooth", block: "end", inline: "nearest"
+                });
+                newMsg.removeAttribute("id");
+            }                        
         });
-        function toggleDate(event)
-        {
+        function toggleDate(event) {
             var dateEle = event.target.parentElement.children[0];
             if (dateEle.style.display === 'none') {
                 dateEle.style.display = 'block';

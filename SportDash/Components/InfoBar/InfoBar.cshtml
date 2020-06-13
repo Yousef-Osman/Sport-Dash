@@ -35,17 +35,17 @@
         </div>
     </section>*@
 
-<section class="bg-elephant">
+<section class="bg-elephant" id="entity-info">
     <div class="container d-flex flex-wrap justify-content-between align-items-center text-Geyser" style="min-height: 350px">
         <div class="col-md-6 py-5 remove-spacing-x">
             <h3>Bio:</h3>
-            <p class="col-10">Some random text to show how cool that playground is and why you should visit it you and your friends</p>
-            @*<p class="col-10" style="font-size:1.2em">@Model.Entity.Size</p>*@
+            @*<p class="col-10">Some random text to show how cool that playground is and why you should visit it you and your friends</p>*@
+            <p class="col-10" style="font-size:1.2em">@Model.Entity.biography</p>
             <h3>Location:</h3>
             <p class="col-10" style="font-size:1.2em">Alexandria, @Model.Entity.Location</p>
             @if (Model.IsAdmin == true)
             {
-                <input type="button" value="Edit" class="btn btn-info bg-Mountain" data-toggle="modal" data-target="#editInfoModal" />
+                <input type="button" value="Edit" class="btn btn-info text-elephant bg-Mountain" data-toggle="modal" data-target="#editInfoModal" />
             }
         </div>
         <div class="col-md-6 py-5 d-flex justify-content-between remove-spacing-x">
@@ -85,8 +85,8 @@
 <div class="modal fade" id="editInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Information</h5>
+            <div class="modal-header bg-Mountain">
+                <h5 class="modal-title text-elephant" id="exampleModalLabel">Edit Information</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -94,45 +94,82 @@
             <div class="modal-body">
                 <div class="form-row mb-2">
                     <div class="col">
-                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.locations">
+                        <textarea class="form-control" rows="2" placeholder="Biography" id="info-bio">@Model.Entity.biography</textarea>
+                    </div>
+                </div>
+                <div class="form-row mb-2">
+                    <div class="col">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.locations" id="info-location">
                             <option value="">Select your location ...</option>
                         </select>
                     </div>
                     <div class="col" id="ball-renting">
-                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.BallRentingOptions">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.BallRentingOptions" id="info-ball">
                             <option value="">Ball Renting ...</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row mb-2" id="common1">
                     <div class="col">
-                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.LockerRoomOptions">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.LockerRoomOptions" id="info-locker">
                             <option value="">Locker Room ...</option>
                         </select>
                     </div>
                     <div class="col">
-                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.SafeOptions">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.SafeOptions" id="info-safe">
                             <option value="">Safe for Belongings ...</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row mb-2" id="common2">
                     <div class="col">
-                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.ToiletOptions">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.ToiletOptions" id="info-toilet">
                             <option value="">Toilet ...</option>
                         </select>
                     </div>
                     <div class="col">
-                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.ForLadiesOptions">
+                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.ForLadiesOptions" id="info-for-ladies">
                             <option value="">For Ladies ...</option>
                         </select>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success text-white" data-dismiss="modal" id="edit-btn">Confirm</button>
+                <button type="button" class="btn btn-info bg-Mountain text-elephant" data-dismiss="modal" id="edit-info-btn">Confirm</button>
                 <button type="button" class="btn btn-secondary" id="edit-name-btn" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript" on-content-loaded="true">
+    $('#edit-info-btn').click(function (e) {
+        e.preventDefault();
+        const info = {};
+
+        //info.location = document.getElementById('info-location').value;
+        //info.ballRenting = document.getElementById('info-ball').value;
+        //info.lockerRoom = document.getElementById('info-locker').value;
+        //info.safe = document.getElementById('info-safe').value;
+        //info.toilet = document.getElementById('info-toilet').value;
+        //info.forLadies = document.getElementById('info-for-ladies').value;
+
+        info.biography = $("#info-bio").val();
+        info.location = $("#info-location :selected").text();
+        info.ballRenting = $("#info-ball :selected").val();
+        info.lockerRoom = $("#info-locker :selected").val();
+        //info.safe = $("#info-safe :selected").val();
+        info.toilet = $("#info-toilet :selected").val();
+        info.forLadies = $("#info-for-ladies :selected").val();
+
+        $.ajax({
+            url: '/@Model.ControllerName/EditInfoData',
+            type: 'POST',
+            data: info,
+            success: function (result) {
+                console.log(result)
+                document.getElementById('entity-info').innerHTML = result;
+            }
+        });
+    });
+</script>

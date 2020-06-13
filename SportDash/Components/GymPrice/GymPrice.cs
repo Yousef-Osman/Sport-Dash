@@ -10,9 +10,9 @@ namespace SportDash.Components.GymPrice
 {
     public class GymPrice : ViewComponent
     {
-        public IViewComponentResult Invoke(GymPriceViewModel gymPriceViewModel)
+        public IViewComponentResult Invoke(DataViewModel dataViewModel)
         {
-            return View("/Components/GymPrice/GymPrice.cshtml", gymPriceViewModel);
+            return View("/Components/GymPrice/GymPrice.cshtml", dataViewModel);
         }
     }
 }

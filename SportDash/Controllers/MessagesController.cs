@@ -71,6 +71,6 @@ namespace SportDash.Controllers
             };
 
             return PartialView("_MiniChat", messagingViewModel);
-        }
+        }        
     }
 }
