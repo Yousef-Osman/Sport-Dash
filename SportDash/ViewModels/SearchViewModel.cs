@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using SportDash.Data;
+using SportDash.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +23,6 @@ namespace SportDash.ViewModels
         public string PriceString { get; set; }
         public string LocationString { get; set; }
         public string SportTypeString { get; set; }
+        public Image ProfileImage { get; set; }
     }
 }

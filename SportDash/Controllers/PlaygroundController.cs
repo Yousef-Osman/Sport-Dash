@@ -307,6 +307,7 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
+        //[Authorize(Policy = "PlaygroundPolicy")]
         public async Task<IActionResult> AddReview(Review R)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -315,8 +316,10 @@ namespace SportDash.Controllers
             // var review = _reviewRepository.PostReview(R);
             //return Ok(new OkObjectResult(review));
             DataViewModel reviewVM = new DataViewModel();
+            var userId = R.ReviewerId;
             var TargetId = R.TargetId; 
             var review = _reviewRepository.PostReview(R);
+            reviewVM.ProfileImage = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == true).SingleOrDefault();
             reviewVM.CurrentUser =  await _userManager.GetUserAsync(User);
             reviewVM.Reviews = _reviewRepository.GetReviewsOfReviewee(TargetId);
             reviewVM.Review = review;
