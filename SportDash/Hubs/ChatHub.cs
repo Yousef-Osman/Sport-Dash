@@ -93,13 +93,13 @@ namespace SportDash.Hubs
             var recieverConnection = await dbContext.ConnectedUsers.FirstOrDefaultAsync(u => u.UserId == reciever.Id);
             if(recieverConnection != null)
             {
-                await Clients.Client(recieverConnection.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.UserName, DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"));
+                await Clients.Client(recieverConnection.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.UserName, DateTime.Now.ToString("hh:mm tt"));
                 userRepository.ChangeMsgsStatus(reciever, true);
-                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.UserName, DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"));
+                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.UserName, DateTime.Now.ToString("hh:mm tt"));
             }
             else
             {
-                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.UserName, DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"));
+                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.UserName, DateTime.Now.ToString("hh:mm tt"));
                 userRepository.ChangeMsgsStatus(reciever, true);
             }
             messageRepository.PostMessage(new Models.Message

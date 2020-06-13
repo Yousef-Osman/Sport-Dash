@@ -1,79 +1,555 @@
 ﻿@model IEnumerable<IGrouping<string, Message>>
 @{
-    ViewData["Title"] = "Received Messages";
+    ViewData["Title"] = "Recent Messages";
 }
 
-@if (Model.Count() == 0)
-{
-    <h3 class="mt-5" style="text-align: center;color: #808080">No Recent Messages</h3>
-}
-else
-{
-    <div class="container-fluid row mt-3 mb-5">
-        <div class="col-4" style="overflow-y: auto;height: 523px">
-            <div id="all-msgs">
-                @foreach (var message in Model)
-                {
-                    <div id="_@(message.FirstOrDefault().SenderId)" style="background: #fff;" class="media border p-3">
-                        <div class="media-body">
-                            <h4>
-                                <a asp-action="Message" asp-controller="Playground" asp-route-id="@(message.FirstOrDefault().SenderId)" title="Click to go to the chat page">@message.Key</a>
-                                <small> <i>@message.FirstOrDefault().MessageDate</i></small>
-                            </h4>
-                            <p>@message.FirstOrDefault().Body</p>
-                            <div class="container">
-                                @*<button class="btn bg-elephant" style="color: #fff;" onclick="sendData('@message.FirstOrDefault().SenderId')" data-toggle="modal" data-target="#replayModal">Replay</button>*@
-                                <button class="btn bg-Geyser" onclick="miniChat('@(message.FirstOrDefault().SenderId)')">Chat</button>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-            @if (Model.Count() > 5)
-            {
-                <button style="background: #1cc8a0;color: #102b3e;" class="btn w-100 mt-4" onclick="loadAll(event)">Load All...</button>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+
+    body {
+        /*background: url("http://shurl.esy.es/y") no-repeat fixed center;*/
+        background-size: cover;
+    }
+
+    .fa-2x {
+        font-size: 1.5em;
+    }
+
+    .ellipsis {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .msg-container {
+        max-height: 350px;
+    }
+
+    .side-bar-container {
+        max-height: 470px;
+    }
+
+    .app {
+        position: relative;
+        overflow: hidden;
+        top: 19px;
+        height: calc(100% - 38px);
+        margin: auto;
+        padding: 0;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .06), 0 2px 5px 0 rgba(0, 0, 0, .2);
+    }
+
+    .app-one {
+        background-color: #f7f7f7;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .06), 0 2px 5px 0 rgba(0, 0, 0, .2);
+    }
+
+    .side {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+    }
+
+    .side-one {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+        position: relative;
+        display: block;
+        top: 0;
+    }
+
+    .side-two {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+        position: relative;
+        top: -100%;
+        left: -100%;
+        -webkit-transition: left 0.3s ease;
+        transition: left 0.3s ease;
+    }
+
+
+    .heading {
+        padding: 10px 16px 10px 15px;
+        margin: 0;
+        height: 60px;
+        width: 100%;
+        background-color: #eee;
+        z-index: 1000;
+    }
+
+    .heading-avatar {
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .heading-avatar-icon img {
+        border-radius: 50%;
+        height: 40px;
+        width: 40px;
+    }
+
+    .heading-name {
+        padding: 0 !important;
+        cursor: pointer;
+    }
+
+    .heading-name-meta {
+        font-weight: 700;
+        font-size: 100%;
+        padding: 5px;
+        padding-bottom: 0;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #000;
+        display: block;
+    }
+
+    .heading-online {
+        display: none;
+        padding: 0 5px;
+        font-size: 12px;
+        color: #93918f;
+    }
+
+    .heading-compose {
+        padding: 0;
+    }
+
+        .heading-compose i {
+            text-align: center;
+            padding: 5px;
+            color: #93918f;
+            cursor: pointer;
+        }
+
+    .heading-dot {
+        padding: 0;
+        margin-left: 10px;
+    }
+
+        .heading-dot i {
+            text-align: right;
+            padding: 5px;
+            color: #93918f;
+            cursor: pointer;
+        }
+
+    .searchBox {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 60px;
+        width: 100%;
+    }
+
+    .searchBox-inner {
+        height: 100%;
+        width: 100%;
+        padding: 10px !important;
+        background-color: #fbfbfb;
+    }
+
+
+        /*#searchBox-inner input {
+          box-shadow: none;
+        }*/
+
+        .searchBox-inner input:focus {
+            outline: none;
+            border: none;
+            box-shadow: none;
+        }
+
+    .sideBar {
+        padding: 0 !important;
+        margin: 0 !important;
+        background-color: #fff;
+        overflow-y: auto;
+        border: 1px solid #f7f7f7;
+        height: calc(100% - 50px);
+    }
+
+    .sideBar-body {
+        position: relative;
+        padding: 10px !important;
+        border-bottom: 1px solid #f7f7f7;
+        height: auto;
+        margin: 0 !important;
+        cursor: pointer;
+    }
+
+        .sideBar-body:hover {
+            background-color: #f2f2f2;
+        }
+
+    .sideBar-avatar {
+        text-align: center;
+        padding: 0 !important;
+    }
+
+    .avatar-icon img {
+        border-radius: 50%;
+        height: 49px;
+        width: 49px;
+    }
+
+    .sideBar-main {
+        padding: 0 !important;
+    }
+
+        .sideBar-main .row {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+    .sideBar-name {
+        padding: 10px !important;
+    }
+
+    .name-meta {
+        font-size: 100%;
+        padding: 1% !important;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #000;
+    }
+
+    .sideBar-time {
+        padding: 10px !important;
+    }
+
+    .time-meta {
+        text-align: right;
+        font-size: 12px;
+        padding: 1% !important;
+        color: rgba(0, 0, 0, .4);
+        vertical-align: baseline;
+    }
+
+    /*New Message*/
+
+    .newMessage {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 100%;
+        position: relative;
+        left: -100%;
+    }
+
+    .newMessage-heading {
+        padding: 10px 16px 10px 15px !important;
+        margin: 0 !important;
+        height: 100px;
+        width: 100%;
+        background-color: #00bfa5;
+        z-index: 1001;
+    }
+
+    .newMessage-main {
+        padding: 10px 16px 0 15px !important;
+        margin: 0 !important;
+        height: 60px;
+        margin-top: 30px !important;
+        width: 100%;
+        z-index: 1001;
+        color: #fff;
+    }
+
+    .newMessage-title {
+        font-size: 18px;
+        font-weight: 700;
+        padding: 10px 5px !important;
+    }
+
+    .newMessage-back {
+        text-align: center;
+        vertical-align: baseline;
+        padding: 12px 5px !important;
+        display: block;
+        cursor: pointer;
+    }
+
+        .newMessage-back i {
+            margin: auto !important;
+        }
+
+    .composeBox {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 60px;
+        width: 100%;
+    }
+
+    .composeBox-inner {
+        height: 100%;
+        width: 100%;
+        padding: 10px !important;
+        background-color: #fbfbfb;
+    }
+
+        .composeBox-inner input:focus {
+            outline: none;
+            border: none;
+            box-shadow: none;
+        }
+
+    .compose-sideBar {
+        padding: 0 !important;
+        margin: 0 !important;
+        background-color: #fff;
+        overflow-y: auto;
+        border: 1px solid #f7f7f7;
+        height: calc(100% - 160px);
+    }
+
+    /*Conversation*/
+
+    .conversation {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 100%;
+        /*width: 100%;*/
+        border-left: 1px solid rgba(0, 0, 0, .08);
+        /*overflow-y: auto;*/
+    }
+
+    .message {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: url("w.jpg") no-repeat fixed center;
+        background-size: cover;
+        overflow-y: auto;
+        border: 1px solid #f7f7f7;
+        height: calc(100% - 120px);
+    }
+
+    .message-previous {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto;
+        width: 100%;
+    }
+
+    .previous {
+        font-size: 15px;
+        text-align: center;
+        padding: 10px !important;
+        cursor: pointer;
+    }
+
+        .previous a {
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+    .message-body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: auto;
+        height: auto;
+    }
+
+    .message-main-receiver {
+        /*padding: 10px 20px;*/
+        max-width: 60%;
+    }
+
+    .message-main-sender {
+        padding: 3px 20px !important;
+        margin-left: 40% !important;
+        max-width: 60%;
+    }
+
+    .message-text {
+        margin: 0 !important;
+        padding: 5px !important;
+        word-wrap: break-word;
+        font-weight: 200;
+        font-size: 14px;
+        padding-bottom: 0 !important;
+    }
+
+    .message-time {
+        margin: 0 !important;
+        margin-left: 50px !important;
+        font-size: 12px;
+        text-align: right;
+        color: #9a9a9a;
+    }
+
+    .receiver {
+        width: auto !important;
+        padding: 4px 10px 7px !important;
+        border-radius: 10px 10px 10px 0;
+        background: #ffffff;
+        font-size: 12px;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+        word-wrap: break-word;
+        display: inline-block;
+    }
+
+    .sender {
+        float: right;
+        width: auto !important;
+        background: #dcf8c6;
+        border-radius: 10px 10px 0 10px;
+        padding: 4px 10px 7px !important;
+        font-size: 12px;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+        display: inline-block;
+        word-wrap: break-word;
+    }
+
+
+    /*Reply*/
+
+    .reply {
+        height: 60px;
+        width: 100%;
+        background-color: #f5f1ee;
+        padding: 10px 5px 10px 5px !important;
+        margin: 0 !important;
+        z-index: 1000;
+    }
+
+    .reply-emojis {
+        padding: 5px !important;
+    }
+
+        .reply-emojis i {
+            text-align: center;
+            padding: 5px 5px 5px 5px !important;
+            color: #93918f;
+            cursor: pointer;
+        }
+
+    .reply-recording {
+        padding: 5px !important;
+    }
+
+        .reply-recording i {
+            text-align: center;
+            padding: 5px !important;
+            color: #93918f;
+            cursor: pointer;
+        }
+
+    .reply-send {
+        padding: 5px !important;
+    }
+
+        .reply-send i {
+            text-align: center;
+            padding: 5px !important;
+            color: #93918f;
+            cursor: pointer;
+        }
+
+    .reply-main {
+        padding: 2px 5px !important;
+    }
+
+        .reply-main textarea {
+            width: 100%;
+            resize: none;
+            overflow: hidden;
+            padding: 5px !important;
+            outline: none;
+            border: none;
+            text-indent: 5px;
+            box-shadow: none;
+            height: 100%;
+            font-size: 16px;
+        }
+
+            .reply-main textarea:focus {
+                outline: none;
+                border: none;
+                text-indent: 5px;
+                box-shadow: none;
             }
-        </div>
-        <div class="col-8" id="mini-chat">
-            <div style="display: flex;align-items: center;justify-content: center">
-                <h2 style="text-align: center;color: #808080">Click Open To Start Chatting</h2>
-            </div>
-        </div>
-    </div>
-    <div id="loader" style="opacity: 0.8;background: #fff;padding: 20px;border-radius: 12px;z-index: 9;display: none;position: absolute;left: 500px;top: 500px;">
-        <h4>Loading...</h4>
-    </div>
-}
+</style>
 
+<div class="container app">
+    <div class="row app-one">
+        <div class="col-sm-4 side">
+            <div class="side-one">
+                <div class="row heading">
+                    <div class="col-sm-3 col-xs-3 heading-avatar">
+                        <h4>Chats</h4>
+                    </div>
+                </div>
 
-<!-- Replay Modal -->
-<div class="modal" id="replayModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
+                <div class="row sideBar" id="all-msgs">
+                    @if (Model.Count() == 0)
+                    {
+                        <div style="padding: 10px;">
+                            <h4 class="text-center" style="color: #93918f">No Recent Messages</h4>
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var message in Model)
+                        {
+                            <div class="row sideBar-body full-width" id="_@(message.FirstOrDefault().SenderId)" onclick="miniChat('@(message.FirstOrDefault().SenderId)')">
+                                <div class="col-lg-2 col-sm-3 col-xs-3 sideBar-avatar">
+                                    <div class="avatar-icon">
+                                        <img src="~/images/site/user-icon.jpg" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 col-sm-9 col-xs-9 sideBar-main">
+                                    <div class="row">
+                                        <div class="col-sm-8 col-xs-8 ellipsis">
+                                            <span class="name-meta">
+                                                <a>@message.Key</a>
+                                            </span>
+                                            <p>@message.FirstOrDefault().Body</p>
+                                        </div>
+                                        <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
+                                            <span class="time-meta pull-right">
+                                                @if (message.FirstOrDefault().MessageDate.Day == DateTime.Now.Day)
+                                                {
+                                                    <small> <i>@message.FirstOrDefault().MessageDate.ToShortTimeString()</i></small>
+                                                }
+                                                else
+                                                {
+                                                    <small> <i>@message.FirstOrDefault().MessageDate.ToShortDateString()</i></small>
+                                                }
 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Replay to Message</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                <div class="form-group">
-                    <textarea id="replay" placeholder="Write your message ...." class="form-control"></textarea>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
             </div>
+        </div>
 
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" onclick="replay()" class="btn bg-elephant" style="color: #fff;" data-dismiss="modal">Send</button>
-                <button type="button" class="btn bg-Geyser" data-dismiss="modal">Close</button>
+        <div class="col-sm-8 conversation" id="mini-chat">
+            <div class="text-center py-5">
+                <h4 class="text-secondary">Click on any message to start conversation</h4>
             </div>
-
         </div>
     </div>
 </div>
-
 
 @section Scripts{
     <script>
@@ -104,17 +580,17 @@ else
         let idOfSender = '';
         function miniChat(senderId) {
             idOfSender = senderId;
-            const loader = document.querySelector("#loader");
-            loader.style.left = window.innerWidth / 2 + "px";
-            loader.style.top = window.innerHeight / 2 + "px";
-            loader.style.display = 'block';
+            //const loader = document.querySelector("#loader");
+            //loader.style.left = window.innerWidth / 2 + "px";
+            //loader.style.top = window.innerHeight / 2 + "px";
+            //loader.style.display = 'block';
             $.ajax({
                 url: '/Messages/MiniChat?senderId=' + senderId,
                 method: 'GET',
                 success: function (data) {
                     const chatContainer = document.querySelector('#mini-chat');
-                    loader.style.display = 'none';
-                    chatContainer.innerHTML = data;                    
+                    //loader.style.display = 'none';
+                    chatContainer.innerHTML = data;
                 }
             })
         }
@@ -129,7 +605,7 @@ else
                 else {
                     connection.invoke("SendMsg", msgIn, idOfSender);
                     msg.value = "";
-                }                
+                }
             }
             msg.focus();
         }
@@ -143,45 +619,66 @@ else
         connection.on("recMsg", function (res, senderId, username, date) {
             const msgContainer = $("#msgs-container");
             if (senderId == idOfSender) {
-                msgContainer.prepend(`<div style="margin-bottom: -20px;font-size: 23px;" class="yours messages">
-                <span class="sm-msg">${date}</span>
-                <div class="message last" onclick="toggleDate(event)">
-                    ${res}
-                </div>
-            </div>`);
+                msgContainer.append(`
+                    <div class="row message-body" id="scroll-element">
+                        <div class="col-sm-12 message-main-receiver">
+                            <div class="receiver">
+                                <div class="message-text">${res}</div>
+                                <span class="message-time pull-right">${date}</span>
+                            </div>
+                        </div>
+                    </div>`);
+                let newMsg = document.getElementById('scroll-element');
+                newMsg.scrollIntoView();
+                newMsg.removeAttribute("id");
             }
             else {
-                msgContainer.prepend(`<div style="margin-bottom: -20px;font-size: 23px;" class="mine messages">
-                <span class="sm-msg">${date}</span>
-                <div class="message last" onclick="toggleDate(event)">
-                    ${res}
-                </div>
-            </div>`);
+                msgContainer.append(`
+                    <div class="row message-body" id="scroll-element">
+                        <div class="col-sm-12 message-main-sender">
+                            <div class="sender">
+                                <div class="message-text">${res}</div>
+                                <span class="message-time pull-right">${date}</span>
+                            </div>
+                        </div>
+                    </div>`);
+                let newMsg = document.getElementById('scroll-element');
+                newMsg.scrollIntoView(true);
+                newMsg.removeAttribute("id");
             }
             const htmlObj = `
-                <div id='_${senderId}' style="background: #fff;" class="media border p-3">
-                    <div class="media-body">
-                        <h4>
-                            <a href="/Playground/Message/${senderId}" >${username}</a>
-                            <small> <i>${date}</i></small>
-                        </h4>
-                        <p>${res}</p>
-                        <div class="container">
-                            <button class="btn bg-elephant" style="color: #fff" onclick="sendData('${senderId}')" data-toggle="modal" data-target="#replayModal">Replay</button>
-                            <button class="btn bg-Geyser" onclick="miniChat('${senderId}')">Open</button>
-                        </div>
-                    </div>
-                </div>
-            `;
+                <div id='_${senderId}'
+                        <div class="row sideBar-body full-width" id="_${senderId}" onclick="miniChat('${senderId}')">
+                            <div class="col-lg-2 col-sm-3 col-xs-3 sideBar-avatar">
+                                <div class="avatar-icon">
+                                    <img src="/images/site/user-icon.jpg" />
+                                </div>
+                            </div>
+                            <div class="col-lg-10 col-sm-9 col-xs-9 sideBar-main">
+                                <div class="row">
+                                    <div class="col-sm-8 col-xs-8 ellipsis">
+                                        <span class="name-meta">
+                                            <a>${username}</a>
+                                        </span>
+                                        <p>${res}</p>
+                                    </div>
+                                    <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
+                                        <span class="time-meta pull-right">
+                                           <small> <i>${date}</i></small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
             if (username != '@(User.Identity.Name)') {
                 const sentMsgs = document.querySelectorAll('#_' + senderId);
                 sentMsgs.forEach(ele => ele.remove());
                 $('#all-msgs').prepend(htmlObj);
             }
         });
-        window.oncontextmenu = function () {
-            return false;
-        }
+        //window.oncontextmenu = function () {
+        //    return false;
+        //}
         window.onkeydown = function (e) {
             if (e.key == 'F12') {
                 return false
