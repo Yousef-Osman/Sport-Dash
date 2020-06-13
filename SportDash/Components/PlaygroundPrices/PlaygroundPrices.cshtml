@@ -1,5 +1,23 @@
 ﻿@model SportDash.ViewModels.DataViewModel
 
+<div class="modal fade" tabindex="-1" role="dialog" id="Price_Modal" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="Price_Modal_header_Message" class="modal-title">Confirmation Message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="Price_Modal_Body"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="Prices_Section" class="container lightSection div-min-height mb-5">
     <h1 class="text-elephant pb-3">Prices</h1>
 
@@ -46,16 +64,16 @@
                     <div class="col-2 h-75 align-self-center">
                         <p>From</p>
                     </div>
-                    <div class="col-3 h-75 Time rounded align-self-center">
-                        <p id="from_@i">@GetTime(item.Start)</p>
+                    <div class="col-3 h-75 Time rounded align-self-center d-flex justify-content-center">
+                        <p class="text-center" id="from_@i">@GetTime(item.Start)</p>
                     </div>
                     <div class="col-1 h-75 px-0 align-self-center">
                         <p class="text-center">To</p>
                     </div>
-                    <div class="col-3 h-75 Time rounded align-self-center">
-                        <p id="to_@i">@GetTime(item.End)</p>
+                    <div class="col-3 h-75 Time rounded align-self-center d-flex justify-content-center">
+                        <p class="text-center" id="to_@i">@GetTime(item.End)</p>
                     </div>
-                    <div class="col-3 h-75 align-self-center">
+                    <div class="col-3 h-75 align-self-center d-flex justify-content-center">
                         <p id="price_@i">@item.Price L.E</p>
                     </div>
                 </div>
@@ -92,13 +110,15 @@
         let to_id;
         let price_id;
         let currId;
+        let temp_from_value;
+        let temp_to_value;
+        let temp_price_value;
         let sourcearray = JSON.parse('@Html.Raw(Json.Serialize(Model.PlaygroundPrices.ToArray()))');
         for (let x of sourcearray) {
             console.log(x.playgroundId);
             console.log(x.start);
             console.log(x.end);
             console.log(x.price);
-            //alert(x.playgroundId);
         }
 
 
@@ -130,20 +150,20 @@
                 <div id="row_${last_id}" class="row col-12 col-lg-9 mx-0 px-0">
                     <div class="col-1 ">
                     </div>
-                    <div class="col-10 prices rounded row prices py-3 d-flex ">
+                    <div class="col-10 prices rounded row prices py-3 d-flex">
                         <div class="col-2 h-75 align-self-center">
                             <p>From</p>
                         </div>
-                        <div class="col-3 h-75 Time rounded align-self-center">
+                        <div class="col-3 h-75 Time rounded align-self-center d-flex justify-content-center">
                             <input type='time' id="from_${last_id}">
                         </div>
                         <div class="col-1 h-75 px-0 align-self-center">
                             <p class="text-center">To</p>
                         </div>
-                        <div class="col-3 h-75 Time rounded align-self-center">
+                        <div class="col-3 h-75 Time rounded align-self-center d-flex justify-content-center">
                             <input type='time' id="to_${last_id}">
                         </div>
-                        <div class="col-3 h-75 align-self-center">
+                        <div class="col-3 h-75 align-self-center d-flex justify-content-center">
                             <input type='number' min='1' max='9999' size="4" id="price_${last_id}">
                         </div>
                     </div>
@@ -168,15 +188,21 @@
                         allow = false;
                     }
                     else {
-                        alert("Finish Other Operations First");
+                        raiseModal("Notification", "Finish Other Operations First");
                     }
                 });
             }
             addListeners();
             function deleteCallback() {
                 //debugger;
-                currId = getIds(this);
-                Manager.DeletePrice();
+                if (allow === true) {
+                    currId = getIds(this);
+                    Manager.DeletePrice();
+                }
+                else {
+                    raiseModal("Notification", "Finish Other Operations First");
+                }
+
             }
             function cancelCallback() {
                 currId = getIds(this);
@@ -186,7 +212,8 @@
                     allow = true;
                 }
                 else {
-                    revertEditUI(currId, document.getElementById(`${from_id}`).value, document.getElementById(`${to_id}`).value, document.getElementById(`${price_id}`).value);
+
+                    revertEditUI(currId, temp_from_value, temp_to_value, temp_price_value);
                 }
 
             }
@@ -197,16 +224,17 @@
 
 
             function updateCallback() {
-                //debugger;
-
                 if (allow === true) {
                     currId = getIds(this);
                     console.log(document.getElementById(`${from_id}`).innerText);
+                    temp_from_value = document.getElementById(`${from_id}`).innerText;
+                    temp_to_value = document.getElementById(`${to_id}`).innerText;
+                    temp_price_value = document.getElementById(`${price_id}`).innerText.slice(0, -4);
                     toEditUI(currId, document.getElementById(`${from_id}`).innerText, document.getElementById(`${to_id}`).innerText, document.getElementById(`${price_id}`).innerText.slice(0, -4));
                     allow = false;
                 }
                 else {
-                    alert("Not Allowed");
+                    raiseModal("Notification", "Finish Other Operations First");
                 }
             }
 
@@ -222,7 +250,9 @@
             }
 
             function addCallback() {
-                Manager.PostPrice();
+                if (isNumber(document.getElementById("price_" + currId).value)) {
+                    Manager.PostPrice();
+                }
             }
 
             function getIds(item) {
@@ -267,7 +297,11 @@
                 document.getElementById(`Cancel_${target_id}`).classList.add("d-none");
                 allow = true;
             }
-
+            function raiseModal(modalHeader, modalBody) {
+                $("#Price_Modal_header_Message").text(modalHeader);
+                $("#Price_Modal_Body").text(modalBody);
+                $("#Price_Modal").modal();
+            }
             var Manager = {
 
             PutPrice: function () {
@@ -284,14 +318,14 @@
                     }
                 };
                 Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
-                function onSuccess(jsonData) {
-                    alert("Successfully Updated");
-                    obj = jsonData;
-                    console.log(jsonData);
-                    revertEditUI(currId, document.getElementById(`${from_id}`).value, document.getElementById(`${to_id}`).value, document.getElementById(`${price_id}`).value);
+                    function onSuccess(jsonData) {
+                        raiseModal("Updated Successfullly","The price has been successfully updated");
+                        obj = jsonData;
+                        console.log(jsonData);
+                        revertEditUI(currId, document.getElementById(`${from_id}`).value, document.getElementById(`${to_id}`).value, document.getElementById(`${price_id}`).value);
                 }
                 function onFailed(error) {
-                    alert("Updating Failed");
+                    raiseModal("Update Failed", "The price can't be updated");
                     console.log(error);
                 }
                 return obj;
@@ -315,10 +349,9 @@
                 function addsuccess(jsonData) {
                     obj = jsonData;
                     console.log(jsonData);
-                    console.log("Added Succcessfully");
-                    //debugger;
-                    let from_value = document.getElementById(`from_${last_id}`).value + ":00";
-                    let to_value = document.getElementById(`to_${last_id}`).value+":00";
+                    raiseModal("Successful Addition","the price has been added successfully");
+                    let from_value = document.getElementById(`from_${last_id}`).value;
+                    let to_value = document.getElementById(`to_${last_id}`).value;
                     let price_value = document.getElementById(`price_${last_id}`).value;
                     console.log(from_value);
                     console.log(to_value);
@@ -337,7 +370,7 @@
 
 
                 function onFailed(error) {
-                    alert("Addition Failed");
+                    raiseModal("Addition Failed","the price can't be added");
                     removeRow(last_id);
                     addListeners();
                     console.log(error);
@@ -356,13 +389,13 @@
                 Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
 
                 function onSuccess(jsonData) {
-                    alert("Deletion Successed");
+                    raiseModal("Successful Deletion","the price has been deleted successfully");
                     console.log(jsonData);
                     removeRow(currId);
                     allow = true;
                 }
                 function onFailed(error) {
-                    alert("Deletion Failed");
+                    raiseModal("Deletion Failed","the price has been updated successfully");
                     console.log(error);
                 }
 
@@ -419,6 +452,15 @@
                 }
                 return padZero(hours) + ":" + padZero(minutes);
 
+            }
+
+            function isNumber(str) {
+                var regex = /^[0-9]+$/;
+                if (!str.match(regex)) {
+                    raiseModal("Unvalid Number","you must add a valid number");
+                    return false;
+                }
+                return true;
             }
 
         });
