@@ -28,6 +28,7 @@ namespace SportDash.ViewModels
         public bool IsSigned { get; set; }
         public string ControllerName { get; set; }
         public Review Review { get; set; }
+        public Image ProfileImage { get; set; }
 
         public GymPrices GymPrice { get; set; }
         public List<GymPrices> GymPricesList { get; set; }

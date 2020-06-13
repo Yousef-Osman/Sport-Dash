@@ -15,7 +15,7 @@
                     @*<form asp-action="AutoCompleteSearch">*@
                         <div class="form-inline">
                             <div class="form-group px-sm-3 mb-2 col-md-11">
-                                <input asp-for="SearchString" id="txtSearch" class="form-control w-100" />
+                                <input asp-for="SearchString" id="txtSearch"  name="txtSearch" class="form-control w-100" />
                             </div>
                             <div class="form-group px-sm-3 mb-2 col-md-1">
                                 <button id="search-btn" class="btn btn-lg btn-primary">Search</button>
@@ -176,32 +176,29 @@
     </div>
 </section>
 
-
-@*<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>*@
-
 <script>
     $('#txtSearch').autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: '/Search/AutoCompleteSearch',
-                type: 'GET',
-                dataType: 'json',
-                data: { searchString: request.term },
+                url: '/search/AutoCompleteSearch',
+                dataType:"json",
+                data: { searchstring: $('#txtSearch').val() },
                 success: function (result) {
-                    console.log(result)
                     response($.map(result, function (item) {
-
-                        console.log(item);
                         return { label: item, value: item };
-                    }))
-                }
+                    }));
+                },
             });
-                
-        },
-        //messages: {
-        //    noResults: "", results: ""
-        //}
+        }
+    });
+
+    //when user choose one autocomplete options and press enter
+    var input = document.getElementById("txtSearch");
+    input.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("search-btn").click();
+        }
     });
 
     $('#cat').change(function()

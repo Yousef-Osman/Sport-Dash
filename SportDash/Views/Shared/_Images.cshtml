@@ -1,0 +1,23 @@
+﻿@model SportDash.ViewModels.DataViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div>
+    <div class="d-flex flex-wrap mt-3">
+        @foreach (var item in Model.Images)
+        {
+            <div class="col-lg-3 col-md-4 mt-1" style="padding:1px !important">
+                <img class="gallery-image" src="@("/images/" + item.Title)" asp-append-version="true">
+                @if (Model.IsAdmin == true)
+                {
+                    <button type="button" class="btn btn-danger mt-1 btn-full-width" data-toggle="modal" data-target="#delete-img-Modal" onclick="deleteImage(@item.Id)">Delete</button>
+                }
+            </div>
+        }
+    </div>
+    <div>
+        @if (Model.IsAdmin == true)
+        {
+            <button type="button" class="btn btn-primary bg-elephant mt-3" data-toggle="modal" data-target="#add-image-modal">Add Image</button>
+        }
+    </div>
+</div>
