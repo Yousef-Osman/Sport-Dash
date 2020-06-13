@@ -171,8 +171,9 @@ namespace SportDash.Controllers
         public async Task<IActionResult> DeleteReservation(int id)
         {
             var playgroundId = _userManager.GetUserId(User);
-            var acceptedReservation = _reservationRepository.GetRequests(playgroundId).FirstOrDefault(r => r.Id == id);
-            await NotifyUser(playgroundId, acceptedReservation, $"Sorry, your reservation request has been rejected  for {acceptedReservation.Date} day from {acceptedReservation.StartTime} to {acceptedReservation.EndTime}");
+            var acceptedReservation = _reservationRepository.GetPlaygroundReservationById(id);
+            if(acceptedReservation.UserId!=null)
+                await NotifyUser(playgroundId, acceptedReservation, $"Sorry, your reservation request has been rejected  for {acceptedReservation.Date} day from {acceptedReservation.StartTime} to {acceptedReservation.EndTime}");
             _reservationRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }

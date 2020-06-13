@@ -19,6 +19,7 @@ namespace SportDash.Repository
         //Get all requests to accpet it or refuse
         //id: PlaygroundId
         public List<PlaygroundReservation> GetRequests(string id);
+        public PlaygroundReservation GetPlaygroundReservationById(int id);
         //Admin accept the reservation request
         //id: Id
         public bool AcceptReservation(int id);
