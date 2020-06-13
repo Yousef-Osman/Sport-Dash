@@ -34,7 +34,7 @@ namespace SportDash.Components.TitleBar
                 dataModel.Entity = dataModel.CurrentUser;
             }
 
-            dataModel.Images = _imageRepository.GetImages(userId);
+            dataModel.Images = _imageRepository.GetImages(userId).Where(a=>a.IsProfileImg == false);
             return View("/Components/ImageGallery/ImageGallery.cshtml", dataModel);
         }
     }

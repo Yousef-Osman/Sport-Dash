@@ -1,0 +1,45 @@
+﻿@model SportDash.ViewModels.DataViewModel
+
+<div class="container d-flex flex-wrap justify-content-between align-items-center text-Geyser" style="min-height: 350px">
+    <div class="col-md-6 py-5 remove-spacing-x">
+        <h3>Bio:</h3>
+        @*<p class="col-10">Some random text to show how cool that playground is and why you should visit it you and your friends</p>*@
+        <p class="col-10" style="font-size:1.2em">@Model.Entity.biography</p>
+        <h3>Location:</h3>
+        <p class="col-10" style="font-size:1.2em">Alexandria, @Model.Entity.Location</p>
+        @if (Model.IsAdmin == true)
+        {
+            <input type="button" value="Edit" class="btn btn-info text-elephant bg-Mountain" data-toggle="modal" data-target="#editInfoModal" />
+        }
+    </div>
+    <div class="col-md-6 py-5 d-flex justify-content-between remove-spacing-x">
+        @if (Model.Entity.BallRenting == true)
+        {
+            <div class="col-3 text-center remove-spacing-x">
+                <img src="~/images/site/ball.png" class="col-12 " />
+                <p>Ball renting</p>
+            </div>
+        }
+        @if (Model.Entity.LockerRoom == true)
+        {
+            <div class="col-3 text-center remove-spacing-x">
+                <img src="~/images/site/locker.png" class="col-12" />
+                <p>Locker Room</p>
+            </div>
+        }
+        @if (Model.Entity.Toilet == true)
+        {
+            <div class="col-3 text-center remove-spacing-x">
+                <img src="~/images/site/toilet.png" class="col-12" />
+                <p>Toilet</p>
+            </div>
+        }
+        @if (Model.Entity.ForLadies == true)
+        {
+            <div class="col-3 text-center remove-spacing-x">
+                <img src="~/images/site/lady.png" class="col-12" />
+                <p>For ladies</p>
+            </div>
+        }
+    </div>
+</div>

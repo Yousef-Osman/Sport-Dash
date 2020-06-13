@@ -85,7 +85,7 @@ namespace SportDash.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Full Name")]
             public string FullName { get; set; }
-
+            public string Biography { get; set; }
             public GamesCategory? SportType { get; set; }
 
             [Required]
@@ -138,6 +138,7 @@ namespace SportDash.Areas.Identity.Pages.Account
                     UserName = Input.Email,
                     Email = Input.Email,
                     FullName = Input.FullName,
+                    biography = Input.Biography,
                     Location = Input.Location,
                     SportType = Input.SportType,
                     Category = SelectedRole,
