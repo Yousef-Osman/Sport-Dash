@@ -16,15 +16,18 @@ namespace SportDash.Controllers
         private readonly IMessageRepository messageRepository;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IUserRepository userRepository;
+        private readonly IImageRepository imageRepository;
 
         public MessagesController(
             IMessageRepository messageRepository, 
             UserManager<ApplicationUser> userManager,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IImageRepository imageRepository)
         {
             this.messageRepository = messageRepository;
             this.userManager = userManager;
             this.userRepository = userRepository;
+            this.imageRepository = imageRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -32,10 +35,27 @@ namespace SportDash.Controllers
             var currentUser = await userManager.GetUserAsync(User);
             userRepository.ChangeMsgsStatus(currentUser, false);
             // getting the most recent 5 messages
-            var msgs = messageRepository.GetMessagesR(currentUser.Id)
-                                        .OrderByDescending(m => m.MessageDate)
-                                        .GroupBy(m => m.Sender.UserName).Take(5);
-            return View(msgs);
+            var msgs = messageRepository.GetMessagesR(currentUser.Id);
+
+            List<Image> profileImgs = new List<Image>();
+            foreach(var msg in msgs)
+            {
+                var img = imageRepository.GetImages(msg.SenderId).FirstOrDefault();
+                if(img.IsProfileImg == true)
+                {
+                    profileImgs.Add(img);
+                }
+            }
+
+            var allMsgs = msgs.OrderByDescending(m => m.MessageDate)
+                                        .GroupBy(m => m.Sender.FullName).Take(5);
+
+            var msgViewModel = new MessagingViewModel
+            {
+                RecievedMessages = allMsgs,
+                ProfileImages = profileImgs
+            };
+            return View(msgViewModel);
         }
 
         public async Task<IActionResult> ChangeMsgStatus()
