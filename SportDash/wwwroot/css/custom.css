@@ -19,7 +19,14 @@
     height: 140px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
+    transition: 0.3s;
 }
+
+.profile-image:hover {
+    opacity: 0.8;
+}
+
 
 .gallery-image {
     width: 100%;
