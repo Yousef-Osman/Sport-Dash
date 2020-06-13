@@ -97,18 +97,18 @@ namespace SportDash.Controllers
             return View(searchVM);
         }
 
-        //[HttpGet]
-        //public IActionResult AutoCompleteSearch(string searchString)
-        //{
-        //    var newTrainers = trainers.Where(a=>a.FullName.Contains(searchString)).Select(a => a.FullName);
-        //    var newPlaygrounds = playgrounds.Where(a =>a.FullName.Contains(searchString)).Select(a => a.FullName);
-        //    var newGyms = gyms.Where(a => a.FullName.Contains(searchString)).Select(a => a.FullName);
-        //    var alldata = new List<string>();
-        //    alldata.AddRange(newTrainers);
-        //    alldata.AddRange(newPlaygrounds);
-        //    alldata.AddRange(newGyms);
-        //    return Ok(alldata);
-        //}
+
+        public IActionResult AutoCompleteSearch(string searchString)
+        {
+            var newTrainers = trainers.Where(a => a.FullName.ToLower().Contains(searchString.ToLower())).Select(a => a.FullName);
+            var newPlaygrounds = playgrounds.Where(a => a.FullName.ToLower().Contains(searchString.ToLower())).Select(a => a.FullName);
+            var newGyms = gyms.Where(a => a.FullName.ToLower().Contains(searchString.ToLower())).Select(a => a.FullName);
+            var alldata = new List<string>();
+            alldata.AddRange(newTrainers);
+            alldata.AddRange(newPlaygrounds);
+            alldata.AddRange(newGyms);
+            return new JsonResult(alldata);
+        }
 
         [HttpGet]
         public IActionResult SearchResult(string searchString)
