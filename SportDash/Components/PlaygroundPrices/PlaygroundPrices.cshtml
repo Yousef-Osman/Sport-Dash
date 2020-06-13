@@ -3,24 +3,57 @@
 <div id="Prices_Section" class="container lightSection div-min-height mb-5">
     <h1 class="text-elephant pb-3">Prices</h1>
 
+    @{
+        string GetTime(TimeSpan time)
+        {
+            string meridiem;
+            int Hour;
+            if (time.Hours >= 12)
+            {
+                meridiem = "PM";
+                if (time.Hours == 12)
+                {
+                    Hour = time.Hours;
+                }
+                else
+                {
+                    Hour = time.Hours - 12;
+                }
+            }
+            else
+            {
+                meridiem = "AM";
+                if (time.Hours == 0)
+                {
+                    Hour = 12;
+                }
+                else
+                {
+                    Hour = time.Hours;
+                }
+            }
+            return $"{Hour:00}:{time.Minutes:00} {meridiem}";
+        }
+    }
+
     @{int i = 0;}
     @foreach (var item in Model.PlaygroundPrices)
     {
         <div class="row separator">
-            <div id="row_@i" p="9" class="row col-12 col-lg-6 mx-0 px-0">
+            <div id="row_@i" class="row col-12 col-lg-6 mx-0 px-0">
                 <div class="col-1 "></div>
                 <div id="@(item.PlaygroundId)" class="col-10 prices rounded row prices py-3 d-flex ">
                     <div class="col-2 h-75 align-self-center">
                         <p>From</p>
                     </div>
                     <div class="col-3 h-75 Time rounded align-self-center">
-                        <p id="from_@i">@item.Start</p>
+                        <p id="from_@i">@GetTime(item.Start)</p>
                     </div>
                     <div class="col-1 h-75 px-0 align-self-center">
                         <p class="text-center">To</p>
                     </div>
                     <div class="col-3 h-75 Time rounded align-self-center">
-                        <p id="to_@i">@item.End</p>
+                        <p id="to_@i">@GetTime(item.End)</p>
                     </div>
                     <div class="col-3 h-75 align-self-center">
                         <p id="price_@i">@item.Price L.E</p>
@@ -94,7 +127,7 @@
                     //debugger;
                     if (allow === true) {
                         let NewRow = `<div class="row separator" >
-                <div id="row_${last_id}" class="row col-12 col-lg-6 mx-0 px-0">
+                <div id="row_${last_id}" class="row col-12 col-lg-9 mx-0 px-0">
                     <div class="col-1 ">
                     </div>
                     <div class="col-10 prices rounded row prices py-3 d-flex ">
@@ -141,7 +174,7 @@
             }
             addListeners();
             function deleteCallback() {
-                debugger;
+                //debugger;
                 currId = getIds(this);
                 Manager.DeletePrice();
             }
@@ -206,8 +239,8 @@
 
             function toEditUI(target_id, from_value = "", to_value = "", price_value = "") {
             //debugger;
-            document.getElementById(`${from_id}`).parentElement.innerHTML = `<input type='time' id = "${from_id}" value="${from_value}">`;
-            document.getElementById(`${to_id}`).parentElement.innerHTML = `<input type='time' id = "${to_id}" value="${to_value}">`;
+                document.getElementById(`${from_id}`).parentElement.innerHTML = `<input type='time' id = "${from_id}" value="${getTime24(from_value)}">`;
+                document.getElementById(`${to_id}`).parentElement.innerHTML = `<input type='time' id = "${to_id}" value="${getTime24(to_value)}">`;
             document.getElementById(`${price_id}`).parentElement.innerHTML = `<input type='number' min='1' max='9999' size="4" id = "${price_id}" value="${price_value}">`;//size doesn't work for chrome
 
             document.getElementById(`row_${target_id}`).classList.remove("col-lg-6");
@@ -220,22 +253,22 @@
             allow = false;
         }
 
-        function revertEditUI(target_id, from_value = "", to_value = "", price_value = "") {
-            document.getElementById(`from_${target_id}`).parentElement.innerHTML = `<p id="from_${target_id}">${from_value}</p>`;
-            document.getElementById(`to_${target_id}`).parentElement.innerHTML = `<p id="to_${target_id}">${to_value}</p>`;
-            document.getElementById(`price_${target_id}`).parentElement.innerHTML = `<p id="price_${target_id}">${price_value} L.E</p>`;
+            function revertEditUI(target_id, from_value = "", to_value = "", price_value = "") {
+                document.getElementById(`from_${target_id}`).parentElement.innerHTML = `<p id="from_${target_id}">${getTimeMeridiem(from_value)}</p>`;
+                document.getElementById(`to_${target_id}`).parentElement.innerHTML = `<p id="to_${target_id}">${getTimeMeridiem(to_value)}</p>`;
+                document.getElementById(`price_${target_id}`).parentElement.innerHTML = `<p id="price_${target_id}">${price_value} L.E</p>`;
 
-            document.getElementById(`row_${target_id}`).classList.remove("col-lg-9");
-            document.getElementById(`row_${target_id}`).classList.add("col-lg-6");
+                document.getElementById(`row_${target_id}`).classList.remove("col-lg-9");
+                document.getElementById(`row_${target_id}`).classList.add("col-lg-6");
 
-            document.getElementById(`Update_${target_id}`).classList.remove("d-none");
-            document.getElementById(`Delete_${target_id}`).classList.remove("d-none");
-            document.getElementById(`Save_${target_id}`).classList.add("d-none");
-            document.getElementById(`Cancel_${target_id}`).classList.add("d-none");
-            allow = true;
-        }
+                document.getElementById(`Update_${target_id}`).classList.remove("d-none");
+                document.getElementById(`Delete_${target_id}`).classList.remove("d-none");
+                document.getElementById(`Save_${target_id}`).classList.add("d-none");
+                document.getElementById(`Cancel_${target_id}`).classList.add("d-none");
+                allow = true;
+            }
 
-        var Manager = {
+            var Manager = {
 
             PutPrice: function () {
                 let obj = "";
@@ -283,7 +316,7 @@
                     obj = jsonData;
                     console.log(jsonData);
                     console.log("Added Succcessfully");
-                    debugger;
+                    //debugger;
                     let from_value = document.getElementById(`from_${last_id}`).value + ":00";
                     let to_value = document.getElementById(`to_${last_id}`).value+":00";
                     let price_value = document.getElementById(`price_${last_id}`).value;
@@ -346,7 +379,48 @@
                 });
             }
 
-        };
+            };
+            function getTimeMeridiem(myTime="") {
+                let time = myTime;
+                let hours = time.slice(0, 2);
+                hours = parseInt(hours);
+                let minutes = time.slice(3, 5);
+                minutes = parseInt(minutes);
+                if (hours >= 12) {
+                    meridiem = " PM";
+                    if (hours != 12) {
+                        hours -= 12;
+                    }
+                }
+                else {
+                    meridiem = " AM";
+                    if (hours == 0) {
+                        hours = 12;
+                    }
+                }
+                time = padZero(hours) + ":" + padZero(minutes) + meridiem;
+                return time;
+            }
+
+            let padZero = num => ('0' + num).slice(-2);
+
+            function getTime24(mytime="") {
+                let time = mytime;
+                let hours = time.slice(0, 2);
+                hours = parseInt(hours);
+                let minutes = time.slice(3, 5);
+                minutes = parseInt(minutes);
+                let meridiem = time.slice(6, 8);
+                if ((meridiem.toLowerCase() === "pm") && (hours < 12)) {
+                    hours += 12;
+                }
+                else if ((meridiem.toLowerCase() === "am") && (hours === 12)) {
+                    hours = 0;
+                }
+                return padZero(hours) + ":" + padZero(minutes);
+
+            }
+
         });
     </script>
 }
