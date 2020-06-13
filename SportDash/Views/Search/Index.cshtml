@@ -3,7 +3,7 @@
     ViewData["Title"] = "Search";
 }
 
-
+<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.4/themes/redmond/jquery-ui.css" />
 
 <section>
     <div class="text-center">
@@ -12,10 +12,10 @@
                 <div>
                     <h2>What are you looking for ?</h2>
                     <p>You can search for Playground or Trainer or Gym with filters option </p>
-                    @*<form asp-action="Index">*@
+                    @*<form asp-action="AutoCompleteSearch">*@
                         <div class="form-inline">
                             <div class="form-group px-sm-3 mb-2 col-md-11">
-                                <input type="search" id="txtSearch" class="form-control w-100" />
+                                <input asp-for="SearchString" id="txtSearch" class="form-control w-100" />
                             </div>
                             <div class="form-group px-sm-3 mb-2 col-md-1">
                                 <button id="search-btn" class="btn btn-lg btn-primary">Search</button>
@@ -72,7 +72,14 @@
                         {
                             <div class="col-md-3">
                                 <div class="card">
-                                    <img src="~/images/obl202005231057175364.jpg" class="card-img-top" alt="...">
+                                    @if (Model.ProfileImage == null)
+                                    {
+                                        <img  class="card-img-top" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                    }
+                                    else
+                                    {
+                                        <img  class="card-img-top" src="@("/images/" + Model.ProfileImage.Title)" asp-append-version="true">
+                                    }
                                     <div class="card-body">
                                         <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
                                         <p class="card-text">@item.Location</p>
@@ -169,24 +176,33 @@
     </div>
 </section>
 
-<script>
-    //$('#txtSearch').autocomplete({
-    //    source: function (request, response) {
-    //        $.ajax({
-    //            url: '/Search/Search',
-    //            type: 'GET',
-    //            data: { searchString: $('#txtSearch').val() },
-    //            success: function (result) {
-    //                response($.map(result, function (item) {
 
-    //                    return {
-    //                        label:item.Name,value:item.Value
-    //                    }
-    //                }))
-    //            }
-    //        });
-    //    }
-    //});
+@*<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>*@
+
+<script>
+    $('#txtSearch').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/Search/AutoCompleteSearch',
+                type: 'GET',
+                dataType: 'json',
+                data: { searchString: request.term },
+                success: function (result) {
+                    console.log(result)
+                    response($.map(result, function (item) {
+
+                        console.log(item);
+                        return { label: item, value: item };
+                    }))
+                }
+            });
+                
+        },
+        //messages: {
+        //    noResults: "", results: ""
+        //}
+    });
 
     $('#cat').change(function()
     {

@@ -17,7 +17,14 @@
                         <div class="row mb-3">
 
                             <div class="col-md-1">
-                                 <img width="50" height="50" class="" src="~/images/user-icon.jpg" />
+                                @if (Model.ProfileImage == null)
+                                 {
+                                   <img  width="50" height="50" class="profile-image" src="@("/images/site/user-icon.jpg")" asp-append-version="true"> 
+                                 }
+                                 else
+                                 {
+                                   <img  width="50" height="50" class="profile-image" src="@("/images/" + Model.ProfileImage.Title)" asp-append-version="true">
+                                 }
                             </div>
 
                             <div class="col-md-11 text-left">
@@ -71,7 +78,7 @@
                                          }
                                    }
                                 }
-                              @*<p>@item.Rating</p>*@
+                              <p>@item.Rating</p>
                               <p>@item.Review_Date</p>
                               <p class="h5">@item.Comment</p>
                               @if (User.IsInRole("User"))
@@ -175,6 +182,7 @@
         e.preventDefault();
         const new_review = $("#staticBackdrop").find('#new-review').val();
         const new_rate = $('input[name=rating]:checked').val();
+        console.log(new_rate);
         const current_id = "@Model.CurrentUser.Id";
         var today = new Date();
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -190,22 +198,25 @@
         };
         console.log(review)
 
-        $('#staticBackdrop').on('hidden.bs.modal', function (e) {
-            $(this)
-                .find("input,textarea,select")
-                .val('')
-                .end()
-                .find("input[type=checkbox], input[type=radio]")
-                .prop("checked", "")
-                .end();
-        });
+        // need to fix it to empty model after close it
+        //$('#staticBackdrop').on('hidden.bs.modal', function (e) {
+        //    e
+        //        .find("input,textarea,select")
+        //        .val('')
+        //        .end()
+        //        .find("input[type=checkbox], input[type=radio]")
+        //        .prop("checked", "")
+        //        .end();
+        //});
+
+       
 
         if (review != null) {
             $.ajax({
                 url: '/@Model.ControllerName/AddReview',
                 type: 'POST',
                 data: { R: review },
-                dataType: "text",
+                //dataType: "text",
                 success: function (response) {
                     console.log(response);
                     $('#review-container').html(response);
@@ -222,9 +233,9 @@
                         <span class="fa fa-star"></span>
 
 
-                        <p>${response.value.rating}</p>
-                        <span>${response.value.review_Date}</span>
-                        <p class="h5">${response.value.comment}</p>
+                        <p>$//{response.value.rating}</p>
+                        <span>$//{response.value.review_Date}</span>
+                        <p class="h5">$//{response.value.comment}</p>
                         <div class="text-right">
                         <Button id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
                         </div>
