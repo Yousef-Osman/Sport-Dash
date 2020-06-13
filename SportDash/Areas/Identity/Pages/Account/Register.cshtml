@@ -32,6 +32,11 @@
                     </div>
                     <div class="form-row mb-2">
                         <div class="col">
+                            <textarea  asp-for="Input.Biography" class="form-control" rows="1" placeholder="Biography" id="info-bio"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row mb-2">
+                        <div class="col">
                             <select asp-for="Input.Location" class="custom-select my-1 mr-sm-2" asp-items="Model.locations">
                                 <option value="">Select your location ...</option>
                             </select>
