@@ -104,14 +104,14 @@ namespace SportDash.Hubs
 
             if(recieverConnection != null)
             {                
-                await Clients.Client(recieverConnection.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.FullName, DateTime.Now.ToString("hh:mm tt"), senderProfileImg, sender.Id);
+                await Clients.Client(recieverConnection.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.FullName, DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt"), senderProfileImg, sender.Id);
                 userRepository.ChangeMsgsStatus(reciever, true);
                 // here i am sending the msg to the other guy on the other side
-                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, reciever.Id, reciever.FullName, DateTime.Now.ToString("hh:mm tt"), recieverProfileImg, sender.Id);
+                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, reciever.Id, reciever.FullName, DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt"), recieverProfileImg, sender.Id);
             }
             else
             {
-                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.FullName, DateTime.Now.ToString("hh:mm tt"), senderProfileImg, sender.Id);
+                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.FullName, DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt"), senderProfileImg, sender.Id);
                 userRepository.ChangeMsgsStatus(reciever, true);
             }
             messageRepository.PostMessage(new Models.Message

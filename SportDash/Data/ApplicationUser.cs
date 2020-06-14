@@ -16,8 +16,7 @@ namespace SportDash.Data
         public GamesCategory? SportType { get; set; }
         public string biography { get; set; }
         public string Location { get; set; }
-        public string Category { get; set; }
-        public string Size { get; set; }
+        public string Category { get; set; }        
         public bool? BallRenting { get; set; }
         public bool? LockerRoom { get; set; }
         public bool? Safe { get; set; }
@@ -29,8 +28,7 @@ namespace SportDash.Data
         public List<Message> SenderMessages { get; set; }
         public List<Message> ReceiverMessages { get; set; }
         public List<Review> ReviewerReviews { get; set; }
-        public List<Review> TargetReviews { get; set; }
-        public List<TrainingProgram> TrainingPrograms { get; set; }
+        public List<Review> TargetReviews { get; set; }        
         public List<GymPrices> GymPrices { get; set; }
         public List<PlaygroundReservation> UserReservations { get; set; }
         public List<PlaygroundReservation> Playgrounds { get; set; }

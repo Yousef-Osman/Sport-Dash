@@ -20,7 +20,6 @@ namespace SportDash.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Image> Images { get; set; }        
-        public DbSet<TrainingProgram> TrainingPrograms { get; set; }
         public DbSet<GymPrices> GymPrices { get; set; }
         public DbSet<PlaygroundPrice> playgroundPrices { get; set; }
         public DbSet<PlaygroundReservation> playgroundReservations { get; set; }
