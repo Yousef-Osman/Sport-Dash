@@ -1,77 +1,219 @@
-﻿@model IEnumerable<ApplicationUser>
+﻿
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Index";
 }
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,700,900|Roboto+Mono:300,400,500">
+<link href="~/lib/homePage/fonts/icomoon/style.css" rel="stylesheet" />
+
+<link href="~/lib/homePage/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/css/custom.css" rel="stylesheet" />
+<link href="~/lib/homePage/css/magnific-popup.css" rel="stylesheet" />
+<link href="~/lib/homePage/css/jquery-ui.css" rel="stylesheet" />
+<link href="~/lib/homePage/css/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/lib/homePage/css/owl.theme.default.min.css" rel="stylesheet" />
+<link href="~/lib/homePage/css/bootstrap-datepicker.css" rel="stylesheet" />
+<link href="~/lib/homePage/css/animate.css" rel="stylesheet" />
+<link href="~/lib/homePage/fonts/flaticon/font/flaticon.css" rel="stylesheet" />
+<link href="~/lib/homePage/css/fl-bigmug-line.css" rel="stylesheet" />
+<link href="~/lib/homePage/css/aos.css" rel="stylesheet" />
+<link href="~/lib/homePage/css/style.css" rel="stylesheet" />
+
+<section>
+    <div>
+        <main role="main">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="~/images/Slider/01.jpg" alt="First slide">
+                        <div class="center-content text-center">
+                            <h1 class="display-2 text-white">SPORT DASH</h1>
+                            <h3 class="text-white">Find Best Playgrounds near you</h3>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="~/images/Slider/02.jpg" alt="Second slide">
+                        <div class="center-content text-center">
+                            <h1 class="display-2 text-white">SPORT DASH</h1>
+                            <h3 class="text-white">See photos of a playground before you visit</h3>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="~/images/Slider/03.jpg" alt="Third slide">
+                        <div class="center-content text-center">
+                            <h1 class="display-2 text-white">SPORT DASH</h1>
+                            <h3 class="text-white">Search our site to find what suits your need</h3>
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+            <div class="site-section bg-light">
+                <div class="container">
+                    <div class="row justify-content-center text-center mb-5">
+                        <div class="col-md-6" data-aos="fade">
+                            <h2>Services We Provide To Help You to Take Care of Your Health</h2>
+                        </div>
+                    </div>
+                    <div class="row hosting">
+                        <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="100">
+
+                            <div class="unit-2 text-center border py-5 h-100 bg-white">
+                                <img src="~/images/site/tennisBat.png" class="col-6 green-color-filter" />
+                                <h3 class="h4 text-black">Sports fields</h3>
+                                <p class="mb-4 text-gray-500">Take a look at the sports fields near you</p>
+                                <p><a class="btn btn-primary py-2 px-4 rounded-0" asp-controller="Search" asp-action="Index">View Details</a></p>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
+
+                            <div class="unit-2 text-center border py-5 h-100 bg-white">
+                                <img src="~/images/site/dumbbell.png" class="col-6 green-color-filter" />
+                                <h3 class="h4 text-black">Gyms</h3>
+                                <p class="mb-4 text-gray-500">find nearby gyms and their price list</p>
+                                <p><a class="btn btn-primary py-2 px-4 rounded-0" asp-controller="Search" asp-action="Index">View Details</a></p>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="300">
+
+                            <div class="unit-2 text-center border py-5 h-100 bg-white">
+                                <img src="~/images/site/whistle.png" class="col-6 green-color-filter" />
+                                <h3 class="h4 text-black">Coaches</h3>
+                                <p class="mb-4 text-gray-500">Find a professional coach that suits you</p>
+                                <p><a class="btn btn-primary py-2 px-4 rounded-0" asp-controller="Search" asp-action="Index">View Details</a></p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="site-blocks-cover overlay" style="background-image: url(/images/site/field_bg.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
+                <div class="container">
+                    <div class="row align-items-center text-left">
+                        <div class="col-md-7">
+                            <h1 class="mb-2">Reservations</h1>
+                            <p class="mb-5">Book your Desirable sport field with a button click</p>
+                            <p>
+                                <a class="btn btn-primary py-3 px-5 rounded-0" asp-area="Identity" asp-page="/Account/Register">Register Now</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="site-section bg-white">
+                <div class="container">
+                    <div class="row justify-content-center text-center mb-5">
+                        <div class="col-md-6" data-aos="fade">
+                            <h2>Features</h2>
+                        </div>
+                    </div>
+                    <div class="row hosting">
+                        <div class="col-md-6 col-lg-4 mb-5 mb-lg-4" data-aos="fade" data-aos-delay="100">
+
+                            <div class="unit-3 h-100 bg-white">
+
+                                <div class="d-flex align-items-center mb-3 unit-3-heading">
+                                    <div class="unit-3-icon-wrap mr-4">
+                                        <img src="~/images/site/search_icon.png" width="60" class="green-color-filter handmade-icon" />
+                                    </div>
+                                    <h2 class="h5">Start Searching</h2>
+                                </div>
+                                <div class="unit-3-body">
+                                    <p>Search for your desired sport field, gym or trainer and make your life easier by using the category search to find places that you need.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-lg-4 mb-5 mb-lg-4" data-aos="fade" data-aos-delay="200">
+
+                            <div class="unit-3 h-100 bg-white">
+
+                                <div class="d-flex align-items-center mb-3 unit-3-heading">
+                                    <div class="unit-3-icon-wrap mr-4">
+                                        <img src="~/images/site/chat-icon.png" width="60" class="green-color-filter handmade-icon" />
+                                    </div>
+                                    <h2 class="h5">Chat Feature</h2>
+                                </div>
+                                <div class="unit-3-body">
+                                    <p>Use the chat feature to communicate with the fields owners and trainers and get the information you want and the proper service that you deserve.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-lg-4 mb-5 mb-lg-4" data-aos="fade" data-aos-delay="300">
+
+                            <div class="unit-3 h-100 bg-white">
+
+                                <div class="d-flex align-items-center mb-3 unit-3-heading">
+                                    <div class="unit-3-icon-wrap mr-4">
+                                        <img src="~/images/site/community-icon.png" width="60" class="green-color-filter handmade-icon" />
+                                    </div>
+                                    <h2 class="h5">Our Community</h2>
+                                </div>
+                                <div class="unit-3-body">
+                                    <p>If you have any Questions, our website provide a large community of users to help find what you're looking for and get other users experience.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
     
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img class="d-block w-100" src="~/images/Slider/01.jpg" alt="First slide">
-            <div class="center-content text-center">
-                <h1 class="display-2 text-white">SPORT DASH</h1>
-                <h3 class="text-white">Find Best Playgrounds near you</h3>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="~/images/Slider/02.jpg" alt="Second slide">
-            <div class="center-content text-center">
-                <h1 class="display-2 text-white">SPORT DASH</h1>
-                <h3 class="text-white">See photos of a playground before you visit</h3>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="~/images/Slider/03.jpg" alt="Third slide">
-            <div class="center-content text-center">
-                <h1 class="display-2 text-white">SPORT DASH</h1>
-                <h3 class="text-white">Search our site to find what suits your need</h3>
-            </div>
-        </div>
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
 
-<section class="pt-5 pb-3">
-    <div class="container">
-        <h1 class="display-4">Find Playgrounds Near You</h1>
-        <p class="lead">
-            Sport Dash is the ultimate handy tool for players.
-            Use it in your local area to find playgrounds you didn’t know existed.
-        </p>
-    </div>
+    <script src="~/lib/homePage/js/jquery-3.3.1.min.js"></script>
+    <script src="~/lib/homePage/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="~/lib/homePage/js/jquery-ui.js"></script>
+    <script src="~/lib/homePage/js/popper.min.js"></script>
+    <script src="~/lib/homePage/js/bootstrap.min.js"></script>
+    <script src="~/lib/homePage/js/owl.carousel.min.js"></script>
+    <script src="~/lib/homePage/js/jquery.stellar.min.js"></script>
+    <script src="~/lib/homePage/js/jquery.countdown.min.js"></script>
+    <script src="~/lib/homePage/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="~/lib/homePage/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/homePage/js/aos.js"></script>
+    <script src="~/lib/homePage/js/main.js"></script>
+
 </section>
 
 
-<section class="container mb-5">
-    <div class="row">
-        @foreach (var item in Model)
-        {
-        <div class="col-md-6">
-            <a class="btn btn-info col-12 py-4 my-1 bg-elephant h2" asp-controller="Playground" asp-action="Index" asp-route-id="@item.Id">
-                <h5>@item.FullName</h5>
-            </a>
-            @*<form asp-controller="Playground" asp-action="Index" method="post">
-                <input value="@item.Id" name="id" hidden />
-                <button type="submit" class="btn btn-info col-12 py-4 my-1 bg-elephant h2">
-                    <h5>@item.FullName</h5>
-                </button>
-            </form>*@
-        </div>
-        }
-    </div>
-</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

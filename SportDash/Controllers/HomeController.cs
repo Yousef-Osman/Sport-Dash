@@ -27,21 +27,13 @@ namespace SportDash.Controllers
 
         public IActionResult Index()
         {
-            var entities = _context.Users.ToList();
-            return View(entities);
-            //TempData["baseUrl"] = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Request.PathBase);
-            //return View();
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public IActionResult NewIndex()
-        {
-            return View();
         }
     }
 }
