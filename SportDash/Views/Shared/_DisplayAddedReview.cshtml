@@ -10,7 +10,17 @@
                     <div class="row mb-3">
 
                         <div class="col-md-1">
-                            <img width="50" height="50" class="" src="~/images/user-icon.jpg" />
+                            @{
+                                var UserProfileImage = item.Reviewer.Images.Where(a => a.IsProfileImg).Select(a => a.Title).FirstOrDefault();
+                            }
+                            @if (UserProfileImage == null)
+                            {
+                                <img class="profile-image-small" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                            }
+                            else
+                            {
+                                <img class="profile-image-small" src="@("/images/" + UserProfileImage)" asp-append-version="true">
+                            }
                         </div>
 
                         <div class="col-md-11 text-left">
@@ -64,7 +74,7 @@
                                     }
                                 }
                             }
-                            @*<p>@item.Rating</p>*@
+                            <p>@item.Rating</p>
                             <p>@item.Review_Date</p>
                             <p class="h5">@item.Comment</p>
                             @if (User.IsInRole("User"))

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -27,9 +28,9 @@ namespace SportDash.Controllers
         {
             _User = User;
             _context = context;
-            trainers = _context.Users.Where(a => a.Category == "Coach").ToList();
-            playgrounds = _context.Users.Include(a=>a.PlaygroundPrices).Where(a => a.Category == "Playground").ToList();
-            gyms = _context.Users.Include(a => a.GymPrices).Where(a => a.Category == "Gym").ToList();
+            trainers = _context.Users.Include(a=>a.Images).Where(a => a.Category == "Coach").ToList();
+            playgrounds = _context.Users.Include(a=>a.PlaygroundPrices).Include(a=>a.Images).Where(a => a.Category == "Playground").ToList();
+            gyms = _context.Users.Include(a => a.GymPrices).Include(a=>a.Images).Where(a => a.Category == "Gym").ToList();
             searchVM = new SearchViewModel();
         }
       
@@ -79,7 +80,9 @@ namespace SportDash.Controllers
                 new SelectListItem {Text = "El-Siouf", Value= "23"},
                 new SelectListItem {Text = "El-Wardiaan", Value= "24"},
                 new SelectListItem {Text = "Gleam", Value= "25"},
-                new SelectListItem {Text = "Janklies", Value= "26"}
+                new SelectListItem {Text = "Janklies", Value= "26"},
+                new SelectListItem {Text = "Miami", Value= "27"}
+                
             };
 
             searchVM.SportType = new List<SelectListItem>
@@ -98,7 +101,7 @@ namespace SportDash.Controllers
         }
 
 
-        public IActionResult AutoCompleteSearch(string searchString)
+        public JsonResult AutoCompleteSearch(string searchString)
         {
             var newTrainers = trainers.Where(a => a.FullName.ToLower().Contains(searchString.ToLower())).Select(a => a.FullName);
             var newPlaygrounds = playgrounds.Where(a => a.FullName.ToLower().Contains(searchString.ToLower())).Select(a => a.FullName);
@@ -107,7 +110,7 @@ namespace SportDash.Controllers
             alldata.AddRange(newTrainers);
             alldata.AddRange(newPlaygrounds);
             alldata.AddRange(newGyms);
-            return new JsonResult(alldata);
+            return Json(alldata);
         }
 
         [HttpGet]

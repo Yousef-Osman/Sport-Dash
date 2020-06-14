@@ -180,8 +180,9 @@ namespace SportDash.Controllers
         public async Task<IActionResult> DeleteReservation(int id)
         {
             var playgroundId = _userManager.GetUserId(User);
-            var acceptedReservation = _reservationRepository.GetRequests(playgroundId).FirstOrDefault(r => r.Id == id);
-            await NotifyUser(playgroundId, acceptedReservation, $"Sorry, your reservation request has been rejected  for {acceptedReservation.Date} day from {acceptedReservation.StartTime} to {acceptedReservation.EndTime}");
+            var acceptedReservation = _reservationRepository.GetPlaygroundReservationById(id);
+            if(acceptedReservation.UserId!=null)
+                await NotifyUser(playgroundId, acceptedReservation, $"Sorry, your reservation request has been rejected  for {acceptedReservation.Date} day from {acceptedReservation.StartTime} to {acceptedReservation.EndTime}");
             _reservationRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
@@ -316,16 +317,19 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
+        //[Authorize(Policy = "PlaygroundPolicy")]
         public async Task<IActionResult> AddReview(Review R)
         {
-            //if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             //R.ReviewerId = _userManager.GetUserId(HttpContext.User);
             //R.TargetId = "b6bf071e-32fe-4b3f-b8ec-57ddc6737e8";
             // var review = _reviewRepository.PostReview(R);
             //return Ok(new OkObjectResult(review));
             DataViewModel reviewVM = new DataViewModel();
+            var userId = R.ReviewerId;
             var TargetId = R.TargetId; 
             var review = _reviewRepository.PostReview(R);
+            reviewVM.ProfileImage = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == true).SingleOrDefault();
             reviewVM.CurrentUser =  await _userManager.GetUserAsync(User);
             reviewVM.Reviews = _reviewRepository.GetReviewsOfReviewee(TargetId);
             reviewVM.Review = review;

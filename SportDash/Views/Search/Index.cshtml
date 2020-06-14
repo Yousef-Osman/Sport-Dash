@@ -3,7 +3,7 @@
     ViewData["Title"] = "Search";
 }
 
-
+<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.4/themes/redmond/jquery-ui.css" />
 
 <section>
     <div class="text-center">
@@ -12,16 +12,16 @@
                 <div>
                     <h2>What are you looking for ?</h2>
                     <p>You can search for Playground or Trainer or Gym with filters option </p>
-                    <form>
-                        <div class="form-inline form-group">
+                    @*<form asp-action="AutoCompleteSearch">*@
+                        <div class="form-inline">
                             <div class="form-group px-sm-3 mb-2 col-md-11">
-                                <input type="search" id="txtSearch" name="txtSearch" class="form-control w-100" />
+                                <input asp-for="SearchString" id="txtSearch"  name="txtSearch" class="form-control w-100" />
                             </div>
                             <div class="form-group px-sm-3 mb-2 col-md-1">
                                 <button id="search-btn" class="btn btn-lg btn-primary">Search</button>
                             </div>
                         </div>
-                    </form>
+                    @*</form>*@
                 </div>
                 <div class="row mt-3">
                     <div class="form-group row col-md-3">
@@ -72,7 +72,15 @@
                         {
                             <div class="col-md-3">
                                 <div class="card">
-                                    <img src="~/images/obl202005231057175364.jpg" class="card-img-top" alt="...">
+                                    @{
+                                        var PlaygroungProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
+                                    }
+                                    @if (PlaygroungProfileImage == null) {
+                                        <img class="card-img-top" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                    }
+                                    else { 
+                                        <img class="card-img-top" src="@("/images/" + PlaygroungProfileImage)" asp-append-version="true">
+                                    }
                                     <div class="card-body">
                                         <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
                                         <p class="card-text">@item.Location</p>
@@ -93,6 +101,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                         }
                     }
                     else
@@ -111,7 +120,17 @@
                         {
                             <div class="col-md-3">
                                 <div class="card">
-                                    <img src="~/images/obl202005231057175364.jpg" class="card-img-top" alt="...">
+                                    @{
+                                        var GymProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
+                                    }
+                                    @if (GymProfileImage == null)
+                                    {
+                                        <img class="card-img-top" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                    }
+                                    else
+                                    {
+                                        <img class="card-img-top" src="@("/images/" + GymProfileImage)" asp-append-version="true">
+                                    }
                                     <div class="card-body">
                                         <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
                                         <p class="card-text">@item.Location</p>
@@ -150,7 +169,17 @@
                         {
                             <div class="col-md-3">
                                 <div class="card">
-                                    <img src="~/images/user-icon.jpg" class="card-img-top" alt="...">
+                                    @{
+                                        var CoachProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
+                                    }
+                                    @if (CoachProfileImage == null)
+                                    {
+                                        <img class="card-img-top" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                    }
+                                    else
+                                    {
+                                        <img class="card-img-top" src="@("/images/" + CoachProfileImage)" asp-append-version="true">
+                                    }
                                     <div class="card-body">
                                         <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
                                         <p class="card-text">@item.Location</p>
