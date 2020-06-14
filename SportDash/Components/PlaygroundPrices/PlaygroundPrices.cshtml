@@ -114,13 +114,6 @@
         let temp_to_value;
         let temp_price_value;
         let sourcearray = JSON.parse('@Html.Raw(Json.Serialize(Model.PlaygroundPrices.ToArray()))');
-        for (let x of sourcearray) {
-            console.log(x.playgroundId);
-            console.log(x.start);
-            console.log(x.end);
-            console.log(x.price);
-        }
-
 
         $(document).ready(() => {
 
@@ -226,7 +219,6 @@
             function updateCallback() {
                 if (allow === true) {
                     currId = getIds(this);
-                    console.log(document.getElementById(`${from_id}`).innerText);
                     temp_from_value = document.getElementById(`${from_id}`).innerText;
                     temp_to_value = document.getElementById(`${to_id}`).innerText;
                     temp_price_value = document.getElementById(`${price_id}`).innerText.slice(0, -4);
@@ -242,10 +234,6 @@
 
 
             function saveCallback() {
-                console.log(sourcearray[currId].playgroundId);
-                //console.log(`${sourcearray[currId].start.hours}:${sourcearray[currId].start.minutes}`);
-                //console.log(`${sourcearray[currId].end.hours}:${sourcearray[currId].end.minutes}`);
-                //console.log(sourcearray[currId].price);
                 Manager.PutPrice();
             }
 
@@ -321,7 +309,6 @@
                     function onSuccess(jsonData) {
                         raiseModal("Updated Successfullly","The price has been successfully updated");
                         obj = jsonData;
-                        console.log(jsonData);
                         revertEditUI(currId, document.getElementById(`${from_id}`).value, document.getElementById(`${to_id}`).value, document.getElementById(`${price_id}`).value);
                 }
                 function onFailed(error) {
@@ -334,7 +321,6 @@
             PostPrice: function () {
                 let obj = "";
                 let serviceURL = "/Playground/AddPlaygroundPrice/";
-                console.log(document.getElementById("from_"+currId).value);
                 let Data = {
                     "NewPlaygroundPrice": {
                         "playgroundId": `@Model.Entity.Id`,
@@ -348,14 +334,10 @@
 
                 function addsuccess(jsonData) {
                     obj = jsonData;
-                    console.log(jsonData);
                     raiseModal("Successful Addition","the price has been added successfully");
                     let from_value = document.getElementById(`from_${last_id}`).value;
                     let to_value = document.getElementById(`to_${last_id}`).value;
                     let price_value = document.getElementById(`price_${last_id}`).value;
-                    console.log(from_value);
-                    console.log(to_value);
-                    console.log(price_value);
                     revertEditUI(last_id, from_value, to_value, price_value);
                     sourcearray.push({ id: jsonData.id, playgroundId: `@Model.Entity.Id`, start: from_value, end: to_value, price: price_value });
                     let rowParent = document.getElementById(`row_${last_id}`).parentElement;
@@ -381,7 +363,6 @@
             DeletePrice: function () {
                 let obj = "";
                 let serviceURL = "/Playground/DeletePlaygroundPrice/";
-                console.log(sourcearray[currId].id);
                 let Data = {
                     "Id": `${sourcearray[currId].id}`
                 };
@@ -390,7 +371,6 @@
 
                 function onSuccess(jsonData) {
                     raiseModal("Successful Deletion","the price has been deleted successfully");
-                    console.log(jsonData);
                     removeRow(currId);
                     allow = true;
                 }

@@ -6,7 +6,7 @@
         @foreach (var item in Model.Images)
         {
             <div class="col-lg-3 col-md-4 mt-1" style="padding:1px !important">
-                <img class="gallery-image" src="@("/images/" + item.Title)" asp-append-version="true">
+                <img class="gallery-image" src="@("/images/" + item.Title)" asp-append-version="true" id="@("/images/" + item.Title)" onclick="displayImage(this.id)">
                 @if (Model.IsAdmin == true)
                 {
                     <button type="button" class="btn btn-danger mt-1 btn-full-width" data-toggle="modal" data-target="#delete-img-Modal" onclick="deleteImage(@item.Id)">Delete</button>

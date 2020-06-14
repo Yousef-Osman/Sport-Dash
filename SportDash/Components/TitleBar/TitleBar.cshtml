@@ -37,16 +37,16 @@
                         <h3 class="text-white" id="entity-Name">@Model.Entity.FullName</h3>
                         @if (Model.IsAdmin == true)
                         {
-                            <button type="button" class="btn btn-info text-elephant bg-Mountain ml-4" data-toggle="modal" data-target="#editTitleModal">Edit</button>
+                            <i class="fa fa-pencil-square-o pl-3 pt-1 text-Mountain" aria-hidden="true" data-toggle="modal" data-target="#editTitleModal" style="font-size: 2em; cursor:pointer"></i>
                         }
                     </div>
-                    <p class="text-white mt-0">@Model.Entity.SportType</p>
+                    <p class="text-Geyser mt-0">@Model.Entity.SportType @Model.Entity.Category</p>
                 </div>
             </div>
             @if (SignInManager.IsSignedIn(User) && Model.IsAdmin == false)
             {
                 <div class="col-md-2 mt-3 mb-3" style="padding:0 !important">
-                    <a class="nav-link btn btn-primary text-white" asp-controller="Playground" asp-action="Message" asp-route-id="@Model.Entity.Id">Message</a>
+                    <a class="nav-link btn btn-info bg-Mountain text-elephant" asp-controller="Playground" asp-action="Message" asp-route-id="@Model.Entity.Id">Message</a>
                 </div>
             }
         </div>

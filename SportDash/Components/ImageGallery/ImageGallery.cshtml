@@ -6,8 +6,8 @@
     <div class="d-flex flex-wrap mt-3">
         @foreach (var item in Model.Images)
         {
-            <div class="col-lg-3 col-md-4 mt-1" style="padding:1px !important">
-                <img class="gallery-image" src="@("/images/" + item.Title)" asp-append-version="true">
+            <div class="col-lg-3 col-md-4 mt-1" style="padding: 1px !important">
+                <img class="gallery-image" src="@("/images/" + item.Title)" asp-append-version="true" id="@("/images/" + item.Title)" onclick="displayImage(this.id)">
                 @if (Model.IsAdmin == true)
                 {
                     <button type="button" class="btn btn-danger mt-1 btn-full-width" data-toggle="modal" data-target="#delete-img-Modal" onclick="deleteImage(@item.Id)">Delete</button>
@@ -22,6 +22,7 @@
         }
     </div>
 </section>
+
 <!-- Delete Modal -->
 <div class="modal fade" id="delete-img-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -67,6 +68,13 @@
     </div>
 </div>
 
+<!-- View Image Modal -->
+<div id="image-modal" class="img-modal">
+    <span class="img-close">&times;</span>
+    <img class="img-modal-content" id="img01">
+</div>
+
+
 <script type="text/javascript" on-content-loaded="true">
     $('#add-img-btn').click(function (e) {
         e.preventDefault();
@@ -100,6 +108,24 @@
                 }
             });
         }
+    }
+
+    //this part is to load image in full size
+    let displayImageModal = document.getElementById("image-modal");
+
+    function displayImage(imageSrc) {
+        // display image inside the modal
+        let modalImg = document.getElementById("img01");
+        displayImageModal.style.display = "block";
+        modalImg.src = imageSrc;
+    }
+
+    // Get the <span> element that closes the modal
+    let modelBody = document.getElementsByClassName("img-modal")[0];
+
+    // Close the modal when user clicks on the screen
+    modelBody.onclick = function () {
+        displayImageModal.style.display = "none";
     }
 </script>
 

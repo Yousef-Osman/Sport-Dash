@@ -146,19 +146,14 @@
     $('#edit-info-btn').click(function (e) {
         e.preventDefault();
         const info = {};
-
-        //info.location = document.getElementById('info-location').value;
-        //info.ballRenting = document.getElementById('info-ball').value;
-        //info.lockerRoom = document.getElementById('info-locker').value;
-        //info.safe = document.getElementById('info-safe').value;
-        //info.toilet = document.getElementById('info-toilet').value;
-        //info.forLadies = document.getElementById('info-for-ladies').value;
+        const location = $("#info-location :selected").text()
 
         info.biography = $("#info-bio").val();
-        info.location = $("#info-location :selected").text();
+        if (!(location.includes("Select"))) {
+            info.location = location;
+        }
         info.ballRenting = $("#info-ball :selected").val();
         info.lockerRoom = $("#info-locker :selected").val();
-        //info.safe = $("#info-safe :selected").val();
         info.toilet = $("#info-toilet :selected").val();
         info.forLadies = $("#info-for-ladies :selected").val();
 
