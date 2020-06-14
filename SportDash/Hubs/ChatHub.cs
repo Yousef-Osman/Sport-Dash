@@ -18,17 +18,20 @@ namespace SportDash.Hubs
         private readonly ApplicationDbContext dbContext;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IUserRepository userRepository;
+        private readonly IImageRepository imageRepository;
 
         public ChatHub(
             IMessageRepository messageRepository, 
             ApplicationDbContext dbContext, 
             UserManager<ApplicationUser> userManager,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IImageRepository imageRepository)
         {
             this.messageRepository = messageRepository;
             this.dbContext = dbContext;
             this.userManager = userManager;
             this.userRepository = userRepository;
+            this.imageRepository = imageRepository;
         }
 
         public async override Task OnConnectedAsync()
@@ -90,16 +93,25 @@ namespace SportDash.Hubs
         {
             var sender = await userManager.GetUserAsync(Context.User);
             var reciever = await userManager.Users.FirstOrDefaultAsync(u => u.Id == recieverId);
+            
+            var senderImg = imageRepository.GetImages(sender.Id).FirstOrDefault(img => img.IsProfileImg == true);
+            var reciverImg = imageRepository.GetImages(reciever.Id).FirstOrDefault(img => img.IsProfileImg == true);
+
+            var senderProfileImg = senderImg == null ? "/images/site/user-icon.jpg" : "/images/" + senderImg.Title;
+            var recieverProfileImg = reciverImg == null ? "/images/site/user-icon.jpg" : "/images/" + reciverImg.Title;
+
             var recieverConnection = await dbContext.ConnectedUsers.FirstOrDefaultAsync(u => u.UserId == reciever.Id);
+
             if(recieverConnection != null)
-            {
-                await Clients.Client(recieverConnection.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.FullName, DateTime.Now.ToString("hh:mm tt"));
+            {                
+                await Clients.Client(recieverConnection.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.FullName, DateTime.Now.ToString("hh:mm tt"), senderProfileImg, sender.Id);
                 userRepository.ChangeMsgsStatus(reciever, true);
-                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.FullName, DateTime.Now.ToString("hh:mm tt"));
+                // here i am sending the msg to the other guy on the other side
+                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, reciever.Id, reciever.FullName, DateTime.Now.ToString("hh:mm tt"), recieverProfileImg, sender.Id);
             }
             else
             {
-                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.FullName, DateTime.Now.ToString("hh:mm tt"));
+                await Clients.Client(Context.ConnectionId).SendAsync("recMsg", msg, sender.Id, sender.FullName, DateTime.Now.ToString("hh:mm tt"), senderProfileImg, sender.Id);
                 userRepository.ChangeMsgsStatus(reciever, true);
             }
             messageRepository.PostMessage(new Models.Message

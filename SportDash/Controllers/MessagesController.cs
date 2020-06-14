@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SportDash.Data;
@@ -11,6 +12,7 @@ using SportDash.ViewModels;
 
 namespace SportDash.Controllers
 {
+    [Authorize]
     public class MessagesController : Controller
     {
         private readonly IMessageRepository messageRepository;
@@ -37,13 +39,13 @@ namespace SportDash.Controllers
             // getting the most recent 5 messages
             var msgs = messageRepository.GetMessagesR(currentUser.Id);
 
-            List<Image> profileImgs = new List<Image>();
+            Dictionary<string, Image> profileImgs = new Dictionary<string, Image>();
             foreach(var msg in msgs)
             {
-                var img = imageRepository.GetImages(msg.SenderId).FirstOrDefault();
-                if(img.IsProfileImg == true)
+                var img = imageRepository.GetImages(msg.SenderId).FirstOrDefault(m => m.IsProfileImg == true);
+                if(!profileImgs.ContainsKey(msg.SenderId))
                 {
-                    profileImgs.Add(img);
+                    profileImgs.Add(msg.SenderId, img);
                 }
             }
 
@@ -62,7 +64,7 @@ namespace SportDash.Controllers
         {
             var currentUser = await userManager.GetUserAsync(User);
             userRepository.ChangeMsgsStatus(currentUser, false);
-            return Ok();
+            return Ok("<html>Status Changed</html>");
         }
 
         public async Task<IActionResult> GetAll()
@@ -83,11 +85,20 @@ namespace SportDash.Controllers
             var currentUser = await userManager.GetUserAsync(User);
             var allMessages = messageRepository.GetMessages(currentUser.Id, playgroundReciver.Id).OrderByDescending(m => m.MessageDate);
 
+            Dictionary<string, Image> profileImgs = new Dictionary<string, Image>();
+            
+            var img = imageRepository.GetImages(playgroundReciver.Id).FirstOrDefault(m => m.IsProfileImg == true);
+            if (!profileImgs.ContainsKey(playgroundReciver.Id))
+            {
+                profileImgs.Add(playgroundReciver.Id, img);
+            }
+
             MessagingViewModel messagingViewModel = new MessagingViewModel
             {
                 CurrentPage = playgroundReciver.FullName,
                 EntityId = senderId,
-                Messages = allMessages
+                Messages = allMessages,
+                ProfileImages = profileImgs
             };
 
             return PartialView("_MiniChat", messagingViewModel);

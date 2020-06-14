@@ -27,8 +27,15 @@
                         {
                             <div class="row sideBar-body full-width" id="_@(message.FirstOrDefault().SenderId)" onclick="miniChat('@(message.FirstOrDefault().SenderId)')">
                                 <div class="col-lg-2 col-sm-3 col-xs-3 sideBar-avatar">
-                                    <div class="avatar-icon">                                 
-                                        <img src="~/images/site/user-icon.jpg" />
+                                    <div class="avatar-icon">
+                                        @if (Model.ProfileImages.FirstOrDefault(i => i.Key == message.FirstOrDefault().SenderId).Value == null)
+                                        {
+                                            <img class="profile-image" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                        }
+                                        else
+                                        {
+                                            <img class="profile-image" src="@("/images/" + Model.ProfileImages.FirstOrDefault(i => i.Key == message.FirstOrDefault().SenderId).Value.Title)" asp-append-version="true">
+                                        }                                        
                                     </div>
                                 </div>
                                 <div class="col-lg-10 col-sm-9 col-xs-9 sideBar-main">
@@ -134,42 +141,51 @@
             }
         }
 
-        connection.on("recMsg", function (res, senderId, username, date) {
+        connection.on("recMsg", function (res, reciever, username, date, img, sender) {
             const msgContainer = $("#msgs-container");
-            if (senderId == idOfSender) {
+            const personName = document.querySelector("#person-name");
+            @*console.log(reciever, sender, "static: " + '@(userManager.GetUserId(User))');*@
+            if (sender == '@(userManager.GetUserId(User))')
+            {
                 msgContainer.append(`
-                    <div class="row message-body" id="scroll-element">
-                        <div class="col-sm-12 message-main-receiver">
-                            <div class="receiver">
-                                <div class="message-text">${res}</div>
-                                <span class="message-time pull-right">${date}</span>
-                            </div>
+                <div class="row message-body" id="scroll-element">
+                    <div class="col-sm-12 message-main-sender">
+                        <div class="sender">
+                            <div class="message-text">${res}</div>
+                            <span class="message-time pull-right">${date}</span>
                         </div>
-                    </div>`);
+                    </div>
+                </div>`);
                 let newMsg = document.getElementById('scroll-element');
-                newMsg.scrollIntoView();
-                newMsg.removeAttribute("id");
+                if (newMsg != null) {
+                    newMsg.scrollIntoView();
+                    newMsg.removeAttribute("id");
+                }
             }
-            else {
+            else if (reciever == idOfSender)
+            {
                 msgContainer.append(`
-                    <div class="row message-body" id="scroll-element">
-                        <div class="col-sm-12 message-main-sender">
-                            <div class="sender">
-                                <div class="message-text">${res}</div>
-                                <span class="message-time pull-right">${date}</span>
-                            </div>
+                <div class="row message-body" id="scroll-element">
+                    <div class="col-sm-12 message-main-receiver">
+                        <div class="receiver">
+                            <div class="message-text">${res}</div>
+                            <span class="message-time pull-right">${date}</span>
                         </div>
-                    </div>`);
+                    </div>
+                </div>`);
                 let newMsg = document.getElementById('scroll-element');
-                newMsg.scrollIntoView(true);
-                newMsg.removeAttribute("id");
-            }
+                if (newMsg != null) {
+                    newMsg.scrollIntoView();
+                    newMsg.removeAttribute("id");
+                }
+            }            
+
             const htmlObj = `
-                <div id='_${senderId}'
-                        <div class="row sideBar-body full-width" id="_${senderId}" onclick="miniChat('${senderId}')">
+                <div id='_${reciever}'
+                        <div class="row sideBar-body full-width" id="_${reciever}" onclick="miniChat('${reciever}')">
                             <div class="col-lg-2 col-sm-3 col-xs-3 sideBar-avatar">
                                 <div class="avatar-icon">
-                                    <img src="/images/site/user-icon.jpg" />
+                                    <img src="${img}" class="profile-image" />
                                 </div>
                             </div>
                             <div class="col-lg-10 col-sm-9 col-xs-9 sideBar-main">
@@ -189,28 +205,10 @@
                             </div>
                         </div>`;
             if (username != '@(userManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).FullName)') {
-                const sentMsgs = document.querySelectorAll('#_' + senderId);
+                const sentMsgs = document.querySelectorAll('#_' + reciever);
                 sentMsgs.forEach(ele => ele.remove());
                 $('#all-msgs').prepend(htmlObj);
             }
-        });
-        //window.oncontextmenu = function () {
-        //    return false;
-        //}
-        window.onkeydown = function (e) {
-            if (e.key == 'F12') {
-                return false
-            }
-            return true;
-        }
-        function toggleDate(event) {
-            var dateEle = event.target.parentElement.children[0];
-            if (dateEle.style.display === 'none') {
-                dateEle.style.display = 'block';
-            }
-            else {
-                dateEle.style.display = 'none';
-            }
-        }
+        });        
     </script>
 }
