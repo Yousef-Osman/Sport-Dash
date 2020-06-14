@@ -36,7 +36,7 @@ namespace SportDash.ViewModels
 
         public Question Question { get; set; }
 
-
+        
 
         public IEnumerable<Review> Reviews { get; set; }
         public IEnumerable<Image> Images { get; set; }

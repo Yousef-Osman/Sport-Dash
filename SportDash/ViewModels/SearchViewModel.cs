@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using SportDash.Data;
+using SportDash.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

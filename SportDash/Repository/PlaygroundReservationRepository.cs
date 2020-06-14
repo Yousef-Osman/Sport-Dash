@@ -48,6 +48,11 @@ namespace SportDash.Repository
             return _DbContext.playgroundReservations.Where(r=>r.PlaygroundId==id && r.Status=="Waiting").OrderBy(r => r.StartTime).OrderBy(r => r.Date).ToList();
         }
 
+        public PlaygroundReservation GetPlaygroundReservationById(int id)
+        {
+            return _DbContext.playgroundReservations.Where(p => p.Id == id).FirstOrDefault();
+        }
+
         public bool AcceptReservation(int id)
         {
             var reservation = _DbContext.playgroundReservations.Find(id);

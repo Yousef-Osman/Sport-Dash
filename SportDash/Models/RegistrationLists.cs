@@ -49,7 +49,8 @@ namespace SportDash.Models
                 new SelectListItem {Text = "El-Siouf", Value= "El-Siouf"},
                 new SelectListItem {Text = "El-Wardiaan", Value= "El-Wardiaan"},
                 new SelectListItem {Text = "Gleam", Value= "Gleam"},
-                new SelectListItem {Text = "Janklies", Value= "Janklies"}
+                new SelectListItem {Text = "Janklies", Value= "Janklies"},
+                new SelectListItem {Text = "Miami", Value= "Miami"}
             };
 
             availability = new List<SelectListItem>
