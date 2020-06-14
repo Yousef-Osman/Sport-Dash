@@ -72,13 +72,14 @@
                         {
                             <div class="col-md-3">
                                 <div class="card">
-                                    @if (Model.ProfileImage == null)
-                                    {
-                                        <img  class="card-img-top" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                    @{
+                                        var PlaygroungProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
                                     }
-                                    else
-                                    {
-                                        <img  class="card-img-top" src="@("/images/" + Model.ProfileImage.Title)" asp-append-version="true">
+                                    @if (PlaygroungProfileImage == null) {
+                                        <img class="card-img-top" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                    }
+                                    else { 
+                                        <img class="card-img-top" src="@("/images/" + PlaygroungProfileImage)" asp-append-version="true">
                                     }
                                     <div class="card-body">
                                         <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
@@ -100,6 +101,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                         }
                     }
                     else
@@ -118,7 +120,17 @@
                         {
                             <div class="col-md-3">
                                 <div class="card">
-                                    <img src="~/images/obl202005231057175364.jpg" class="card-img-top" alt="...">
+                                    @{
+                                        var GymProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
+                                    }
+                                    @if (GymProfileImage == null)
+                                    {
+                                        <img class="card-img-top" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                    }
+                                    else
+                                    {
+                                        <img class="card-img-top" src="@("/images/" + GymProfileImage)" asp-append-version="true">
+                                    }
                                     <div class="card-body">
                                         <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
                                         <p class="card-text">@item.Location</p>
@@ -157,7 +169,17 @@
                         {
                             <div class="col-md-3">
                                 <div class="card">
-                                    <img src="~/images/user-icon.jpg" class="card-img-top" alt="...">
+                                    @{
+                                        var CoachProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
+                                    }
+                                    @if (CoachProfileImage == null)
+                                    {
+                                        <img class="card-img-top" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                    }
+                                    else
+                                    {
+                                        <img class="card-img-top" src="@("/images/" + CoachProfileImage)" asp-append-version="true">
+                                    }
                                     <div class="card-body">
                                         <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
                                         <p class="card-text">@item.Location</p>

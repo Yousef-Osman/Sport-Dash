@@ -23,6 +23,5 @@ namespace SportDash.ViewModels
         public string PriceString { get; set; }
         public string LocationString { get; set; }
         public string SportTypeString { get; set; }
-        public Image ProfileImage { get; set; }
     }
 }

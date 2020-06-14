@@ -102,6 +102,21 @@ namespace SportDash.Controllers
 
         [HttpPost]
         [Authorize(Policy = "GymPolicy")]
+        public async Task<IActionResult> EditProfileImage(IFormFile file)
+        {
+            var image = new Image();
+            image.ImageFile = file;
+            image.IsProfileImg = true;
+            var userId = _userManager.GetUserId(HttpContext.User);
+            await _imageRepository.CreateImage(image, userId);
+
+            var profileImage = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == true).SingleOrDefault().Title;
+            return Ok(profileImage);
+        }
+
+
+        [HttpPost]
+        [Authorize(Policy = "GymPolicy")]
         public async Task<IActionResult> AddNewImage(IFormFile file)
         {
             var image = new Image();
@@ -110,7 +125,7 @@ namespace SportDash.Controllers
             await _imageRepository.CreateImage(image, userId);
 
             var dataModel = new DataViewModel();
-            dataModel.Images = _imageRepository.GetImages(userId);
+            dataModel.Images = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == false);
             dataModel.IsAdmin = true;
             return PartialView("_Images", dataModel);
         }
@@ -123,7 +138,7 @@ namespace SportDash.Controllers
             var userId = _userManager.GetUserId(HttpContext.User);
 
             var dataModel = new DataViewModel();
-            dataModel.Images = _imageRepository.GetImages(userId);
+            dataModel.Images = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == false);
             dataModel.IsAdmin = true;
             return PartialView("_Images", dataModel);
         }

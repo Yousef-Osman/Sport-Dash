@@ -10,13 +10,16 @@
                     <div class="row mb-3">
 
                         <div class="col-md-1">
-                            @if (Model.ProfileImage == null)
+                            @{
+                                var UserProfileImage = item.Reviewer.Images.Where(a => a.IsProfileImg).Select(a => a.Title).FirstOrDefault();
+                            }
+                            @if (UserProfileImage == null)
                             {
-                                <img width="50" height="50" class="profile-image" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                <img class="profile-image-small" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
                             }
                             else
                             {
-                                <img width="50" height="50" class="profile-image" src="@("/images/" + Model.ProfileImage.Title)" asp-append-version="true">
+                                <img class="profile-image-small" src="@("/images/" + UserProfileImage)" asp-append-version="true">
                             }
                         </div>
 
