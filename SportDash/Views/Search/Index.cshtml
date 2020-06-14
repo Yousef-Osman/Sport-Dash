@@ -13,18 +13,18 @@
                     <h2>What are you looking for ?</h2>
                     <p>You can search for Playground or Trainer or Gym with filters option </p>
                     @*<form asp-action="AutoCompleteSearch">*@
-                        <div class="form-inline">
-                            <div class="form-group px-sm-3 mb-2 col-md-11">
-                                <input asp-for="SearchString" id="txtSearch"  name="txtSearch" class="form-control w-100" />
-                            </div>
-                            <div class="form-group px-sm-3 mb-2 col-md-1">
-                                <button id="search-btn" class="btn btn-lg btn-primary">Search</button>
-                            </div>
+                    <div class="form-inline">
+                        <div class="form-group px-sm-3 mb-2 col-md-11">
+                            <input asp-for="SearchString" id="txtSearch" name="txtSearch" class="form-control w-100" />
                         </div>
+                        <div class="form-group px-sm-3 mb-2 col-md-1">
+                            <button id="search-btn" class="btn btn-lg btn-primary">Search</button>
+                        </div>
+                    </div>
                     @*</form>*@
                 </div>
                 <div class="row mt-3">
-                    <div class="form-group row col-md-3">
+                    <div class="form-group row col-md-3 col-sm-6">
                         <label class="col-sm-4 col-form-label">Category</label>
                         <div class="col-sm-8">
                             <select id="cat" class="form-control" asp-for="CategoryString" asp-items="Model.Category">
@@ -32,7 +32,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row col-md-3">
+                    <div class="form-group row col-md-3 col-sm-6">
                         <label class="col-sm-4 col-form-label">Price</label>
                         <div class="col-sm-8">
                             <select id="search-price" class="form-control" asp-for="PriceString" asp-items="Model.Price">
@@ -40,7 +40,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row col-md-3">
+                    <div class="form-group row col-md-3 col-sm-6">
                         <label class="col-sm-4 col-form-label">Location</label>
                         <div class="col-sm-8">
                             <select id="search-location" class="form-control" asp-for="LocationString" asp-items="Model.Location">
@@ -48,7 +48,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row col-md-3">
+                    <div class="form-group row col-md-3 col-sm-6">
                         <label class="col-sm-6 col-form-label">Sport Type</label>
                         <div class="col-sm-6">
                             <select id="search-sportType" class="form-control" asp-for="SportTypeString" asp-items="Model.SportType">
@@ -62,28 +62,38 @@
     </div>
 
 
-    <div id="search-container" class="bg-Geyser">        
-            <div id="playgrounds" class="container p-3">
-                <h2>Playgrounds</h2>
-                <div class="row">
-                    @if (Model.Playgrounds.Count > 0)
-                    {
-                        foreach (var item in Model.Playgrounds)
+
+    <div id="search-container">
+        <div class="site-section bg-light" id="playgrounds">
+            <div class="container">
+                @if (Model.Playgrounds.Count > 0)
+                {
+                    <div class="row justify-content-center text-center mb-5">
+                        <div class="col-md-6" data-aos="fade">
+                            <h1>Sports Fields</h1>
+                        </div>
+                    </div>
+                    <div class="row hosting">
+                        @foreach (var item in Model.Playgrounds)
                         {
-                            <div class="col-md-3">
-                                <div class="card">
+                            <div class="col-md-4 col-lg-3 mb-4 mt-1" data-aos="fade" data-aos-delay="200">
+                                <div class="unit-2  bg-white">
                                     @{
                                         var PlaygroungProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
                                     }
-                                    @if (PlaygroungProfileImage == null) {
-                                        <img class="card-img-top" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                    @if (PlaygroungProfileImage == null)
+                                    {
+                                        <img class="card-img-top gallery-image" src="@("/images/site/search_wallpaper.jpg")" asp-append-version="true">
                                     }
-                                    else { 
-                                        <img class="card-img-top" src="@("/images/" + PlaygroungProfileImage)" asp-append-version="true">
+                                    else
+                                    {
+                                        <img class="card-img-top gallery-image" src="@("/images/" + PlaygroungProfileImage)" asp-append-version="true">
                                     }
                                     <div class="card-body">
-                                        <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
-                                        <p class="card-text">@item.Location</p>
+                                        <h3>
+                                            <a class="card-title text-dark" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
+                                        </h3>
+                                        <p class="card-subtitle mb-1 text-muted">@item.Location</p>
                                         @if (item.PlaygroundPrices.Count > 0)
                                         {
                                             var temp = item.PlaygroundPrices[0].Price;
@@ -95,45 +105,52 @@
                                                     temp = i.Price;
                                                 }
                                             }
-                                            <span>Starts from @temp </span>
+                                            <p class="card-subtitle mb-1">Starts from @temp </p>
                                         }
 
                                     </div>
                                 </div>
                             </div>
-                            
                         }
-                    }
-                    else
-                    {
-                        <h5>There are no playgrounds with that name</h5>
-                    }
-                </div>
-                <hr />
+                    </div>
+                }
+                else
+                {
+                    <h3 class="text-center">There are no Sports Fields to display</h3>
+                }
             </div>
-            <div id="gyms" class="container p-3">
-                <h2>Gyms</h2>
-                <div class="row">
-                    @if (Model.Gyms.Count > 0)
-                    {
-                        foreach (var item in Model.Gyms)
+        </div>
+
+        <div class="site-section bg-white" id="gyms">
+            <div class="container">
+                @if (Model.Gyms.Count > 0)
+                {
+                    <div class="row justify-content-center text-center mb-5">
+                        <div class="col-md-6" data-aos="fade">
+                            <h1>Gyms</h1>
+                        </div>
+                    </div>
+                    <div class="row hosting">
+                        @foreach (var item in Model.Gyms)
                         {
-                            <div class="col-md-3">
-                                <div class="card">
+                            <div class="col-md-4 col-lg-3 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
+                                <div class="unit-2  bg-white">
                                     @{
                                         var GymProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
                                     }
                                     @if (GymProfileImage == null)
                                     {
-                                        <img class="card-img-top" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                        <img class="card-img-top gallery-image" src="@("/images/site/search_wallpaper.jpg")" asp-append-version="true">
                                     }
                                     else
                                     {
-                                        <img class="card-img-top" src="@("/images/" + GymProfileImage)" asp-append-version="true">
+                                        <img class="card-img-top gallery-image" src="@("/images/" + GymProfileImage)" asp-append-version="true">
                                     }
                                     <div class="card-body">
-                                        <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
-                                        <p class="card-text">@item.Location</p>
+                                        <h3>
+                                            <a class="card-title text-dark" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
+                                        </h3>
+                                        <p class="card-subtitle mb-1 text-muted">@item.Location</p>
                                         @if (item.GymPrices.Count > 0)
                                         {
                                             var temp1 = item.GymPrices[0].Subscribtion_Price;
@@ -145,56 +162,65 @@
                                                     temp1 = i.Subscribtion_Price;
                                                 }
                                             }
-                                            <span>Starts from @temp1 </span>
+                                            <p class="card-subtitle mb-1">Starts from @temp1 </p>
                                         }
+
                                     </div>
                                 </div>
                             </div>
                         }
-                    }
-                    else
-                    {
-                        <h5>There are no gyms with that name</h5>
-                    }
-                </div>
-                <hr />
+                    </div>
+                }
+                else
+                {
+                    <h3 class="text-center">There are no Gyms to display</h3>
+                }
             </div>
+        </div>
 
-            <div id="trainers" class="container p-3">
-                <h2>Coaches</h2>
-                <div class="row">
-                    @if (Model.Trainers.Count > 0)
-                    {
-                        foreach (var item in Model.Trainers)
+        <div class="site-section bg-light" id="trainers">
+            <div class="container">
+                @if (Model.Trainers.Count > 0)
+                {
+                    <div class="row justify-content-center text-center mb-5">
+                        <div class="col-md-6" data-aos="fade">
+                            <h1>Coaches</h1>
+                        </div>
+                    </div>
+                    <div class="row hosting">
+                        @foreach (var item in Model.Trainers)
                         {
-                            <div class="col-md-3">
-                                <div class="card">
+                            <div class="col-md-4 col-lg-3 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
+                                <div class="unit-2  bg-white">
                                     @{
                                         var CoachProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
                                     }
                                     @if (CoachProfileImage == null)
                                     {
-                                        <img class="card-img-top" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                        <img class="card-img-top gallery-image" src="@("/images/site/search_wallpaper.jpg")" asp-append-version="true">
                                     }
                                     else
                                     {
-                                        <img class="card-img-top" src="@("/images/" + CoachProfileImage)" asp-append-version="true">
+                                        <img class="card-img-top gallery-image" src="@("/images/" + CoachProfileImage)" asp-append-version="true">
                                     }
                                     <div class="card-body">
-                                        <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
-                                        <p class="card-text">@item.Location</p>
-                                        <span>@item.SportType.Value</span>
+                                        <h3>
+                                            <a class="card-title text-dark" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
+                                        </h3>
+                                        <p class="card-subtitle mb-1 text-muted">@item.Location</p>
+                                        <p class="card-subtitle mb-1">@item.SportType.Value</p>
                                     </div>
                                 </div>
                             </div>
                         }
-                    }
-                    else
-                    {
-                        <h5>There are no coaches with that name</h5>
-                    }
-                </div>
-            </div>        
+                    </div>
+                }
+                else
+                {
+                    <h3 class="text-center">There are no Coaches to display</h3>
+                }
+            </div>
+        </div>
     </div>
 </section>
 
@@ -203,7 +229,7 @@
         source: function (request, response) {
             $.ajax({
                 url: '/search/AutoCompleteSearch',
-                dataType:"json",
+                dataType: "json",
                 data: { searchstring: $('#txtSearch').val() },
                 success: function (result) {
                     response($.map(result, function (item) {
@@ -223,8 +249,7 @@
         }
     });
 
-    $('#cat').change(function()
-    {
+    $('#cat').change(function () {
         var category = $("#cat option:selected").text();
         if (category == "Playground") {
             $('#trainers').hide();

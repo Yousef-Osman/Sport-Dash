@@ -1,9 +1,9 @@
 ﻿body {
-    background-color: #CED8E1 !important;
+    background-color: #F8F9FA !important;
 }
 
 .bg-elephant {
-    background-color: #102B3E;
+    background-color: #002347;
 }
 
 .bg-Mountain {
@@ -71,6 +71,12 @@
     margin-left: 0;
     margin-right: 0;
 }
+
+.custom-shadow {
+    -webkit-box-shadow: 0 5px 20px -5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 20px -5px rgba(0, 0, 0, 0.2);
+}
+
 
 /* Image Model Styles Modal */
 .img-modal {
@@ -307,3 +313,6 @@
         font-size: 13px;
         color: #ddd;
     }
+
+
+
