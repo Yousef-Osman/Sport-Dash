@@ -144,6 +144,11 @@
     <script src="~/js/chat.js"></script>
     @RenderSection("Scripts", required: false)
     <script>
+        let id = setInterval(() => {
+            if (connection.connectionState == 0) {
+                connection.start();
+            }
+        }, 3000);
         const newMsg = document.querySelector("#newMsg");
         connection.on("recMsg", function (res) {
             if (!location.pathname.includes("Message")) {

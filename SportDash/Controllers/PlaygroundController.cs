@@ -115,11 +115,20 @@ namespace SportDash.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             var allMessages = _messageRepository.GetMessages(currentUser.Id, playgroundReciver.Id).OrderByDescending(m => m.MessageDate);
 
+            Dictionary<string, Image> profileImgs = new Dictionary<string, Image>();
+
+            var img = _imageRepository.GetImages(playgroundReciver.Id).FirstOrDefault(m => m.IsProfileImg == true);
+            if (!profileImgs.ContainsKey(playgroundReciver.Id))
+            {
+                profileImgs.Add(playgroundReciver.Id, img);
+            }
+
             MessagingViewModel messagingViewModel = new MessagingViewModel
             {
                 CurrentPage = playgroundReciver.FullName,
                 EntityId = id,
-                Messages = allMessages
+                Messages = allMessages,
+                ProfileImages = profileImgs
             };
 
             return View(messagingViewModel);

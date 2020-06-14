@@ -27,8 +27,7 @@ namespace SportDash
         {
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
-            services.AddScoped<IQuestionRepository, QuestionRepoitory>();
-            services.AddScoped<ITrainingProgramRepository, TrainingProgramRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepoitory>();            
             services.AddScoped<IGymPricesRepository, GymPricesRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SportDash.Migrations
 {
-    public partial class ramy : Migration
+    public partial class addQuestionsAndRemovedTrainingProgramsAndSizeProp : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,7 +45,6 @@ namespace SportDash.Migrations
                     biography = table.Column<string>(nullable: true),
                     Location = table.Column<string>(nullable: true),
                     Category = table.Column<string>(nullable: true),
-                    Size = table.Column<string>(nullable: true),
                     BallRenting = table.Column<bool>(nullable: true),
                     LockerRoom = table.Column<bool>(nullable: true),
                     Safe = table.Column<bool>(nullable: true),
@@ -358,32 +357,6 @@ namespace SportDash.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TrainingPrograms",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Category = table.Column<int>(nullable: false),
-                    Price = table.Column<double>(nullable: false),
-                    TrainingDate = table.Column<DateTime>(nullable: false),
-                    Start = table.Column<DateTime>(nullable: false),
-                    End = table.Column<DateTime>(nullable: false),
-                    Trainer_Name = table.Column<string>(nullable: false),
-                    ForLadies = table.Column<bool>(nullable: false),
-                    ClubId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainingPrograms", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TrainingPrograms_AspNetUsers_ClubId",
-                        column: x => x.ClubId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -416,10 +389,10 @@ namespace SportDash.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "adf6f00a-6ad3-47f7-842c-48d6fee33e0f", "08576a2b-406c-40bc-ba3a-6aa783d71f51", "Playground", "PLAYGROUND" },
-                    { "987cc20d-a064-42a1-bb8b-d02e8739650d", "ccc30e68-bf27-4bda-b54c-8b47d0444de2", "Gym", "GYM" },
-                    { "81c34d12-3da9-424e-98af-18eeaf5a250f", "5af8db58-e0e8-458c-adf2-12605ee0c509", "Coach", "COACH" },
-                    { "ed74d052-e25c-4b72-8a3a-9ff3027692a7", "672de51c-2b96-48ed-b4bc-b56f29840e26", "User", "USER" }
+                    { "4edd9bb1-57fe-4d49-8da1-07c553a5329d", "c37f4ec3-424f-4abb-b8cc-d8bb86a2a6d2", "Playground", "PLAYGROUND" },
+                    { "c999ec64-0f8c-41a3-8c5a-7f8f417533f2", "0bc8d4ed-ca02-46c5-a30d-8db131a80e35", "Gym", "GYM" },
+                    { "c74273aa-df1b-4935-b37d-429991785bc8", "83a4d002-f58c-41b5-a3af-e5918541546b", "Coach", "COACH" },
+                    { "21cf6c75-fedc-4280-b84f-74e2b81b8eaf", "00ef2bbf-e5d8-410b-a3c4-44a14931a2ff", "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -525,11 +498,6 @@ namespace SportDash.Migrations
                 name: "IX_Reviews_TargetId",
                 table: "Reviews",
                 column: "TargetId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TrainingPrograms_ClubId",
-                table: "TrainingPrograms",
-                column: "ClubId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -572,9 +540,6 @@ namespace SportDash.Migrations
 
             migrationBuilder.DropTable(
                 name: "Reviews");
-
-            migrationBuilder.DropTable(
-                name: "TrainingPrograms");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

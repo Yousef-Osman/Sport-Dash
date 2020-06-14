@@ -19,7 +19,14 @@ namespace SportDash.Models
                 new SelectListItem {Text = "BasketBall", Value= "1"},
                 new SelectListItem {Text = "VolleyBall", Value= "2"},
                 new SelectListItem {Text = "Tennis", Value= "3"},
-                new SelectListItem {Text = "Others", Value= "4"},
+                new SelectListItem {Text = "Boxing", Value= "4"},
+                new SelectListItem {Text = "Judo", Value= "5"},
+                new SelectListItem {Text = "Karate", Value= "6"},
+                new SelectListItem {Text = "Kung Fu", Value= "7"},
+                new SelectListItem {Text = "Wrestling", Value= "8"},
+                new SelectListItem {Text = "HandBall", Value= "9"},
+                new SelectListItem {Text = "Tennis Table", Value= "10"},
+                new SelectListItem {Text = "Others", Value= "11"},
             };
 
             locations = new List<SelectListItem>

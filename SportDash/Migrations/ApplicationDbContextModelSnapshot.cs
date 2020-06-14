@@ -48,29 +48,29 @@ namespace SportDash.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "adf6f00a-6ad3-47f7-842c-48d6fee33e0f",
-                            ConcurrencyStamp = "08576a2b-406c-40bc-ba3a-6aa783d71f51",
+                            Id = "4edd9bb1-57fe-4d49-8da1-07c553a5329d",
+                            ConcurrencyStamp = "c37f4ec3-424f-4abb-b8cc-d8bb86a2a6d2",
                             Name = "Playground",
                             NormalizedName = "PLAYGROUND"
                         },
                         new
                         {
-                            Id = "987cc20d-a064-42a1-bb8b-d02e8739650d",
-                            ConcurrencyStamp = "ccc30e68-bf27-4bda-b54c-8b47d0444de2",
+                            Id = "c999ec64-0f8c-41a3-8c5a-7f8f417533f2",
+                            ConcurrencyStamp = "0bc8d4ed-ca02-46c5-a30d-8db131a80e35",
                             Name = "Gym",
                             NormalizedName = "GYM"
                         },
                         new
                         {
-                            Id = "81c34d12-3da9-424e-98af-18eeaf5a250f",
-                            ConcurrencyStamp = "5af8db58-e0e8-458c-adf2-12605ee0c509",
+                            Id = "c74273aa-df1b-4935-b37d-429991785bc8",
+                            ConcurrencyStamp = "83a4d002-f58c-41b5-a3af-e5918541546b",
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = "ed74d052-e25c-4b72-8a3a-9ff3027692a7",
-                            ConcurrencyStamp = "672de51c-2b96-48ed-b4bc-b56f29840e26",
+                            Id = "21cf6c75-fedc-4280-b84f-74e2b81b8eaf",
+                            ConcurrencyStamp = "00ef2bbf-e5d8-410b-a3c4-44a14931a2ff",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -251,9 +251,6 @@ namespace SportDash.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SportType")
@@ -526,45 +523,6 @@ namespace SportDash.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("SportDash.Models.TrainingProgram", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Category")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClubId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("ForLadies")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Trainer_Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TrainingDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClubId");
-
-                    b.ToTable("TrainingPrograms");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -695,13 +653,6 @@ namespace SportDash.Migrations
                     b.HasOne("SportDash.Data.ApplicationUser", "Target")
                         .WithMany("TargetReviews")
                         .HasForeignKey("TargetId");
-                });
-
-            modelBuilder.Entity("SportDash.Models.TrainingProgram", b =>
-                {
-                    b.HasOne("SportDash.Data.ApplicationUser", "Club")
-                        .WithMany("TrainingPrograms")
-                        .HasForeignKey("ClubId");
                 });
 #pragma warning restore 612, 618
         }
