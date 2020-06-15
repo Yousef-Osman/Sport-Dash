@@ -2,7 +2,7 @@
 @model SportDash.ViewModels.DataViewModel
 
 <div class="ml-0 justify-content-center row prices bg-elephant py-4">
-    <img class="profile-image" style="width:64px;height:64px;" src="@("/images/user-icon.jpg")" asp-append-version="true">
+    <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
     <div class="ml-3">
         @*<div><p>Name</p></div>*@
         @*<div><p>Date</p></div>*@
@@ -15,6 +15,27 @@
             <textarea class="form-control animated" cols="50" id="Question" placeholder="Ask us..." rows="5"></textarea>
             <button id="Ask" class="btn btn-primary">Ask</button>
 
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="Question_Modal" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="Question_Modal_header_Message" class="modal-title">Confirmation Message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="Question_Modal_Body"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="Ok" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
         </div>
     </div>
 </div>
@@ -38,12 +59,17 @@
                 "UserId": `@Model.CurrentUser.Id`,
                 "Category": `${document.getElementById("Question_Category").selectedIndex-1}`
             },
-            success: ()=>{
-                alert("Posted");
+            success: () => {
+                raiseModal("Successful Posting", "The question is successfully posted");
             },
-            error: ()=>{
-                alert("Error");
+            error: () => {
+                raiseModal("Error", "The question can't be posted");
             }
         })
     });
+    function raiseModal(modalHeader, modalBody) {
+        $("#Question_Modal_header_Message").text(modalHeader);
+        $("#Question_Modal_Body").text(modalBody);
+        $("#Question_Modal").modal();
+    }
 </script>

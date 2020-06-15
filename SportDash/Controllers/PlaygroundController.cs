@@ -170,7 +170,7 @@ namespace SportDash.Controllers
             var userId = _userManager.GetUserId(HttpContext.User);
 
             var dataModel = new DataViewModel();
-            dataModel.Images = _imageRepository.GetImages(userId).Where(a=>a.IsProfileImg == false);
+            dataModel.Images = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == false);
             dataModel.IsAdmin = true;
             return PartialView("_Images", dataModel);
         }
@@ -182,7 +182,7 @@ namespace SportDash.Controllers
         {
             var playgroundId = _userManager.GetUserId(User);
             var acceptedReservation = _reservationRepository.GetPlaygroundReservationById(id);
-            if(acceptedReservation.UserId!=null)
+            if (acceptedReservation.UserId != null)
                 await NotifyUser(playgroundId, acceptedReservation, $"Sorry, your reservation request has been rejected  for {acceptedReservation.Date} day from {acceptedReservation.StartTime} to {acceptedReservation.EndTime}");
             _reservationRepository.Delete(id);
             return RedirectToAction(nameof(Index));
@@ -209,7 +209,7 @@ namespace SportDash.Controllers
             // getting the conId of the reserver user and see if he is online
             // if so, i will send a the message in real time
             ConnectedUser receiverConnectedUser = _connectedUsersRepository.GetConnectionIdOfUser(acceptedReservation.UserId);
-            
+
             if (receiverConnectedUser != null)
             {
                 await _hubContext.Clients.Client(receiverConnectedUser.ConnectionId).SendAsync("recMsg", sentMsg.Body, playgroundId, playground.UserName, sentMsg.MessageDate.ToString("dd/MM/yyyy hh:mm:ss tt"));
@@ -229,14 +229,14 @@ namespace SportDash.Controllers
 
             //check for another requests and delete the requests with the same time of another reservation            
             var remainingRequests = _reservationRepository.GetRequests(playgroundId);
-            foreach(var r in remainingRequests)
+            foreach (var r in remainingRequests)
             {
                 if (_reservationRepository.IsValid(r) == false)
                 {
                     // notifing the other users that thier requests have been rejected
-                    await NotifyUser(playgroundId, r, $"Sorry, your reservation request has been rejected  for {r.Date} day from {r.StartTime} to {r.EndTime}" );
+                    await NotifyUser(playgroundId, r, $"Sorry, your reservation request has been rejected  for {r.Date} day from {r.StartTime} to {r.EndTime}");
                     _reservationRepository.Delete(r.Id);
-                }                    
+                }
             }
             return RedirectToAction(nameof(Index));
         }
@@ -267,7 +267,7 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchByDate(DateTime date , string playgroundId)
+        public IActionResult SearchByDate(DateTime date, string playgroundId)
         {
             string userId = null;
             if (User.IsInRole("Playground"))
@@ -293,6 +293,22 @@ namespace SportDash.Controllers
         public IActionResult PutPlaygroundPrice(int Id, PlaygroundPrice NewPlaygroundPrice)
         {
             //bool result = playgroundPriceRepository.UpdatePlaygroundPrice(oldAndNewplaygroundPrice.NewPlaygroundPrice, oldAndNewplaygroundPrice.OldPlaygroundPrice);
+            List<PlaygroundPrice> ConflictedPrices = _playgroundPriceRepository.GetConflictedList(NewPlaygroundPrice);
+            if (ConflictedPrices.Count > 0)
+            {
+                if (ConflictedPrices.Count == 1)
+                {
+                    if (ConflictedPrices[0].Id != Id)
+                    {
+                        return Conflict();
+                    }                    
+                }
+                else
+                {
+                    return Conflict();
+                }
+
+            }
             bool result = _playgroundPriceRepository.UpdatePlaygroundPrice(Id, NewPlaygroundPrice);
             if (result == true)
                 return Ok();
@@ -304,6 +320,11 @@ namespace SportDash.Controllers
         public IActionResult AddPlaygroundPrice(int Id, PlaygroundPrice NewPlaygroundPrice)
         {
             //bool result = playgroundPriceRepository.UpdatePlaygroundPrice(oldAndNewplaygroundPrice.NewPlaygroundPrice, oldAndNewplaygroundPrice.OldPlaygroundPrice);
+            List<PlaygroundPrice> ConflictedPrices = _playgroundPriceRepository.GetConflictedList(NewPlaygroundPrice);
+            if (ConflictedPrices.Count > 0)
+            {
+                return Conflict();
+            }
             int result = _playgroundPriceRepository.AddPlaygroundPrice(NewPlaygroundPrice);
             return Ok(new { id = result });
         }

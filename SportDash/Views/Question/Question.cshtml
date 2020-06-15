@@ -52,7 +52,7 @@
             }
             <div class="row m-3">
                 <div class="row p-3 text-dark bg-white rounded">
-                    <img class="profile-image profile-image" style="width:64px;height:64px;" src="@("/images/user-icon.jpg")" asp-append-version="true">
+                    <img class="profile-image profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
                     <div class="ml-3">
                         <div>
                             <p>@item.User.UserName</p>
@@ -73,6 +73,26 @@
                 </div>
             </div>
         }
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="Comment_Modal" aria-modal="true">
+    <div class="modal-dialog text-dark" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="Comment_Modal_header_Message" class="modal-title">Confirmation Message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="Comment_Modal_Body"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="Ok" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -118,14 +138,20 @@
                     "QuestionId": `@Model.Question.Id`
                 },
                 success: () => {
-                    alert("Comment Posted");
+                    raiseModal("Comment Posted", "The comment is successfully posted");
                     document.getElementById("Comment_Text").value = "";
                 },
                 error: () => {
-                    alert("Error");
+                    raiseModal("Error", "The comment can't be posted");
                     document.getElementById("Comment_Text").value = "";
                 }
             });
         });
     }
-</script>   
+
+    function raiseModal(modalHeader, modalBody) {
+        $("#Comment_Modal_header_Message").text(modalHeader);
+        $("#Comment_Modal_Body").text(modalBody);
+        $("#Comment_Modal").modal();
+    }
+</script>
