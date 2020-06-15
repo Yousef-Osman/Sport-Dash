@@ -65,6 +65,14 @@ namespace SportDash.Controllers
             return View(dataModel);
         }
 
+        [HttpPost]
+        [Authorize(Policy = "UserPolicy")]
+        public IActionResult EditEntityName(string newName)
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            _userRepository.EditFullName(userId, newName);
+            return RedirectToAction(nameof(Index));
+        }
 
         [HttpPost]
         [Authorize(Policy = "UserPolicy")]
@@ -109,16 +117,6 @@ namespace SportDash.Controllers
             return PartialView("_Images", dataModel);
         }
 
-
-        [HttpPost]
-        [Authorize(Policy = "UserPolicy")]
-        public IActionResult EditEntityName(string newName)
-        {
-            var userId = _userManager.GetUserId(HttpContext.User);
-            _userRepository.EditFullName(userId, newName);
-            return RedirectToAction(nameof(Index));
-        }
-
         public async Task<IActionResult> Message(string id)
         {
             var playgroundReciver = await _userManager.FindByIdAsync(id);
@@ -137,5 +135,16 @@ namespace SportDash.Controllers
             return View(messagingViewModel);
         }
 
+        [HttpPost]
+        [Authorize(Policy = "UserPolicy")]
+        public async Task<IActionResult> EditInfoData(ApplicationUser infoData)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var dataModel = new DataViewModel();
+            dataModel.Entity = _userRepository.EditApplicationUser(user, infoData);
+            dataModel.IsAdmin = true;
+
+            return PartialView("_InfoBar", dataModel);
+        }
     }
 }

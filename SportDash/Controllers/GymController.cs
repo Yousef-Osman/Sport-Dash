@@ -144,6 +144,18 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "GymPolicy")]
+        public async Task<IActionResult> EditInfoData(ApplicationUser infoData)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var dataModel = new DataViewModel();
+            dataModel.Entity = _userRepository.EditApplicationUser(user, infoData);
+            dataModel.IsAdmin = true;
+
+            return PartialView("_InfoBar", dataModel);
+        }
+
+        [HttpPost]
         public IActionResult AddReview(Review R)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

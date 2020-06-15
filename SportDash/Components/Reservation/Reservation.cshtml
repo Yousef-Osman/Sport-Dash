@@ -38,20 +38,17 @@
             <div class="tab-content">
                 <div id="todayReservations" class="container tab-pane active">
                     <br>
-                    <div class="card-group mt-3 d-flex flex-wrap">
+                    <div class="row hosting mt-4">
                         @foreach (var res in Model.Reservations)
                         {
-                            <div class="col-lg-3 col-md-6 pb-4">
-                                <div class="bg-Geyser round-borders mx-1">
-                                    <div class="card-body">
-                                        <h5 class="card-title">@res.Name</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">@res.Date</h6>
-                                        <p class="card-text">@res.Playground.FullName</p>
-                                        <p class="card-text">Hours: @(res.EndTime - res.StartTime)</p>
-                                        <p class="card-text">From: @res.StartTime</p>
-                                        <p class="card-text">To:  @res.EndTime</p>
-                                        <button type="button" onclick="deleteReservation(@res.Id)" class="btn btn-danger">Cancel</button>
-                                    </div>
+                            <div class="col-md-4 col-lg-3 col-sm-6 mb-4 mt-1" data-aos="fade" data-aos-delay="100">
+                                <div class="unit-2 text-center border pt-4 pb-3 h-100 bg-white">
+                                    <h3 class="h4 mb-3 pt-2 text-gray-700">@res.Name</h3>
+                                    <h5 class="h6 mb-3 text-gray-700">@res.Date</h5>
+                                    <p class="mb-2 text-gray-600">Hours: @(res.EndTime - res.StartTime)</p>
+                                    <p class="mb-2 text-gray-600">From: @res.StartTime)</p>
+                                    <p class="mb-4 text-gray-600">To:  @res.EndTime</p>
+                                    <p><a class="btn btn-danger text-light py-2 px-4 rounded-0" onclick="deleteReservation(@res.Id)">Cancel</a></p>
                                 </div>
                             </div>
                         }
@@ -60,32 +57,33 @@
 
                 <div id="search" class="container tab-pane">
                     <br>
-                    <div class="form-group">
-                        <label class="col-form-label text-Geyser mr-3">Date</label>
-                        <input type="date" style="width: 25%; display:inline-block" id="search-date" name="bday" class="form-control">
-                        <button type="button" id="show-reservation" class="btn btn-info">Show</button>
+                    <div class="row hosting justify-content-center my-4">
+                        <div class="form-inline justify-content-center col-10">
+                            <label class="form-label text-gray-700 mr-3"><b>Date</b></label>
+                            <input type="date" id="search-date" name="bday" class="form-control col-6 mx-2">
+                            <a class="btn btn-success text-light py-2 px-4 rounded-0" id="show-reservation">Show</a>
+                        </div>
                     </div>
-                    <div class="card-group mt-3" id="returned-data">
+                    <div class="row hosting mt-5" id="returned-data">
 
                     </div>
                 </div>
-
                 <div id="requests" class="container tab-pane fade">
                     <br>
-                    <div class="card-group mt-3">
+
+                    <div class="row hosting mt-4">
                         @foreach (var res in Model.Requests)
                         {
-                            <div class="card" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title">@res.Name</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">@res.Date</h6>
-                                    <p class="card-text">@res.Playground.FullName</p>
-                                    <p class="card-text">Hours: @(res.EndTime - res.StartTime)</p>
-                                    <p class="card-text">From: @res.StartTime</p>
-                                    <p class="card-text">To:  @res.EndTime</p>
-                                    <div class="card-body">
-                                        <button type="button" onclick="acceptReservation(@res.Id)" class="btn btn-success">Accept</button>
-                                        <button type="button" onclick="deleteReservation(@res.Id)" class="btn btn-danger">Cancel</button>
+                            <div class="col-md-4 col-lg-3 col-sm-6 mb-4 mt-1" data-aos="fade" data-aos-delay="100">
+                                <div class="unit-2 text-center border pt-4 pb-3 h-100 bg-white">
+                                    <h3 class="h4 mb-3 pt-2 text-gray-700">@res.Name</h3>
+                                    <h5 class="h6 mb-3 text-gray-700">@res.Date</h5>
+                                    <p class="mb-2 text-gray-600">Hours: @(res.EndTime - res.StartTime)</p>
+                                    <p class="mb-2 text-gray-600">From: @res.StartTime)</p>
+                                    <p class="mb-4 text-gray-600">To:  @res.EndTime</p>
+                                    <div class="row justify-content-center">
+                                        <p><a class="btn btn-primary text-light py-2 px-3 mx-1 rounded-0" onclick="acceptReservation(@res.Id)">Accept</a></p>
+                                        <p><a class="btn btn-danger text-light py-2 px3 mx-1 rounded-0" onclick="deleteReservation(@res.Id)">Cancel</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -95,19 +93,22 @@
 
                 <div id="add" class="container tab-pane fade">
                     <br>
-                    <div style="text-align:left;width: 40%;margin: 50px auto;padding: 10px;border: 1px solid #ddd;border-radius: 10px;">
-                        @if (User.IsInRole("Playground") && Model.IsAdmin)
-                        {
-                            <label class="text-Geyser">Username</label>
-                            <input type="text" id="reservation-user" name="EventUsername" class="form-control" />
-                        }
-                        <label class="text-Geyser">Date</label>
-                        <input type="date" id="reservation-date" name="EventDate" class="form-control" />
-                        <label class="text-Geyser">Start Time</label>
-                        <input type="time" id="start-at" name="EventFrom" class="form-control" />
-                        <label class="text-Geyser">End Time</label>
-                        <input type="time" id="end-at" name="EventTo" class="form-control" />
-                        <button id="new-reservation" style="margin: 20px 0;width: 100%;" class="btn btn-info bg-Mountain">Add</button>
+                    <div class="row hosting justify-content-center my-4">
+
+                        <div class="custom-shadow bg-white col-lg-5 col-md-8 p-4 rounded">
+                            @if (User.IsInRole("Playground") && Model.IsAdmin)
+                            {
+                                <label class="text-gray-700">Username</label>
+                                <input type="text" id="reservation-user" name="EventUsername" class="form-control mb-2" />
+                            }
+                            <label class="text-gray-700">Date</label>
+                            <input type="date" id="reservation-date" name="EventDate" class="form-control mb-2" />
+                            <label class="text-gray-700">Start Time</label>
+                            <input type="time" id="start-at" name="EventFrom" class="form-control mb-2" />
+                            <label class="text-gray-700">End Time</label>
+                            <input type="time" id="end-at" name="EventTo" class="form-control mb-2" />
+                            <a class="btn btn-primary mt-3 text-light py-2 col-12 rounded" id="new-reservation">Add</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -201,10 +202,19 @@
                     for (var i = 0; i < res.value.length; i++) {
                         var reserve = res.value[i];
                         var newdate = reserve.date.substring(0, 10);
-                        target.append('<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">' + reserve.name + '</h5 ><h6 class="card-subtitle mb-2 text-muted">' + newdate + '</h6><p class="card-text">From: ' + reserve.startTime + '</p><p class="card-text">To:  ' + reserve.endTime + '</p></div></div>');
+                        target.append(`
+                    <div class="col-md-4 col-lg-3 col-sm-6 mb-4 mt-1" data-aos="fade" data-aos-delay="100">
+                        <div class="unit-2 text-center border pt-4 pb-3 h-100 bg-white">
+                            <h3 class="h4 mb-3 pt-2 text-gray-700">${reserve.name}</h3>
+                            <h5 class="h6 mb-3 text-gray-700">${newdate}</h5>
+                            <p class="mb-2 text-gray-600">From: ${reserve.startTime}</p>
+                            <p class="mb-4 text-gray-600">To: ${ reserve.endTime }</p>
+                        </div>
+                    </div>`);
                     }
                 }
             },
         })
     });
 </script>
+
