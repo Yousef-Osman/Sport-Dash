@@ -62,8 +62,7 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
-    user-select: none;
+    margin-bottom: 60px;    
 }
 
 .footer {

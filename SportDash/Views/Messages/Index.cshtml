@@ -17,7 +17,7 @@
                 <div class="row sideBar" id="all-msgs">
                     @if (Model.RecievedMessages.Count() == 0)
                     {
-                        <div style="padding: 10px;">
+                        <div style="padding: 10px;" id="noMsgs">
                             <h4 class="text-center" style="color: #93918f">No Recent Messages</h4>
                         </div>
                     }
@@ -144,13 +144,14 @@
         connection.on("recMsg", function (res, reciever, username, date, img, sender) {
             const msgContainer = $("#msgs-container");
             const personName = document.querySelector("#person-name");
-            @*console.log(reciever, sender, "static: " + '@(userManager.GetUserId(User))');*@
+            const noMsgs = document.querySelector("#noMsgs");
+            
             if (sender == '@(userManager.GetUserId(User))')
             {
                 msgContainer.append(`
                 <div class="row message-body" id="scroll-element">
                     <div class="col-sm-12 message-main-sender">
-                        <div class="sender">
+                        <div class="sender" style="max-width: 370px;">
                             <div class="message-text">${res}</div>
                             <span class="message-time pull-right">${date}</span>
                         </div>
@@ -166,8 +167,8 @@
             {
                 msgContainer.append(`
                 <div class="row message-body" id="scroll-element">
-                    <div class="col-sm-12 message-main-receiver">
-                        <div class="receiver">
+                    <div class="message-main-receiver">
+                        <div class="receiver" style="max-width: 370px;">
                             <div class="message-text">${res}</div>
                             <span class="message-time pull-right">${date}</span>
                         </div>
@@ -178,7 +179,10 @@
                     newMsg.scrollIntoView();
                     newMsg.removeAttribute("id");
                 }
-            }            
+            }
+            if (noMsgs != null) {
+                noMsgs.remove();
+            }
 
             const htmlObj = `
                 <div id='_${reciever}'
@@ -209,6 +213,6 @@
                 sentMsgs.forEach(ele => ele.remove());
                 $('#all-msgs').prepend(htmlObj);
             }
-        });        
+        });
     </script>
 }
