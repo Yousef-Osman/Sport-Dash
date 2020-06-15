@@ -25,38 +25,79 @@
 <div style="height: 350px;" class="row message full-width" id="conversation">
 
     <div id="msgs-container" class="msg-container">
+        @{
+            var i = 0;
+        }
         @foreach (var msg in Model.Messages.Reverse())
         {
             if (msg.Sender.UserName == User.Identity.Name)
             {
-                <div class="row message-body">
-                    <div class="col-sm-12 message-main-sender">
-                        <div class="sender" style="max-width: 370px;">
-                            <div class="message-text">
-                                @msg.Body
+                if (i == (Model.Messages.Count() - 1))
+                {
+                    <div id="last-element" class="row message-body">
+                        <div class="col-sm-12 message-main-sender">
+                            <div class="sender" style="max-width: 370px;">
+                                <div class="message-text">
+                                    @msg.Body
+                                </div>
+                                <span class="message-time pull-right">
+                                    @msg.MessageDate
+                                </span>
                             </div>
-                            <span class="message-time pull-right">
-                                @msg.MessageDate
-                            </span>
                         </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="row message-body">
+                        <div class="col-sm-12 message-main-sender">
+                            <div class="sender" style="max-width: 370px;">
+                                <div class="message-text">
+                                    @msg.Body
+                                </div>
+                                <span class="message-time pull-right">
+                                    @msg.MessageDate
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
             }
             else
             {
-                <div class="row message-body">
-                    <div class="col-sm-12 message-main-receiver">
-                        <div class="receiver" style="max-width: 370px;">
-                            <div class="message-text">
-                                @msg.Body
+                if (i == (Model.Messages.Count() - 1))
+                {
+                    <div id="last-element" class="row message-body">
+                        <div class="col-sm-12 message-main-receiver">
+                            <div class="receiver" style="max-width: 370px;">
+                                <div class="message-text">
+                                    @msg.Body
+                                </div>
+                                <span class="message-time pull-right">
+                                    @msg.MessageDate
+                                </span>
                             </div>
-                            <span class="message-time pull-right">
-                                @msg.MessageDate
-                            </span>
                         </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="row message-body">
+                        <div class="col-sm-12 message-main-receiver">
+                            <div class="receiver" style="max-width: 370px;">
+                                <div class="message-text">
+                                    @msg.Body
+                                </div>
+                                <span class="message-time pull-right">
+                                    @msg.MessageDate
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                }
             }
+            i++;
         }
     </div>
 </div>
