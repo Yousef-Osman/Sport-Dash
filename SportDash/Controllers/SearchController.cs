@@ -126,6 +126,12 @@ namespace SportDash.Controllers
                 searchVM.Playgrounds = playgrounds.ToList();
                 searchVM.Gyms = gyms.ToList();
             }
+            else
+            {
+                searchVM.Trainers = trainers.ToList();
+                searchVM.Playgrounds = playgrounds.ToList();
+                searchVM.Gyms = gyms.ToList();
+            }
 
             return PartialView("_SearchResult", searchVM);
         }
