@@ -70,7 +70,7 @@
                     {
                         foreach (var item in Model.Playgrounds)
                         {
-                            <div class="col-md-3">
+                            <div class="col-md-3 p-3">
                                 <div class="card">
                                     @{
                                         var PlaygroungProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
@@ -82,7 +82,7 @@
                                         <img class="card-img-top" src="@("/images/" + PlaygroungProfileImage)" asp-append-version="true">
                                     }
                                     <div class="card-body">
-                                        <a class="card-title" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
+                                        <a class="h3" asp-controller="@item.Category" asp-action="Index" asp-route-id="@item.Id">@item.FullName</a>
                                         <p class="card-text">@item.Location</p>
                                         @if (item.PlaygroundPrices.Count > 0)
                                         {
@@ -118,7 +118,7 @@
                     {
                         foreach (var item in Model.Gyms)
                         {
-                            <div class="col-md-3">
+                            <div class="col-md-3 p-3">
                                 <div class="card">
                                     @{
                                         var GymProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
@@ -167,7 +167,7 @@
                     {
                         foreach (var item in Model.Trainers)
                         {
-                            <div class="col-md-3">
+                            <div class="col-md-3 p-3">
                                 <div class="card">
                                     @{
                                         var CoachProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
