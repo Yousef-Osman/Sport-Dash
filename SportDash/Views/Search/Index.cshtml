@@ -6,61 +6,67 @@
 <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.4/themes/redmond/jquery-ui.css" />
 
 <section>
-    <div class="text-center">
-        <div class="bg-elephant d-flex justify-content-center">
-            <div class="container text-Geyser py-5">
-                <div>
-                    <h2>What are you looking for ?</h2>
-                    <p>You can search for Playground or Trainer or Gym with filters option </p>
-                    @*<form asp-action="AutoCompleteSearch">*@
-                    <div class="form-inline">
-                        <div class="form-group px-sm-3 mb-2 col-md-11">
-                            <input asp-for="SearchString" id="txtSearch" name="txtSearch" class="form-control w-100" />
-                        </div>
-                        <div class="form-group px-sm-3 mb-2 col-md-1">
-                            <button id="search-btn" class="btn btn-lg btn-primary">Search</button>
-                        </div>
-                    </div>
-                    @*</form>*@
-                </div>
-                <div class="row mt-3">
-                    <div class="form-group row col-md-3 col-sm-6">
-                        <label class="col-sm-4 col-form-label">Category</label>
-                        <div class="col-sm-8">
-                            <select id="cat" class="form-control" asp-for="CategoryString" asp-items="Model.Category">
-                                <option value="">All</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row col-md-3 col-sm-6">
-                        <label class="col-sm-4 col-form-label">Price</label>
-                        <div class="col-sm-8">
-                            <select id="search-price" class="form-control" asp-for="PriceString" asp-items="Model.Price">
-                                <option value="">All</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row col-md-3 col-sm-6">
-                        <label class="col-sm-4 col-form-label">Location</label>
-                        <div class="col-sm-8">
-                            <select id="search-location" class="form-control" asp-for="LocationString" asp-items="Model.Location">
-                                <option value="">All</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row col-md-3 col-sm-6">
-                        <label class="col-sm-6 col-form-label">Sport Type</label>
-                        <div class="col-sm-6">
-                            <select id="search-sportType" class="form-control" asp-for="SportTypeString" asp-items="Model.SportType">
-                                <option value="">All</option>
-                            </select>
+
+    <div class="site-blocks-cover2 overlay" style="background-image: url(/images/site/bg-global2.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
+        <div class="container">
+            <div class="row align-items-center text-center">
+                <div class="col-12">
+                    <div class="text-center">
+                        <div class="d-flex justify-content-center">
+                            <div class="container text-light py-4">
+                                <div>
+                                    <h2>What are you looking for ?</h2>
+                                    <p>You can search for Sports Field, Coach or Gym with filter options </p>
+                                    <div class="form-inline d-flex justify-content-between">
+                                        <div class="form-group col-md-11 col-sm-9 mb-2 px-0">
+                                            <input asp-for="SearchString" id="txtSearch" name="txtSearch" class="custom-select my-1 mr-sm-2 w-100" />
+                                        </div>
+                                        <div class="form-group col-md-1 col-sm-3 mb-2">
+                                            <button id="search-btn" class="btn btn-primary">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3 mb-5 d-flex justify-content-between">
+                                    <div class="form-group row col-md-3 col-sm-6">
+                                        <label class="col-sm-4 col-form-label">Category</label>
+                                        <div class="col-sm-8">
+                                            <select id="cat" class="custom-select my-1 mr-sm-2" asp-for="CategoryString" asp-items="Model.Category">
+                                                <option value="">All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-md-3 col-sm-6">
+                                        <label class="col-sm-4 col-form-label">Price</label>
+                                        <div class="col-sm-8">
+                                            <select id="search-price" class="custom-select my-1 mr-sm-2" asp-for="PriceString" asp-items="Model.Price">
+                                                <option value="">All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-md-3 col-sm-6">
+                                        <label class="col-sm-4 col-form-label">Location</label>
+                                        <div class="col-sm-8">
+                                            <select id="search-location" class="custom-select my-1 mr-sm-2" asp-for="LocationString" asp-items="Model.Location">
+                                                <option value="">All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-md-3 col-sm-6">
+                                        <label class="col-sm-6 col-form-label">Sport Type</label>
+                                        <div class="col-sm-6">
+                                            <select id="search-sportType" class="custom-select my-1 mr-sm-2" asp-for="SportTypeString" asp-items="Model.SportType">
+                                                <option value="">All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 
     <div id="search-container">
@@ -116,7 +122,7 @@
                 }
                 else
                 {
-                    <h3 class="text-center">There are no Sports Fields to display</h3>
+                    <h3 class="text-center text-secondary">There are no Sports Fields to display</h3>
                 }
             </div>
         </div>
@@ -173,7 +179,7 @@
                 }
                 else
                 {
-                    <h3 class="text-center">There are no Gyms to display</h3>
+                    <h3 class="text-center text-secondary">There are no Gyms to display</h3>
                 }
             </div>
         </div>
@@ -217,7 +223,7 @@
                 }
                 else
                 {
-                    <h3 class="text-center">There are no Coaches to display</h3>
+                    <h3 class="text-center text-secondary">There are no Coaches to display</h3>
                 }
             </div>
         </div>

@@ -545,3 +545,315 @@
             text-indent: 5px;
             box-shadow: none;
         }
+
+
+.custom-shadow {
+    -webkit-box-shadow: 0 5px 20px -5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 20px -5px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Image Model Styles Modal */
+.img-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.img-modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 1000px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.img-modal-content {
+    animation-name: zoom;
+    animation-duration: 0.4s;
+}
+
+@keyframes zoom {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* The Close Button */
+.img-close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+    .img-close:hover,
+    .img-close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px) {
+    .img-modal-content {
+        width: 100%;
+    }
+}
+
+
+/* Home screen UI */
+.green-color-filter {
+    filter: invert(76%) sepia(17%) saturate(5452%) hue-rotate(37deg) brightness(95%) contrast(76%);
+}
+
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+
+#footer {
+    background: #000;
+    padding: 0 0 30px 0;
+    color: #eee;
+    font-size: 14px;
+}
+
+    #footer .footer-top {
+        background: #111;
+        padding: 60px 0 30px 0;
+    }
+
+        #footer .footer-top .footer-info {
+            margin-bottom: 30px;
+        }
+
+            #footer .footer-top .footer-info h3 {
+                font-size: 34px;
+                margin: 0 0 20px 0;
+                padding: 2px 0 2px 10px;
+                line-height: 1;
+                font-family: "Montserrat", sans-serif;
+                font-weight: 700;
+                letter-spacing: 3px;
+                border-left: 4px solid #18d26e;
+            }
+
+            #footer .footer-top .footer-info p {
+                font-size: 14px;
+                line-height: 24px;
+                margin-bottom: 0;
+                font-family: "Montserrat", sans-serif;
+                color: #eee;
+            }
+
+        #footer .footer-top .social-links a {
+            font-size: 18px;
+            display: inline-block;
+            background: #333;
+            color: #eee;
+            line-height: 1;
+            padding: 8px 0;
+            margin-right: 4px;
+            border-radius: 50%;
+            text-align: center;
+            width: 36px;
+            height: 36px;
+            transition: 0.3s;
+        }
+
+            #footer .footer-top .social-links a:hover {
+                background: #18d26e;
+                color: #fff;
+            }
+
+        #footer .footer-top h4 {
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+            #footer .footer-top h4::before,
+            #footer .footer-top h4::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                height: 2px;
+            }
+
+            #footer .footer-top h4::before {
+                right: 0;
+                background: #555;
+            }
+
+            #footer .footer-top h4::after {
+                background: #18d26e;
+                width: 60px;
+            }
+
+        #footer .footer-top .footer-links {
+            margin-bottom: 30px;
+        }
+
+            #footer .footer-top .footer-links ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+                #footer .footer-top .footer-links ul i {
+                    padding-right: 8px;
+                    color: #ddd;
+                }
+
+                #footer .footer-top .footer-links ul li {
+                    border-bottom: 1px solid #333;
+                    padding: 10px 0;
+                }
+
+                    #footer .footer-top .footer-links ul li:first-child {
+                        padding-top: 0;
+                    }
+
+                #footer .footer-top .footer-links ul a {
+                    color: #eee;
+                }
+
+                    #footer .footer-top .footer-links ul a:hover {
+                        color: #18d26e;
+                    }
+
+        #footer .footer-top .footer-contact {
+            margin-bottom: 30px;
+        }
+
+            #footer .footer-top .footer-contact p {
+                line-height: 26px;
+            }
+
+        #footer .footer-top .footer-newsletter {
+            margin-bottom: 30px;
+        }
+
+            #footer .footer-top .footer-newsletter input[type="email"] {
+                border: 0;
+                padding: 6px 8px;
+                width: 65%;
+            }
+
+            #footer .footer-top .footer-newsletter input[type="submit"] {
+                background: #18d26e;
+                border: 0;
+                width: 35%;
+                padding: 6px 0;
+                text-align: center;
+                color: #fff;
+                transition: 0.3s;
+                cursor: pointer;
+            }
+
+                #footer .footer-top .footer-newsletter input[type="submit"]:hover {
+                    background: #13a456;
+                }
+
+    #footer .copyright {
+        text-align: center;
+        padding-top: 30px;
+    }
+
+    #footer .credits {
+        text-align: center;
+        font-size: 13px;
+        color: #ddd;
+    }
+
+
+
+/* Blocks */
+.site-blocks-cover2 {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+}
+
+    .site-blocks-cover2.overlay {
+        position: relative;
+    }
+
+        .site-blocks-cover2.overlay:before {
+            position: absolute;
+            content: "";
+            left: 0;
+            bottom: 0;
+            right: 0;
+            top: 0;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+    .site-blocks-cover2, .site-blocks-cover2 .row {
+        min-height: 300px;
+        height: calc(40vh);
+    }
+
+        .site-blocks-cover2.inner-page, .site-blocks-cover2.inner-page .row {
+            min-height: 300px;
+            height: calc(80vh);
+        }
+
+        .site-blocks-cover2 .sub-text {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: .2em;
+        }
+
+        .site-blocks-cover2 h1 {
+            font-weight: 900;
+            color: #fff;
+            font-size: 2.5rem;
+        }
+
+            .site-blocks-cover2 h1 strong {
+                font-weight: 900;
+            }
+
+@media (min-width: 768px) {
+    .site-blocks-cover2 h1 {
+        font-size: 4rem;
+        font-weight: 400;
+        line-height: 1.2;
+    }
+}
+
+.site-blocks-cover2 p {
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1.5;
+}
+
+.site-blocks-cover2 .intro-text {
+    font-size: 16px;
+    line-height: 1.5;
+}

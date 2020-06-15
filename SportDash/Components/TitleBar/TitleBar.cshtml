@@ -4,54 +4,41 @@
 @using SportDash.Data
 @inject SignInManager<ApplicationUser> SignInManager
 
-<div class="bg-elephant py-4">
-    <div class="container py-2">
-        <div class="d-flex align-items-center justify-content-between flex-wrap">
-            <div class="d-flex align-items-center col-md-6" style="padding:0 !important">
-                <div id="profile-image-container">
-                    @if (Model.Images.Where(a => a.IsProfileImg == true).FirstOrDefault() == null)
-                    {
-                        if (@Model.IsAdmin)
-                        {
-                            <img class="profile-image" src="@("/images/site/user-icon.jpg")" asp-append-version="true" data-toggle="modal" data-target="#editPrfileImageModal">
-                        }
-                        else
-                        {
-                            <img class="profile-image" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
-                        }
-                    }
-                    else
-                    {
-                        if (@Model.IsAdmin)
-                        {
-                            <img class="profile-image" src="@("/images/" + Model.ProfileImage.Title)" asp-append-version="true" data-toggle="modal" data-target="#editPrfileImageModal">
-                        }
-                        else
-                        {
-                            <img class="profile-image" src="@("/images/" + Model.ProfileImage.Title)" asp-append-version="true">
-                        }
-                    }
-                </div>
-                <div class=" ml-3">
-                    <div class="d-flex">
-                        <h3 class="text-white" id="entity-Name">@Model.Entity.FullName</h3>
-                        @if (Model.IsAdmin == true)
-                        {
-                            <i class="fa fa-pencil-square-o pl-3 pt-1 text-Mountain" aria-hidden="true" data-toggle="modal" data-target="#editTitleModal" style="font-size: 2em; cursor:pointer"></i>
-                        }
+
+@{var profileImage = "/images/site/bg-global.jpg";}
+@if (Model.Images.Where(a => a.IsProfileImg == true).FirstOrDefault() != null)
+{
+    profileImage = "/images/" + Model.ProfileImage.Title;
+}
+
+
+<div class="site-blocks-cover2 overlay" style="background-image: url(@profileImage);" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="container">
+        <div class="row align-items-center text-center">
+            <div class="col-12">
+                <h1 class="mb-2">@Model.Entity.FullName</h1>
+                <p>@Model.Entity.SportType @Model.Entity.Category</p>
+
+                @if (Model.IsAdmin)
+                {
+                    <div class="mb-4">
+                        <a class="btn btn-primary btn-outline-primary rounded-pill text-white py-2 px-4" data-toggle="modal" data-target="#editPrfileImageModal">Edit Image</a>
+                        <a class="btn btn-primary btn-outline-primary rounded-pill text-white py-2 px-4" data-toggle="modal" data-target="#editTitleModal">Edit Name</a>
                     </div>
-                    <p class="text-Geyser mt-0">@Model.Entity.SportType @Model.Entity.Category</p>
-                </div>
+                }
+
+
+                @if (SignInManager.IsSignedIn(User) && Model.IsAdmin == false)
+                {
+                    <div class="mb-4">
+                        <a class="btn btn-primary btn-outline-primary rounded-pill text-white py-2 px-4" asp-controller="Playground" asp-action="Message" asp-route-id="@Model.Entity.Id">Send a Message</a>
+                    </div>
+                }
             </div>
-            @if (SignInManager.IsSignedIn(User) && Model.IsAdmin == false)
-            {
-                <div class="col-md-2 mt-3 mb-3" style="padding:0 !important">
-                    <a class="nav-link btn btn-info bg-Mountain text-elephant" asp-controller="Playground" asp-action="Message" asp-route-id="@Model.Entity.Id">Message</a>
-                </div>
-            }
         </div>
     </div>
 </div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="editTitleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
