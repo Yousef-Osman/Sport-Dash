@@ -83,11 +83,12 @@ namespace SportDash.Controllers
             if (playgroundReciver == null) return NotFound();
 
             var currentUser = await userManager.GetUserAsync(User);
-            var allMessages = messageRepository.GetMessages(currentUser.Id, playgroundReciver.Id).OrderByDescending(m => m.MessageDate);
+            var allMessages = messageRepository.GetMessages(currentUser.Id, playgroundReciver.Id).OrderByDescending(m => m.MessageDate);            
 
             Dictionary<string, Image> profileImgs = new Dictionary<string, Image>();
             
             var img = imageRepository.GetImages(playgroundReciver.Id).FirstOrDefault(m => m.IsProfileImg == true);
+             
             if (!profileImgs.ContainsKey(playgroundReciver.Id))
             {
                 profileImgs.Add(playgroundReciver.Id, img);
