@@ -118,6 +118,8 @@
                     const chatContainer = document.querySelector('#mini-chat');
                     //loader.style.display = 'none';
                     chatContainer.innerHTML = data;
+                    document.getElementById("last-element").scrollIntoView();
+                    window.scrollBy(0, -50000);
                 }
             })
         }
@@ -178,10 +180,11 @@
                 </div>`);
                 let newMsg = document.getElementById('scroll-element');
                 if (newMsg != null) {
-                    newMsg.scrollIntoView();
+                    newMsg.scrollIntoView();                    
                     newMsg.removeAttribute("id");
                 }
             }
+            window.scrollBy(0, -50000);
             if (noMsgs != null) {
                 noMsgs.remove();
             }
