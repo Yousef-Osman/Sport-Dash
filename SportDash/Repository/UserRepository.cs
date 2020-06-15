@@ -56,7 +56,6 @@ namespace SportDash.Repository
         {
             user.biography = infoData.biography ?? user.biography;
             user.Location = infoData.Location ?? user.Location;
-            user.Location = (infoData.Location.Contains("Select")) ? user.Location : infoData.Location;
             user.BallRenting = infoData.BallRenting ?? user.BallRenting;
             user.LockerRoom = infoData.LockerRoom ?? user.LockerRoom;
             user.Toilet = infoData.Toilet ?? user.Toilet;

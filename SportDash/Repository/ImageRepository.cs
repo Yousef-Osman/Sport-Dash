@@ -34,14 +34,14 @@ namespace SportDash.Repository
 
         public async Task CreateImage(Image image, string id)
         {
-            //if(image.IsProfileImg == true)
-            //{
-            //    var profileImage = _context.Images.Where(a => a.IsProfileImg == true).SingleOrDefault();
-            //    if (profileImage != null)
-            //    {
-            //        await DeleteImage(profileImage.Id);
-            //    }
-            //}
+            if (image.IsProfileImg == true)
+            {
+                var profileImage = _context.Images.Where(a => a.IsProfileImg == true && a.UserId == id).SingleOrDefault();
+                if (profileImage != null)
+                {
+                    await DeleteImage(profileImage.Id);
+                }
+            }
 
             string wwwroot = _hostEnvironment.WebRootPath;
             string fileName = Path.GetFileNameWithoutExtension(image.ImageFile.FileName);
