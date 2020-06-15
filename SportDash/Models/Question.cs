@@ -10,9 +10,9 @@ namespace SportDash.Models
 {
     public enum QuestionAbout
     {
-        Playground = 0,
-        gym = 1,
-        Trainer = 2,
+        SportsField = 0,
+        Gym = 1,
+        Coach = 2,
         Others = 3
     }
     public class Question

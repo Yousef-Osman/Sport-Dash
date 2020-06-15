@@ -7,13 +7,13 @@
 
     <ul class="nav nav-tabs nav-justified">
         <li class="nav-item active">
-            <a class="nav-link" href="#">Playground</a>
+            <a class="nav-link" href="#">Sports Field</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Gym</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Trainer</a>
+            <a class="nav-link" href="#">Coach</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Others</a>
@@ -66,7 +66,7 @@
             let questionElementHTML =
             `<div class="row m-3">
                 <div class="row p-3 text-dark bg-white rounded">
-                    <img class="profile-image" style="width:64px;height:64px;" src="@("/images/user-icon.jpg")" asp-append-version="true">
+                    <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
                     <div class="ml-3">
                             <p>${question.user.userName}</p>
                             <p>${creationTime}</p>
@@ -145,13 +145,13 @@
 
     function getCategoryNumber() {
         let About = -1;
-        if (category === "Playground") {
+        if (category === "Sports Field") {
             About = 0;
         }
         else if (category === "Gym") {
             About = 1;
         }
-        else if (category === "Trainer") {
+        else if (category === "Coach") {
             About = 2;
         }
         else if (category === "Others") {
