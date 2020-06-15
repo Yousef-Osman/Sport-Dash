@@ -4,159 +4,176 @@
     Layout = null;
 }
 
-<section>
-    <div class="container pb-4 my-5">
-        <h1 class="text-elephant pb-3">Reviews</h1>
-        <div id="review-container">
-           @foreach (var item in Model.Reviews)
-            {
-                <div class="card">
-
-                    <div class="card-body">
-
-                        <div class="row mb-3">
-
-                            <div class="col-md-1">
-                                 <img width="50" height="50" class="" src="~/images/user-icon.jpg" />
-                            </div>
-
-                            <div class="col-md-11 text-left">
-                               <h3>@item.Reviewer.FullName</h3>
-                               @if (item.Rating.ToString() == "Bad")
-                                {
-                                   <span class="fa fa-star checked"></span>
-                                   <span class="fa fa-star"></span>
-                                   <span class="fa fa-star"></span>
-                                   <span class="fa fa-star"></span>
-                                   <span class="fa fa-star"></span>
-                                }
-                                else
-                                {
-                                   if (item.Rating.ToString() == "Nice")
-                                   {
-                                      <span class="fa fa-star checked"></span>
-                                      <span class="fa fa-star checked"></span>
-                                      <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span>
-                                   }
-                                   else
-                                   {
-                                         if (item.Rating.ToString() == "Good")
-                                         {
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span>
-                                         }
-                                         else
-                                         {
-                                              if (item.Rating.ToString() == "VeryGood")
-                                              {
-                                                   <span class="fa fa-star checked"></span>
-                                                   <span class="fa fa-star checked"></span>
-                                                   <span class="fa fa-star checked"></span>
-                                                   <span class="fa fa-star checked"></span>
-                                                   <span class="fa fa-star"></span>
-                                              }
-                                              else
-                                              {
-                                                   <span class="fa fa-star checked"></span>
-                                                   <span class="fa fa-star checked"></span>
-                                                   <span class="fa fa-star checked"></span>
-                                                   <span class="fa fa-star checked"></span>
-                                                   <span class="fa fa-star checked"></span>
-                                              }
-                                         }
-                                   }
-                                }
-                              @*<p>@item.Rating</p>*@
-                              <p>@item.Review_Date</p>
-                              <p class="h5">@item.Comment</p>
-                              @if (User.IsInRole("User"))
-                               {
-                                   @if (item.Reviewer.FullName == Model.CurrentUser.FullName)
-                                    {
-                                       <div class="text-right">
-                                           <Button value="@item.Id" id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
-                                       </div>
-                                    }
-                               }
-
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-            }
-        </div>
-        @if (User.IsInRole("User"))
-        {
-            <div class="row">
-                <div class="col-md-4">
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#staticBackdrop">
-                        Leave Review
-                    </button>
+<section class="bg-white">
+    <div class="site-section">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-4">
+                <div class="col-md-6" data-aos="fade">
+                    <h1>Reviews</h1>
                 </div>
             </div>
-        }
 
-        @* Add modal *@
-        <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row" id="post-review-box">
-                            <div class="col-md-12">
+            <div id="review-container">
+                @foreach (var item in Model.Reviews)
+                {
+                    <div class="card mb-3 custom-shadow">
 
-                                <input id="ratings-hidden" name="rating" type="hidden">
-                                <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
+                        <div class="card-body">
 
-                                <div class="text-right">
-                                    <div id="star-rating" class="rating">
-                                        <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Excellent">5 stars</label>
-                                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Very Good">4 stars</label>
-                                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Good">3 stars</label>
-                                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Nice">2 stars</label>
-                                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="bad">1 star</label>
-                                    </div>
+                            <div class="row mb-3">
+
+                                <div class="col-md-1">
+                                    @{
+                                        var UserProfileImage = item.Reviewer.Images.Where(a => a.IsProfileImg).Select(a => a.Title).FirstOrDefault();
+                                    }
+                                    @if (UserProfileImage == null)
+                                    {
+                                        <img class="profile-image-small" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                    }
+                                    else
+                                    {
+                                        <img class="profile-image-small" src="@("/images/" + UserProfileImage)" asp-append-version="true">
+                                    }
+                                </div>
+
+                                <div class="col-md-11 text-left">
+                                    <h3>@item.Reviewer.FullName</h3>
+                                    @if (item.Rating.ToString() == "Bad")
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.Rating.ToString() == "Nice")
+                                        {
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        }
+                                        else
+                                        {
+                                            if (item.Rating.ToString() == "Good")
+                                            {
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star"></span>
+                                                <span class="fa fa-star"></span>
+                                            }
+                                            else
+                                            {
+                                                if (item.Rating.ToString() == "VeryGood")
+                                                {
+                                                    <span class="fa fa-star checked"></span>
+                                                    <span class="fa fa-star checked"></span>
+                                                    <span class="fa fa-star checked"></span>
+                                                    <span class="fa fa-star checked"></span>
+                                                    <span class="fa fa-star"></span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="fa fa-star checked"></span>
+                                                    <span class="fa fa-star checked"></span>
+                                                    <span class="fa fa-star checked"></span>
+                                                    <span class="fa fa-star checked"></span>
+                                                    <span class="fa fa-star checked"></span>
+                                                }
+                                            }
+                                        }
+                                    }
+                                    <p>@item.Rating</p>
+                                    <p>@item.Review_Date</p>
+                                    <p class="h5">@item.Comment</p>
+                                    @if (User.IsInRole("User"))
+                                    {
+                                        @if (item.Reviewer.FullName == Model.CurrentUser.FullName)
+                                        {
+                                            <div class="text-right">
+                                                <Button value="@item.Id" id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
+                                            </div>
+                                        }
+                                    }
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-review">Add</button>
+
+                }
+            </div>
+            @if (User.IsInRole("User"))
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#staticBackdrop">
+                            Leave Review
+                        </button>
+                    </div>
+                </div>
+            }
+
+            @* Add modal *@
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" id="post-review-box">
+                                <div class="col-md-12">
+
+                                    <input id="ratings-hidden" name="rating" type="hidden">
+                                    <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
+
+                                    <div class="text-right">
+                                        <div id="star-rating" class="rating">
+                                            <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Excellent">5 stars</label>
+                                            <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Very Good">4 stars</label>
+                                            <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Good">3 stars</label>
+                                            <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Nice">2 stars</label>
+                                            <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="bad">1 star</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-review">Add</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        @* Delete Modal *@
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Deleting Review</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to delete this review ?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
-                        <button type="button" id="delete-review" class="btn btn-primary" data-dismiss="modal">Yes</button>
+            @* Delete Modal *@
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Deleting Review</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this review ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                            <button type="button" id="delete-review" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -175,6 +192,7 @@
         e.preventDefault();
         const new_review = $("#staticBackdrop").find('#new-review').val();
         const new_rate = $('input[name=rating]:checked').val();
+        console.log(new_rate);
         const current_id = "@Model.CurrentUser.Id";
         var today = new Date();
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -190,22 +208,25 @@
         };
         console.log(review)
 
-        $('#staticBackdrop').on('hidden.bs.modal', function (e) {
-            $(this)
-                .find("input,textarea,select")
-                .val('')
-                .end()
-                .find("input[type=checkbox], input[type=radio]")
-                .prop("checked", "")
-                .end();
-        });
+        // need to fix it to empty model after close it
+        //$('#staticBackdrop').on('hidden.bs.modal', function (e) {
+        //    e
+        //        .find("input,textarea,select")
+        //        .val('')
+        //        .end()
+        //        .find("input[type=checkbox], input[type=radio]")
+        //        .prop("checked", "")
+        //        .end();
+        //});
+
+
 
         if (review != null) {
             $.ajax({
                 url: '/@Model.ControllerName/AddReview',
                 type: 'POST',
                 data: { R: review },
-                dataType: "text",
+                //dataType: "text",
                 success: function (response) {
                     console.log(response);
                     $('#review-container').html(response);
@@ -222,9 +243,9 @@
                         <span class="fa fa-star"></span>
 
 
-                        <p>${response.value.rating}</p>
-                        <span>${response.value.review_Date}</span>
-                        <p class="h5">${response.value.comment}</p>
+                        <p>$//{response.value.rating}</p>
+                        <span>$//{response.value.review_Date}</span>
+                        <p class="h5">$//{response.value.comment}</p>
                         <div class="text-right">
                         <Button id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
                         </div>

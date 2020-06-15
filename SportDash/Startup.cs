@@ -10,6 +10,7 @@ using SportDash.Models;
 using SportDash.Repository;
 using SportDash.Hubs;
 using System;
+using System.Threading.Tasks;
 
 namespace SportDash
 {
@@ -27,8 +28,7 @@ namespace SportDash
         {
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
-            services.AddScoped<IQuestionRepository, QuestionRepoitory>();
-            services.AddScoped<ITrainingProgramRepository, TrainingProgramRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepoitory>();            
             services.AddScoped<IGymPricesRepository, GymPricesRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
@@ -77,9 +77,11 @@ namespace SportDash
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithRedirects("/Error/Index/{0}");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

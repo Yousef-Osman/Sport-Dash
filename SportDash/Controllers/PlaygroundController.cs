@@ -103,10 +103,11 @@ namespace SportDash.Controllers
             var userId = _userManager.GetUserId(HttpContext.User);
             await _imageRepository.CreateImage(image, userId);
 
-            var profileImage = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == true).SingleOrDefault().Title;
+            var profileImage = _imageRepository.GetImages(userId).Where(a=>a.IsProfileImg == true).SingleOrDefault().Title;
             return Ok(profileImage);
         }
 
+        [Authorize]
         public async Task<IActionResult> Message(string id)
         {
             var playgroundReciver = await _userManager.FindByIdAsync(id);
@@ -115,11 +116,20 @@ namespace SportDash.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             var allMessages = _messageRepository.GetMessages(currentUser.Id, playgroundReciver.Id).OrderByDescending(m => m.MessageDate);
 
+            Dictionary<string, Image> profileImgs = new Dictionary<string, Image>();
+
+            var img = _imageRepository.GetImages(playgroundReciver.Id).FirstOrDefault(m => m.IsProfileImg == true);
+            if (!profileImgs.ContainsKey(playgroundReciver.Id))
+            {
+                profileImgs.Add(playgroundReciver.Id, img);
+            }
+
             MessagingViewModel messagingViewModel = new MessagingViewModel
             {
                 CurrentPage = playgroundReciver.FullName,
                 EntityId = id,
-                Messages = allMessages
+                Messages = allMessages,
+                ProfileImages = profileImgs
             };
 
             return View(messagingViewModel);
@@ -329,17 +339,20 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
+        //[Authorize(Policy = "PlaygroundPolicy")]
         public async Task<IActionResult> AddReview(Review R)
         {
-            //if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             //R.ReviewerId = _userManager.GetUserId(HttpContext.User);
             //R.TargetId = "b6bf071e-32fe-4b3f-b8ec-57ddc6737e8";
             // var review = _reviewRepository.PostReview(R);
             //return Ok(new OkObjectResult(review));
             DataViewModel reviewVM = new DataViewModel();
-            var TargetId = R.TargetId;
+            var userId = R.ReviewerId;
+            var TargetId = R.TargetId; 
             var review = _reviewRepository.PostReview(R);
-            reviewVM.CurrentUser = await _userManager.GetUserAsync(User);
+            reviewVM.ProfileImage = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == true).SingleOrDefault();
+            reviewVM.CurrentUser =  await _userManager.GetUserAsync(User);
             reviewVM.Reviews = _reviewRepository.GetReviewsOfReviewee(TargetId);
             reviewVM.Review = review;
             return PartialView("_DisplayAddedReview", reviewVM);

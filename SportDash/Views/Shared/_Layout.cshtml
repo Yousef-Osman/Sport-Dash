@@ -10,14 +10,19 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/custom.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="~/lib/homePage/css/style.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.22/jquery-ui.js"></script>
+
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-Geyser border-bottom">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-black" style="background-color: black">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SportDash</a>
+                
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/site/0004.jpg" class="navbar-brand" width="120"/>
+                    </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,39 +31,42 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a id="newMsg" class="nav-link text-dark" asp-controller="Search" asp-action="Index">Search</a>
+                            <a id="newMsg" class="nav-link" asp-controller="Search" asp-action="Index">Search</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="newMsg" class="nav-link" asp-controller="Question" asp-action="Index">Q&A</a>
                         </li>
                         @if (User.IsInRole("Playground"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Playground" asp-action="Index" asp-route-id="">Profile</a>
+                                <a class="nav-link" asp-controller="Playground" asp-action="Index" asp-route-id="">Profile</a>
                             </li>
                         }
                         @if (User.IsInRole("Gym"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Gym" asp-action="Index" asp-route-id="">Profile</a>
+                                <a class="nav-link" asp-controller="Gym" asp-action="Index" asp-route-id="">Profile</a>
                             </li>
                         }
                         @if (User.IsInRole("Coach"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Coach" asp-action="Index" asp-route-id="">Profile</a>
+                                <a class="nav-link" asp-controller="Coach" asp-action="Index" asp-route-id="">Profile</a>
                             </li>
                         }
                         @if (User.IsInRole("User"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="User" asp-action="Index" asp-route-id="">Profile</a>
+                                <a class="nav-link" asp-controller="User" asp-action="Index" asp-route-id="">Profile</a>
                             </li>
                         }
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a id="newMsg" class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">
+                                <a id="newMsg" class="nav-link" asp-area="" asp-controller="Messages" asp-action="Index">
                                     Messages
                                     @if ((await UserManager.GetUserAsync(User)).HasNewMsgs)
                                     {
@@ -77,14 +85,55 @@
         </nav>
     </header>
     <div>
-        <main role="main" class="pb-3">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted bg-elephant py-3">
-        <div class="container d-flex justify-content-center">
-            &copy; 2020 - SportDash - All Rights Reserved
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-3 col-md-6 footer-info">
+                        <h3>WASSLA</h3>
+                        <p>Wassla purpose is to help people finding their desired sports field, gym or coach by facilitate the search method and help with the reservation process.</p>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><i class="ion-ios-arrow-right"></i> <a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a asp-controller="Search" asp-action="Index">Search</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a asp-controller="Question" asp-action="Index">Community</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-contact">
+                        <h4>Contact Us</h4>
+                        <p>
+                            Github.com/Yousef-Osman<br>
+                            Github.com/ahmedmagdy492<br>
+                            Github.com/mina-medhat<br>
+                            Github.com/Abanob-Hanna<br>
+                            Github.com/RamyAhmedGhanem<br>
+                        </p>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-newsletter">
+                        <h4>Feedback</h4>
+                        <p>To help improve the application and get the proper service, feel free to send as feedback on what you liked and what adjustments should we make to improve the application.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="copyright">
+                &copy; 2020 - <strong>WASSLA</strong> - All Rights Reserved
+            </div>
         </div>
     </footer>
 
@@ -98,9 +147,14 @@
     <script src="~/js/chat.js"></script>
     @RenderSection("Scripts", required: false)
     <script>
+        let id = setInterval(() => {
+            if (connection.connectionState == 0) {
+                connection.start();
+            }
+        }, 3000);
         const newMsg = document.querySelector("#newMsg");
         connection.on("recMsg", function (res) {
-            if (!location.pathname.includes("Message")) {                
+            if (!location.pathname.includes("Message")) {
                 document.querySelector("#new-msg").style.display = "inline";
                 const sound = document.querySelector("#sound");
                 sound.play();
@@ -114,7 +168,7 @@
                     }
                 })
             }
-        });        
+        });
     </script>
 </body>
 </html>

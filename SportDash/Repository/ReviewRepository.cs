@@ -33,7 +33,7 @@ namespace SportDash.Repository
         // get all reviews of this user ex: Trainer's Reviews
         public IEnumerable<Review> GetReviewsOfReviewee(string User_Id)
         {
-            return _context.Reviews.Include(a=>a.Reviewer).Where(r => r.TargetId == User_Id ).ToList();
+            return _context.Reviews.Include(a=>a.Reviewer).Include(a=>a.Reviewer.Images).Where(r => r.TargetId == User_Id ).ToList();
         }
 
         

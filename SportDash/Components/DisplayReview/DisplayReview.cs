@@ -13,13 +13,17 @@ namespace SportDash.Components
 {
     public class DisplayReview : ViewComponent
     {
-        private readonly IReviewRepository _IR;
+        private readonly IReviewRepository _reviewRepository;
         private readonly UserManager<ApplicationUser> _user;
+        private readonly IImageRepository _imageRepository;
 
-        public DisplayReview(IReviewRepository IR, UserManager<ApplicationUser> user)
+        public DisplayReview(IReviewRepository reviewRepository,
+                             UserManager<ApplicationUser> user ,
+                             IImageRepository imageRepository)
         {
-            _IR = IR;
+            _reviewRepository = reviewRepository;
             _user = user;
+            _imageRepository = imageRepository;
         }
 
 
@@ -39,8 +43,9 @@ namespace SportDash.Components
                 dataModel.Entity = dataModel.CurrentUser;
             }
             
-            dataModel.Reviews = _IR.GetReviewsOfReviewee(userId);
+            dataModel.Reviews = _reviewRepository.GetReviewsOfReviewee(userId);
             dataModel.Review = newReview;
+            dataModel.ProfileImage = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == true).SingleOrDefault();
             //dataModel.ControllerName = controllerName;
             //dataModel.CurrentUser = user_Id;
             return View("/Components/DisplayReview/DisplayReview.cshtml", dataModel);

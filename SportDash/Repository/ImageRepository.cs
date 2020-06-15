@@ -34,9 +34,9 @@ namespace SportDash.Repository
 
         public async Task CreateImage(Image image, string id)
         {
-            if(image.IsProfileImg == true)
+            if (image.IsProfileImg == true)
             {
-                var profileImage = _context.Images.Where(a => a.IsProfileImg == true).SingleOrDefault();
+                var profileImage = _context.Images.Where(a => a.IsProfileImg == true && a.UserId == id).SingleOrDefault();
                 if (profileImage != null)
                 {
                     await DeleteImage(profileImage.Id);

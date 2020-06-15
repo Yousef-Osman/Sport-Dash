@@ -74,6 +74,49 @@ namespace SportDash.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [Authorize(Policy = "UserPolicy")]
+        public async Task<IActionResult> EditProfileImage(IFormFile file)
+        {
+            var image = new Image();
+            image.ImageFile = file;
+            image.IsProfileImg = true;
+            var userId = _userManager.GetUserId(HttpContext.User);
+            await _imageRepository.CreateImage(image, userId);
+
+            var profileImage = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == true).SingleOrDefault().Title;
+            return Ok(profileImage);
+        }
+
+
+        [HttpPost]
+        [Authorize(Policy = "UserPolicy")]
+        public async Task<IActionResult> AddNewImage(IFormFile file)
+        {
+            var image = new Image();
+            image.ImageFile = file;
+            var userId = _userManager.GetUserId(HttpContext.User);
+            await _imageRepository.CreateImage(image, userId);
+
+            var dataModel = new DataViewModel();
+            dataModel.Images = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == false);
+            dataModel.IsAdmin = true;
+            return PartialView("_Images", dataModel);
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "UserPolicy")]
+        public async Task<IActionResult> DeleteImage(int id)
+        {
+            await _imageRepository.DeleteImage(id);
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            var dataModel = new DataViewModel();
+            dataModel.Images = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == false);
+            dataModel.IsAdmin = true;
+            return PartialView("_Images", dataModel);
+        }
+
         public async Task<IActionResult> Message(string id)
         {
             var playgroundReciver = await _userManager.FindByIdAsync(id);
@@ -94,30 +137,14 @@ namespace SportDash.Controllers
 
         [HttpPost]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<IActionResult> AddNewImage(IFormFile file)
+        public async Task<IActionResult> EditInfoData(ApplicationUser infoData)
         {
-            var image = new Image();
-            image.ImageFile = file;
-            var userId = _userManager.GetUserId(HttpContext.User);
-            await _imageRepository.CreateImage(image, userId);
-
+            var user = await _userManager.GetUserAsync(User);
             var dataModel = new DataViewModel();
-            dataModel.Images = _imageRepository.GetImages(userId);
+            dataModel.Entity = _userRepository.EditApplicationUser(user, infoData);
             dataModel.IsAdmin = true;
-            return PartialView("_Images", dataModel);
-        }
 
-        [HttpPost]
-        [Authorize(Policy = "UserPolicy")]
-        public async Task<IActionResult> DeleteImage(int id)
-        {
-            await _imageRepository.DeleteImage(id);
-            var userId = _userManager.GetUserId(HttpContext.User);
-
-            var dataModel = new DataViewModel();
-            dataModel.Images = _imageRepository.GetImages(userId);
-            dataModel.IsAdmin = true;
-            return PartialView("_Images", dataModel);
+            return PartialView("_InfoBar", dataModel);
         }
     }
 }
