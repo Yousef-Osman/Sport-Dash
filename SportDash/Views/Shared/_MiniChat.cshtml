@@ -31,7 +31,7 @@
             {
                 <div class="row message-body">
                     <div class="col-sm-12 message-main-sender">
-                        <div class="sender">
+                        <div class="sender" style="max-width: 370px;">
                             <div class="message-text">
                                 @msg.Body
                             </div>
@@ -46,7 +46,7 @@
             {
                 <div class="row message-body">
                     <div class="col-sm-12 message-main-receiver">
-                        <div class="receiver">
+                        <div class="receiver" style="max-width: 370px;">
                             <div class="message-text">
                                 @msg.Body
                             </div>
@@ -63,9 +63,9 @@
 
 <div class="row reply">
     <div class="col-sm-11 col-xs-9 reply-main">
-        <textarea class="form-control" rows="1" id="msg" onkeypress="sendKey(event)" placeholder="Type a message ..."></textarea>
+        <textarea class="h-auto form-control" rows="1" id="msg" onkeypress="sendKey(event)" placeholder="Type a message ..."></textarea>
     </div>
     <div class="col-sm-1 col-xs-1 reply-send">
-        <a onclick="send()"><i class="fa fa-send fa-2x" aria-hidden="true"></i></a>
+        <a onclick="send()"><i class="fa fa-send" aria-hidden="true"></i></a>
     </div>
 </div>

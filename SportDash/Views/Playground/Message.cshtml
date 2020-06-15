@@ -1,94 +1,94 @@
 ﻿@model SportDash.ViewModels.MessagingViewModel
+@inject UserManager<ApplicationUser> userManager;
 
 @{
     ViewData["Title"] = "Live Chat";
 }
-
-<div class="container app" style="width: 60%;">
-    <div class="app-one">
-        <div class="conversation">
-            <div class="text-center">
-                <div>
-                    <div class="row heading">
-                        <div class="heading-avatar">
-                            <div class="heading-avatar-icon">
-                                @if (Model.ProfileImages.FirstOrDefault().Value == null)
-                                {
-                                    <img class="profile-image" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
-                                }
-                                else
-                                {
-                                    <img class="profile-image" src="@("/images/" + Model.ProfileImages.FirstOrDefault().Value.Title)" asp-append-version="true">
-                                }                                
+<section style="min-height: 550px">
+    <div class="container app" style="width: 60%;">
+        <div class="app-one">
+            <div class="conversation">
+                <div class="text-center">
+                    <div>
+                        <div class="row heading">
+                            <div class="heading-avatar">
+                                <div class="heading-avatar-icon">
+                                    @if (Model.ProfileImages.FirstOrDefault().Value == null)
+                                    {
+                                        <img class="profile-image" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                                    }
+                                    else
+                                    {
+                                        <img class="profile-image" src="@("/images/" + Model.ProfileImages.FirstOrDefault().Value.Title)" asp-append-version="true">
+                                    }
+                                </div>
                             </div>
-                        </div>
-                        <div class="heading-name">
-                            <a class="heading-name-meta text-secondary">
-                                @Model.CurrentPage
-                            </a>
-                        </div>
-                    </div>
-
-                    <div style="height: 350px;" class="row message full-width" id="conversation">
-                        <div class="row message-previous">
-                            <div class="col-sm-12 previous">
-                                <a onclick="previous(this)" id="ankitjain28" name="20">
-                                    Show Previous Message!
+                            <div class="heading-name">
+                                <a class="heading-name-meta text-secondary">
+                                    @Model.CurrentPage
                                 </a>
                             </div>
                         </div>
 
-                        <div id="msgs-container" class="msg-container">
-                            @foreach (var msg in Model.Messages.Reverse())
-                            {
-                                if (msg.Sender.UserName == User.Identity.Name)
-                                {
-                                    <div class="row message-body">
-                                        <div class="col-sm-12 message-main-sender">
-                                            <div class="sender">
-                                                <div class="message-text">
-                                                    @msg.Body
-                                                </div>
-                                                <span class="message-time pull-right">
-                                                    @msg.MessageDate
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="row message-body">
-                                        <div class="col-sm-12 message-main-receiver">
-                                            <div class="receiver">
-                                                <div class="message-text">
-                                                    @msg.Body
-                                                </div>
-                                                <span class="message-time pull-right">
-                                                    @msg.MessageDate
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            }
-                        </div>
-                    </div>
+                        <div style="height: 350px;" class="row message full-width" id="conversation">
+                            <div class="row message-previous">
+                                <div class="col-sm-12 previous">
+                                    <a onclick="previous(this)" id="ankitjain28" name="20">
+                                    </a>
+                                </div>
+                            </div>
 
-                    <div class="row reply">
-                        <div class="col-sm-11 col-xs-9 reply-main">
-                            <textarea class="form-control" rows="1" id="msg" onkeypress="sendKey(event)" placeholder="Type a message ..."></textarea>
+                            <div id="msgs-container" class="msg-container">
+                                @foreach (var msg in Model.Messages.Reverse())
+                                {
+                                    if (msg.Sender.UserName == User.Identity.Name)
+                                    {
+                                        <div class="row message-body">
+                                            <div class="col-sm-12 message-main-sender">
+                                                <div class="sender" style="max-width: 370px;">
+                                                    <div class="message-text">
+                                                        @msg.Body
+                                                    </div>
+                                                    <span class="message-time pull-right">
+                                                        @msg.MessageDate
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="row message-body">
+                                            <div class=" message-main-receiver">
+                                                <div class="receiver" style="max-width: 370px;">
+                                                    <div class="message-text">
+                                                        @msg.Body
+                                                    </div>
+                                                    <span class="message-time pull-right">
+                                                        @msg.MessageDate
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
                         </div>
-                        <div class="col-sm-1 col-xs-1 reply-send">
-                            <a onclick="send()"><i class="fa fa-send fa-2x" aria-hidden="true"></i></a>
+
+                        <div class="row reply">
+                            <div class="col-sm-11 col-xs-9 reply-main">
+                                <textarea class="h-auto form-control" rows="1" id="msg" onkeypress="sendKey(event)" placeholder="Type a message ..."></textarea>
+                            </div>
+                            <div class="col-sm-1 col-xs-1 reply-send">
+                                <a onclick="send()"><i class="fa fa-send" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+</section>
 
 @section Scripts{
     <script>
@@ -112,38 +112,42 @@
                 send();
             }
         }
-        connection.on("recMsg", (res, senderId, username, date) => {
+        connection.on("recMsg", (res, reciever, username, date, img, sender) => {
             const msgContainer = $("#msgs-container");
-            if (senderId == location.pathname.split('/')[3]) {
+            if (sender == '@(userManager.GetUserId(User))')
+            {
                 msgContainer.append(`
-                    <div class="row message-body" id="scroll-element">
-                        <div class="col-sm-12 message-main-receiver">
-                            <div class="receiver">
-                                <div class="message-text">${res}</div>
-                                <span class="message-time pull-right">${date}</span>
-                            </div>
+                <div class="row message-body" id="scroll-element">
+                    <div class="message-main-sender" style="margin-left: 72% !important;">
+                        <div class="sender" style="max-width: 370px;">
+                            <div class="message-text">${res}</div>
+                            <span class="message-time pull-right">${date}</span>
                         </div>
-                    </div>`);
+                    </div>
+                </div>`);
                 let newMsg = document.getElementById('scroll-element');
-                newMsg.scrollIntoView();
-                newMsg.removeAttribute("id");
+                if (newMsg != null) {
+                    newMsg.scrollIntoView();
+                    newMsg.removeAttribute("id");
+                }
             }
-            else {
+            else if (reciever == location.pathname.split('/')[3])
+            {
                 msgContainer.append(`
-                    <div class="row message-body" id="scroll-element">
-                        <div class="col-sm-12 message-main-sender">
-                            <div class="sender">
-                                <div class="message-text">${res}</div>
-                                <span class="message-time pull-right">${date}</span>
-                            </div>
+                <div class="row message-body" id="scroll-element">
+                    <div class="message-main-receiver">
+                        <div class="receiver" style="max-width: 370px;">
+                            <div class="message-text">${res}</div>
+                            <span class="message-time pull-right">${date}</span>
                         </div>
-                    </div>`);
+                    </div>
+                </div>`);
                 let newMsg = document.getElementById('scroll-element');
-                newMsg.scrollIntoView(true, {
-                    behavior: "smooth", block: "end", inline: "nearest"
-                });
-                newMsg.removeAttribute("id");
-            }                        
+                if (newMsg != null) {
+                    newMsg.scrollIntoView();
+                    newMsg.removeAttribute("id");
+                }
+            }
         });
         function toggleDate(event) {
             var dateEle = event.target.parentElement.children[0];

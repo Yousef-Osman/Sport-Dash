@@ -107,6 +107,7 @@ namespace SportDash.Controllers
             return Ok(profileImage);
         }
 
+        [Authorize]
         public async Task<IActionResult> Message(string id)
         {
             var playgroundReciver = await _userManager.FindByIdAsync(id);

@@ -10,6 +10,7 @@ using SportDash.Models;
 using SportDash.Repository;
 using SportDash.Hubs;
 using System;
+using System.Threading.Tasks;
 
 namespace SportDash
 {
@@ -76,9 +77,11 @@ namespace SportDash
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithRedirects("/Error/Index/{0}");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
