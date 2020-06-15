@@ -7,9 +7,6 @@
 
     <ul class="nav nav-tabs nav-justified">
         <li class="nav-item active">
-            <a class="nav-link" href="#">Club</a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" href="#">Playground</a>
         </li>
         <li class="nav-item">
@@ -17,9 +14,6 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Trainer</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Training Program</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Others</a>
@@ -151,23 +145,17 @@
 
     function getCategoryNumber() {
         let About = -1;
-        if (category === "Club") {
+        if (category === "Playground") {
             About = 0;
         }
-        else if (category === "Playground") {
+        else if (category === "Gym") {
             About = 1;
         }
-        else if (category === "Gym") {
+        else if (category === "Trainer") {
             About = 2;
         }
-        else if (category === "Trainer") {
-            About = 3;
-        }
-        else if (category === "Training Program") {
-            About = 4;
-        }
         else if (category === "Others") {
-            About = 5;
+            About = 3;
         }
         return About;
     }
