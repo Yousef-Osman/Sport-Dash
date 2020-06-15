@@ -30,6 +30,28 @@
 
     </div>
 </div>
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="Question_Modal" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="Question_Modal_header_Message" class="modal-title">Confirmation Message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="Question_Modal_Body"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="Ok" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     let questionsContainer = document.getElementById("Questions_Container");
     function FillQuestions(value) {
@@ -41,7 +63,7 @@
         let lastUpdateTime;
         let questionId;
         questionsContainer.innerHTML = "";
-        let fragment = document.createRange().createContextualFragment(""); 
+        let fragment = document.createRange().createContextualFragment("");
         for (let question of questions) {
             creationTime = new Date(question.creationTime);
             creationTime = getDateString(creationTime);
@@ -110,13 +132,17 @@
                 },
                 success: onGettingSuccess,
                 error: () => {
-                    alert("Error");
+                    raiseModal("Error","Can't get the questions");
                 }
             });
         }
 
     }
-
+    function raiseModal(modalHeader, modalBody) {
+        $("#Question_Modal_header_Message").text(modalHeader);
+        $("#Question_Modal_Body").text(modalBody);
+        $("#Question_Modal").modal();
+    }
     function onGettingSuccess(data) {
         response = data.value;
         console.log(data);
@@ -159,7 +185,7 @@
             meridiem = " PM";
             if (hours != 12) {
                 hours -= 12;
-            }            
+            }
         }
         else {
             meridiem = " AM";

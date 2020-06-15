@@ -33,7 +33,7 @@ namespace SportDash.Components.PlaygroundPrices
 
             dataModel.PlaygroundPrices = _playgroundPriceRepositor.GetByPlayground(userId);
 
-            return View("/Components/PlaygroundPrices/PlaygroundPrices.cshtml", dataModel);
+            return View("/Components/PlaygroundPrices/PlaygroundPrices_Modified.cshtml", dataModel);
         }
     }
 }
