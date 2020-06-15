@@ -17,5 +17,6 @@ namespace SportDash.Repository
         public int AddPlaygroundPrice(PlaygroundPrice playgroundPrice);
         public bool UpdatePlaygroundPrice(int Id, PlaygroundPrice oldPlaygroundPrice);
         public bool DeletePlaygroundPrice(int id);
+        public List<PlaygroundPrice> GetConflictedList(PlaygroundPrice playgroundPrice);
     }
 }
