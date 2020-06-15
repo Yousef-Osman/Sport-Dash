@@ -50,6 +50,29 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="Question_Modal" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="Question_Modal_header_Message" class="modal-title">Confirmation Message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="Question_Modal_Body"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="Ok" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <script>
     let Edit = document.getElementById("Edit");
     let Save = document.getElementById("Save");
@@ -94,7 +117,7 @@
                 }
             },
             success: () => {
-                alert("Posted");
+                raiseModal("Successful Posting","The question is successfully posted");
                 let element = document.getElementById("Question_Body");
                 let parent = element.parentElement;
                 let Text = element.value;
@@ -107,9 +130,13 @@
                 Edit.classList.remove("d-none");
             },
             error: () => {
-                alert("Error");
+                raiseModal("Error","The question can't be posted");
             }
         });
     }
-
+    function raiseModal(modalHeader, modalBody) {
+        $("#Question_Modal_header_Message").text(modalHeader);
+        $("#Question_Modal_Body").text(modalBody);
+        $("#Question_Modal").modal();
+    }
 </script>

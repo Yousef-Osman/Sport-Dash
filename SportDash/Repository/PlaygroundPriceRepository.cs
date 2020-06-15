@@ -79,6 +79,7 @@ namespace SportDash.Repository
             }
             return false;
         }
+
         public bool UpdatePlaygroundPrice(int Id,PlaygroundPrice newPlaygroundPrice)
         {
             PlaygroundPrice FoundplaygroundPrice = SearchPlaygroundPrice(Id);
@@ -101,6 +102,23 @@ namespace SportDash.Repository
         {
             return _applicationDbContext.playgroundPrices.Where(
                 playgroundprice => playgroundprice.PlaygroundId == playgroundId).ToList();
+        }
+
+        public List<PlaygroundPrice> GetConflictedList(PlaygroundPrice newPlaygroundPrice)
+        {
+           List<PlaygroundPrice> prices = _applicationDbContext.playgroundPrices.Where(playgroundPrice=>
+            ((playgroundPrice.Start<newPlaygroundPrice.Start)&&(playgroundPrice.End > newPlaygroundPrice.Start)) ||
+            ((playgroundPrice.Start<newPlaygroundPrice.End) &&(playgroundPrice.End > newPlaygroundPrice.End)) ||
+            ((playgroundPrice.Start >= newPlaygroundPrice.Start) && (playgroundPrice.End <= newPlaygroundPrice.End))).ToList();
+            return prices;
+            //if(price == null)
+            //{
+            //    return false;
+            //}
+            //else
+            //{
+            //    return true;
+            //}
         }
     }
 }

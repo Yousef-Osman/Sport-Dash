@@ -1,5 +1,6 @@
 ﻿@model SportDash.ViewModels.DataViewModel
 
+<!-- Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="Price_Modal" aria-modal="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -20,6 +21,57 @@
         </div>
     </div>
 </div>
+
+
+
+<!--Edit and Add Modal -->
+<div class="modal fade" id="Edit_Price_Modal" tabindex="-1" role="dialog" aria-labelledby="priceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-Mountain">
+                <h5 class="modal-title text-elephant" id="Edit_Price_ModalLabel">Edit Price</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row mb-2">
+                    <div class="col">
+                        <p>Start</p>
+                    </div>
+                    <div class="col">
+                        <input type='time' id="from_input">
+                    </div>
+                </div>
+                <div class="form-row mb-2">
+                    <div class="col">
+                        <p>End</p>
+                    </div>
+                    <div class="col">
+                        <input type='time' id="to_input">
+                    </div>
+                </div>
+                <div class="form-row mb-2">
+                    <div class="col">
+                        <p>Price</p>
+                    </div>
+                    <div class="col">
+                        <input type='number' min='1' max='9999' size="4" id="price_input">
+                    </div>
+                </div>
+            </div>
+            <div id="edit_footer" class="modal-footer">
+                <button type="button" class="btn btn-info bg-Mountain text-elephant" data-dismiss="modal" id="confirm_price_edit">Edit</button>
+                <button type="button" class="btn btn-secondary" id="close_Edit" data-dismiss="modal">Close</button>
+            </div>
+            <div id="add_footer" class="modal-footer d-none">
+                <button type="button" class="btn btn-info bg-Mountain text-elephant" data-dismiss="modal" id="confirm_price_add">Add</button>
+                <button type="button" class="btn btn-secondary" id="close_add" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 
@@ -108,8 +160,6 @@
 @if (Model.IsAdmin)
 {
     <script>
-
-
         let last_id = @i;
         let allow = true;
         let from_id;
@@ -173,7 +223,7 @@
                 document.getElementById("Add").addEventListener("click", () => {
                     //debugger;
                     if (allow === true) {
-                        let NewRow = `<div class="row separator" >
+                        let NewRow = `<div class="row separator d-none" >
                 <div id="row_${last_id}" class="row col-12 col-lg-9 mx-0 px-0">
                     <div class="col-1 ">
                     </div>
@@ -207,12 +257,14 @@
             </div>
             </div>`;
                         currId = last_id;
+                        document.getElementById(`edit_footer`).classList.add("d-none");
+                        document.getElementById(`add_footer`).classList.remove("d-none");
+                        raiseEditModal(currId,"","","","Add Price");
                         document.getElementById("Prices_Section").innerHTML += NewRow;
                         document.getElementById(`Update_${currId}`).addEventListener("click", updateCallback);
                         document.getElementById(`Delete_${currId}`).addEventListener("click", deleteCallback);
                         document.getElementById(`Save_${currId}`).addEventListener("click", addCallback);
                         document.getElementById(`Cancel_${currId}`).addEventListener("click", cancelCallback);
-                        allow = false;
                     }
                     else {
                         raiseModal("Notification", "Finish Other Operations First");
@@ -230,14 +282,16 @@
                 else {
                     raiseModal("Notification", "Finish Other Operations First");
                 }
-
+            }
+            function removeLastRow() {
+                removeRow(last_id);
+                addListeners();
             }
             function cancelCallback() {
                 currId = getIds(this);
                 if (currId == last_id) {
-                    removeRow(last_id);
-                    addListeners();
-                    allow = true;
+                    removeLastRow();
+                    //allow = true;
                 }
                 else {
 
@@ -258,14 +312,31 @@
                     temp_from_value = document.getElementById(`${from_id}`).innerText;
                     temp_to_value = document.getElementById(`${to_id}`).innerText;
                     temp_price_value = document.getElementById(`${price_id}`).innerText.slice(0, -4);
-                    toEditUI(currId, document.getElementById(`${from_id}`).innerText, document.getElementById(`${to_id}`).innerText, document.getElementById(`${price_id}`).innerText.slice(0, -4));
-                    allow = false;
+                    //toEditUI(currId, temp_from_value, temp_to_value, temp_price_value);
+                    document.getElementById(`edit_footer`).classList.remove("d-none");
+                    document.getElementById(`add_footer`).classList.add("d-none");
+                    raiseEditModal(currId, temp_from_value, temp_to_value, temp_price_value);
+                    //allow = false;
                 }
                 else {
                     raiseModal("Notification", "Finish Other Operations First");
                 }
             }
 
+            function raiseEditModal(target_id, from_value = "", to_value = "", price_value = "", modalHeader = "Edit Price") {
+                $("#Edit_Price_ModalLabel").text(modalHeader);
+                $("#from_input").val(getTime24(from_value));
+                $("#to_input").val(getTime24(to_value));
+                $("#price_input").val(price_value);
+                //$("#Price_Modal_Body").text(modalBody);
+                $("#Edit_Price_Modal").modal();
+            }
+
+            $("#confirm_price_edit").click(saveCallback);
+            //$("#close_Edit").click(removeLastRow);
+
+            $("#confirm_price_add").click(addCallback);
+            $("#close_add").click(removeLastRow);
 
 
 
@@ -278,8 +349,11 @@
             }
 
             function addCallback() {
-                if (isNumber(document.getElementById("price_" + currId).value)) {
+                if (isNumber(document.getElementById("price_input").value)) {
                     Manager.PostPrice();
+                }
+                else {
+                    addListeners();
                 }
             }
 
@@ -307,7 +381,16 @@
                 document.getElementById(`Delete_${target_id}`).classList.add("d-none");
                 document.getElementById(`Save_${target_id}`).classList.remove("d-none");
                 document.getElementById(`Cancel_${target_id}`).classList.remove("d-none");
-                allow = false;
+                //allow = false;
+            }
+
+
+
+            function reflectChangesBack(target_id, from_value = "", to_value = "", price_value = "") {
+                //debugger;
+                document.getElementById(`from_${target_id}`).innerText = getTimeMeridiem(from_value);
+                document.getElementById(`to_${target_id}`).innerText = getTimeMeridiem(to_value);
+                document.getElementById(`price_${target_id}`).innerText = price_value + ` L.E`;
             }
 
             function revertEditUI(target_id, from_value = "", to_value = "", price_value = "") {
@@ -322,25 +405,26 @@
                 document.getElementById(`Delete_${target_id}`).classList.remove("d-none");
                 document.getElementById(`Save_${target_id}`).classList.add("d-none");
                 document.getElementById(`Cancel_${target_id}`).classList.add("d-none");
-                allow = true;
             }
+
             function raiseModal(modalHeader, modalBody) {
                 $("#Price_Modal_header_Message").text(modalHeader);
                 $("#Price_Modal_Body").text(modalBody);
                 $("#Price_Modal").modal();
             }
+
             var Manager = {
                 PutPrice: function () {
                     let obj = "";
-                    let serviceURL = "/Playground/PutPlaygroundPrice/" /*+ sourcearray[currId].playgroundId*/;
+                    let serviceURL = "/Playground/PutPlaygroundPrice/";
                     let Data = {
                     "Id": `${sourcearray[currId].id}`,
                     "NewPlaygroundPrice": {
                         "Id": `${sourcearray[currId].id}`,
                         "playgroundId": `${sourcearray[currId].playgroundId}`,
-                        "Start": `${document.getElementById(from_id).value}`,
-                        "End": `${document.getElementById(to_id).value}`,
-                        "Price": `${document.getElementById(price_id).value}`
+                        "Start": `${document.getElementById("from_input").value}`,
+                        "End": `${document.getElementById("to_input").value}`,
+                        "Price": `${document.getElementById("price_input").value}`
                     }
                 };
                     Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
@@ -348,7 +432,8 @@
                         raiseModal("Updated Successfullly","The price has been successfully updated");
                         obj = jsonData;
                         console.log(jsonData);
-                        revertEditUI(currId, document.getElementById(`${from_id}`).value, document.getElementById(`${to_id}`).value, document.getElementById(`${price_id}`).value);
+                        //revertEditUI(currId, document.getElementById(`${from_id}`).value, document.getElementById(`${to_id}`).value, document.getElementById(`${price_id}`).value);
+                        reflectChangesBack(currId, document.getElementById("from_input").value, document.getElementById("to_input").value, document.getElementById("price_input").value);
                     }
                     function onFailed(error) {
                         if (error.status == 409) {
@@ -368,9 +453,9 @@
                 let Data = {
                     "NewPlaygroundPrice": {
                         "playgroundId": `@Model.Entity.Id`,
-                        "Start": `${document.getElementById("from_"+currId).value}`,
-                        "End": `${document.getElementById("to_"+currId).value}`,
-                        "Price": `${document.getElementById("price_"+currId).value}`
+                        "Start": `${document.getElementById(`from_input`).value}`,
+                        "End": `${document.getElementById(`to_input`).value}`,
+                        "Price": `${document.getElementById(`price_input`).value}`
                     }
                 };
                 //debugger;
@@ -380,22 +465,25 @@
                     obj = jsonData;
                     console.log(jsonData);
                     raiseModal("Successful Addition","the price has been added successfully");
-                    let from_value = document.getElementById(`from_${last_id}`).value;
-                    let to_value = document.getElementById(`to_${last_id}`).value;
-                    let price_value = document.getElementById(`price_${last_id}`).value;
+                    let from_value = document.getElementById(`from_input`).value;
+                    let to_value = document.getElementById(`to_input`).value;
+                    let price_value = document.getElementById(`price_input`).value;
                     console.log(from_value);
                     console.log(to_value);
                     console.log(price_value);
                     revertEditUI(last_id, from_value, to_value, price_value);
                     sourcearray.push({ id: jsonData.id, playgroundId: `@Model.Entity.Id`, start: from_value, end: to_value, price: price_value });
-                    let rowParent = document.getElementById(`row_${last_id}`).parentElement;
+                    document.getElementById(`row_${last_id}`);
 
+                    document.getElementById(`row_${last_id}`)
+                    let rowParent = document.getElementById(`row_${last_id}`).parentElement;
+                    rowParent.classList.remove("d-none");
                     //rowParent is row with separator class
                     //rowParent.parentElemen is container
                     rowParent = rowParent.parentElement.insertBefore(rowParent, document.getElementById("Add"));
-                    last_id++;
+                    last_id++; 
                     addListeners();
-                    allow = true;
+                    //allow = true;
                 }
 
 
@@ -405,6 +493,7 @@
                     } else {
                         raiseModal("Addition Failed", "the price can't be added for some reason");
                     }
+                    removeLastRow();
                     //removeRow(last_id);
                     //addListeners();
                     //allow = true;
@@ -427,11 +516,11 @@
                     raiseModal("Successful Deletion","the price has been deleted successfully");
                     console.log(jsonData);
                     removeRow(currId);
-                    allow = true;
+                    //allow = true;
                 }
                 function onFailed(error) {
                     raiseModal("Deletion Failed", "the price can't be deleted");
-                    allow = true;
+                    //allow = true;
                     console.log(error);
                 }
 
@@ -449,7 +538,8 @@
             }
 
             };
-            function getTimeMeridiem(myTime="") {
+
+            function getTimeMeridiem(myTime = "") {
                 let time = myTime;
                 let hours = time.slice(0, 2);
                 hours = parseInt(hours);
