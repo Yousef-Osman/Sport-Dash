@@ -19,42 +19,16 @@ namespace SportDash.Repository
 
         public int AddPlaygroundPrice(PlaygroundPrice NewPlaygroundPrice)
         {
-            //PlaygroundPrice FoundplaygroundPrice = SearchPlaygroundPrice(NewPlaygroundPrice);
-            //if (FoundplaygroundPrice == null)
-            //{
-            //try
-            //{
-                _applicationDbContext.playgroundPrices.Add(NewPlaygroundPrice);
-                _applicationDbContext.SaveChanges();
-                return NewPlaygroundPrice.Id;
-
-            //}
-            //catch (Exception)
-            //{
-            //    return false;
-            //}
-            
-
-            //}
-            //else
-            //{
-            //    return false;
-            //}
+            _applicationDbContext.playgroundPrices.Add(NewPlaygroundPrice);
+            _applicationDbContext.SaveChanges();
+            return NewPlaygroundPrice.Id;
         }
 
         private PlaygroundPrice SearchPlaygroundPrice(int Id)
         {
-            //return _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.PlaygroundId == NewplaygroundPrice.PlaygroundId && playgroundprice.Start == NewplaygroundPrice.Start && playgroundprice.End == NewplaygroundPrice.End).FirstOrDefault();
             return _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.Id == Id).FirstOrDefault();
-
         }
 
-        //public PlaygroundPrice GetOne(string Id)
-        //{
-        //    //PlaygroundPrice playgroundPrice = _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.PlaygroundId == playgroundId && playgroundprice.Start == start && playgroundprice.End == end).FirstOrDefault();
-        //    PlaygroundPrice playgroundPrice = _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.Id == Id).FirstOrDefault();
-        //    return playgroundPrice;
-        //}
         public List<PlaygroundPrice> GetAPlaygroundPrices(string playgroundId)
         {
             List<PlaygroundPrice> playground_Prices = _applicationDbContext.playgroundPrices.Where(playgroundprice => playgroundprice.PlaygroundId == playgroundId).ToList();
@@ -89,9 +63,7 @@ namespace SportDash.Repository
                 FoundplaygroundPrice.Start = newPlaygroundPrice.Start;
                 FoundplaygroundPrice.End = newPlaygroundPrice.End;
 
-                //_applicationDbContext.playgroundPrices.Update(FoundplaygroundPrice);
                 _applicationDbContext.Entry(FoundplaygroundPrice).State = EntityState.Modified;
-                //_applicationDbContext.Attach(newPlaygroundPrice);
                 _applicationDbContext.SaveChanges();
                 return true;
             }
@@ -111,14 +83,6 @@ namespace SportDash.Repository
             ((playgroundPrice.Start<newPlaygroundPrice.End) &&(playgroundPrice.End > newPlaygroundPrice.End)) ||
             ((playgroundPrice.Start >= newPlaygroundPrice.Start) && (playgroundPrice.End <= newPlaygroundPrice.End))).ToList();
             return prices;
-            //if(price == null)
-            //{
-            //    return false;
-            //}
-            //else
-            //{
-            //    return true;
-            //}
         }
     }
 }

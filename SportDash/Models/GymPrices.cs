@@ -19,7 +19,6 @@ namespace SportDash.Models
     public class GymPrices
     {
 
-        //[Key]
         public int Id { get; set; }
 
         [ForeignKey(nameof(Gym))]

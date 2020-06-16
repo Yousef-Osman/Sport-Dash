@@ -184,100 +184,53 @@
 
 @if (User.IsInRole("User"))
 {
+    <script type="text/javascript" on-content-loaded="true">
+        var review;
+        $('#add-review').click(function (e) {
+            e.preventDefault();
+            const new_review = $("#staticBackdrop").find('#new-review').val();
+            const new_rate = $('input[name=rating]:checked').val();
+            const current_id = "@Model.CurrentUser.Id";
+            var today = new Date();
+            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date + ' ' + time;
+            review = {
+                Rating: new_rate,
+                Comment: new_review,
+                Review_Date: dateTime,
+                ReviewerId: current_id,
+                TargetId: "@Model.Entity.Id"
+            };
 
-<script type="text/javascript" on-content-loaded="true">
-    var review;
-    $('#add-review').click(function (e) {
-        console.log("iam in function");
-        e.preventDefault();
-        const new_review = $("#staticBackdrop").find('#new-review').val();
-        const new_rate = $('input[name=rating]:checked').val();
-        console.log(new_rate);
-        const current_id = "@Model.CurrentUser.Id";
-        var today = new Date();
-        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date + ' ' + time;
-        review = {
-            Rating: new_rate,
-            Comment: new_review,
-            Review_Date: dateTime,
-            ReviewerId: current_id,
-            TargetId: "@Model.Entity.Id"
+            if (review != null) {
+                $.ajax({
+                    url: '/@Model.ControllerName/AddReview',
+                    type: 'POST',
+                    data: { R: review },
+                    success: function (response) {
+                        $('#review-container').html(response);
+                    }
+                });
+            }
+        });
 
-        };
-        console.log(review)
+        $('#delete-review').click(function (e) {
+            e.preventDefault();
+            const review_id = $('#review').val();
+            const TargetId = "@Model.Entity.Id";
+            if (review_id != 0 && TargetId !=0) {
+                $.ajax({
+                    url: '/@Model.ControllerName/DeleteReview/',
+                    type: 'POST',
+                    data: { id: review_id , TargetId : TargetId},
+                    dataType: "text",
+                    success: function (result) {
+                        $('#review-container').html(result);
+                    }
+                });
+            }
+        });
 
-        // need to fix it to empty model after close it
-        //$('#staticBackdrop').on('hidden.bs.modal', function (e) {
-        //    e
-        //        .find("input,textarea,select")
-        //        .val('')
-        //        .end()
-        //        .find("input[type=checkbox], input[type=radio]")
-        //        .prop("checked", "")
-        //        .end();
-        //});
-
-
-
-        if (review != null) {
-            $.ajax({
-                url: '/@Model.ControllerName/AddReview',
-                type: 'POST',
-                data: { R: review },
-                //dataType: "text",
-                success: function (response) {
-                    console.log(response);
-                    $('#review-container').html(response);
-                    @*$('#display-reviews').append(`<div class="row">
-                    <div class="col-md-1">
-                        <img  width="50" height="50" class="" src="/images/user-icon.jpg" />
-                    </div>
-                    <div class="col-md-11 text-left">
-                        <h3>@Model.Entity.FullName</h3>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-
-
-                        <p>$//{response.value.rating}</p>
-                        <span>$//{response.value.review_Date}</span>
-                        <p class="h5">$//{response.value.comment}</p>
-                        <div class="text-right">
-                        <Button id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
-                        </div>
-                    </div>
-                </div>`)*@
-                }
-            });
-        }
-    });
-
-    $('#delete-review').click(function (e) {
-        console.log("iam in function");
-        e.preventDefault();
-        const review_id = $('#review').val();
-        const TargetId = "@Model.Entity.Id";
-        console.log(review_id);
-        console.log(TargetId);
-        if (review_id != 0 && TargetId !=0) {
-            $.ajax({
-                url: '/@Model.ControllerName/DeleteReview/',
-                type: 'POST',
-                data: { id: review_id , TargetId : TargetId},
-                dataType: "text",
-                success: function (result) {
-                    console.log(result);
-                    $('#review-container').html(result);
-                    //location.reload();
-
-                }
-            });
-        }
-    });
-
-</script>
+    </script>
 }
