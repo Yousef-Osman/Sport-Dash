@@ -1,52 +1,53 @@
 ﻿
 @model SportDash.ViewModels.DataViewModel
 
+
 <div class="row m-3">
     <div class="row p-3 text-dark bg-white rounded">
-        <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+        <img class="profile-image" style="width:64px;height:64px;" src="@Model.ImagePath" asp-append-version="true">
         <div class="ml-3">
-                @{
-                    string GetDate(DateTime dateTime)
+            @{
+                string GetDate(DateTime dateTime)
+                {
+                    string meridiem;
+                    string Hour;
+                    if (dateTime.Hour >= 12)
                     {
-                        string meridiem;
-                        string Hour;
-                        if (dateTime.Hour >= 12)
+                        meridiem = "PM";
+                        if (dateTime.Hour == 12)
                         {
-                            meridiem = "PM";
-                            if (dateTime.Hour == 12)
-                            {
-                                Hour = $"{dateTime.Hour}";
-                            }
-                            else
-                            {
-                                Hour = $"{dateTime.Hour - 12}";
-                            }
+                            Hour = $"{dateTime.Hour}";
                         }
                         else
                         {
-                            meridiem = "AM";
-                            if (dateTime.Hour == 0)
-                            {
-                                Hour = "12";
-                            }
-                            else
-                            {
-                                Hour = $"{dateTime.Hour}";
-                            }
+                            Hour = $"{dateTime.Hour - 12}";
                         }
-                        return $"{dateTime.Year}-{dateTime.Month}-{dateTime.Day} " +
-                            $"{Hour}:{dateTime.Minute}:{dateTime.Second} {meridiem}";
                     }
+                    else
+                    {
+                        meridiem = "AM";
+                        if (dateTime.Hour == 0)
+                        {
+                            Hour = "12";
+                        }
+                        else
+                        {
+                            Hour = $"{dateTime.Hour}";
+                        }
+                    }
+                    return $"{dateTime.Year}-{dateTime.Month}-{dateTime.Day} " +
+                        $"{Hour}:{dateTime.Minute}:{dateTime.Second} {meridiem}";
                 }
-                <p>@Model.Question.User.UserName</p>
-                <p>@GetDate(Model.Question.CreationTime)</p>
-                <p id="Question_Body">@Model.Question.Body</p>
-                <i id="Last_Update" style="display:block">Last Updated: @GetDate(Model.Question.LastUpdateTime)</i>
-                @if (Model.IsAdmin)
-                {
-                    <button id="Edit" class="btn btn-primary">Edit</button>
-                }
-                <button id="Save" class="btn btn-primary d-none">Save</button>
+            }
+            <p>@Model.Question.User.UserName</p>
+            <p>@GetDate(Model.Question.CreationTime)</p>
+            <p id="Question_Body">@Model.Question.Body</p>
+            <i id="Last_Update" style="display:block">Last Updated: @GetDate(Model.Question.LastUpdateTime)</i>
+            @if (Model.IsAdmin)
+            {
+                <button id="Edit" class="btn btn-primary">Edit</button>
+            }
+            <button id="Save" class="btn btn-primary d-none">Save</button>
         </div>
     </div>
 </div>

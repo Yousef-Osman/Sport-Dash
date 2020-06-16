@@ -203,8 +203,14 @@ namespace SportDash.Controllers
             {
                 question.User = _userRepository.GetApplicationUser(question.UserId);
             }
+            QuestionVComponent questionVComponent = new QuestionVComponent(_imageRepository);
+            List<string> imagesPaths = new List<string>();
+            foreach (var question in questions)
+            {
+                imagesPaths.Add(questionVComponent.GetImagePath(question.User.Id));
+            }
             //status code 200
-            return Ok(new JsonResult(questions));
+            return Ok(new JsonResult(new { questions,imagesPaths }));
         }
         [HttpPost]
         public IActionResult Ask(Question question)

@@ -50,7 +50,8 @@
     let questionsContainer = document.getElementById("Questions_Container");
     function FillQuestions(value) {
         //debugger;
-        let questions = value;
+        let questions = value.questions;
+        let imagesPaths = value.imagesPaths;
         let userName;
         let creationTime;
         let questionBody;
@@ -58,15 +59,16 @@
         let questionId;
         questionsContainer.innerHTML = "";
         let fragment = document.createRange().createContextualFragment("");
+        let i = 0;
         for (let question of questions) {
             creationTime = new Date(question.creationTime);
             creationTime = getDateString(creationTime);
             lastUpdateTime = new Date(question.lastUpdateTime);
             lastUpdateTime = getDateString(lastUpdateTime);
             let questionElementHTML =
-            `<div class="row m-3">
+                `<div class="row m-3">
                 <div class="row p-3 text-dark bg-white rounded">
-                    <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                    <img class="profile-image" style="width:64px;height:64px;" src=${imagesPaths[i]} asp-append-version="true">
                     <div class="ml-3">
                             <p>${question.user.userName}</p>
                             <p>${creationTime}</p>
@@ -83,6 +85,7 @@
                     </a>
             </div>`;
             fragment.appendChild(document.createRange().createContextualFragment(questionElementHTML));
+            i++;
         }
         questionsContainer.insertBefore(fragment, questionsContainer.firstChild);
 

@@ -1,8 +1,15 @@
 ﻿
 @model SportDash.ViewModels.DataViewModel
 
+@using SportDash.Components.Question;
+@inject SportDash.Repository.IImageRepository _imageRepository
+
+@{
+    QuestionVComponent questionVComponent = new QuestionVComponent(_imageRepository);
+}
+
 <div class="ml-0 justify-content-center row prices bg-elephant py-4">
-    <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+    <img class="profile-image" style="width:64px;height:64px;" src="@questionVComponent.GetImagePath(Model.CurrentUser.Id)" asp-append-version="true">
     <div class="ml-3">
         @*<div><p>Name</p></div>*@
         @*<div><p>Date</p></div>*@

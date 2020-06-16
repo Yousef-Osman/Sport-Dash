@@ -22,6 +22,8 @@ namespace SportDash.ViewModels
             ToiletOptions = lists.availability;
             ForLadiesOptions = lists.availability;
         }
+
+        public string ImagePath { get; set; }
         public ApplicationUser CurrentUser { get; set; }
         public ApplicationUser Entity { get; set; }
         public bool IsAdmin { get; set; }
