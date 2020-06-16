@@ -34,7 +34,7 @@ namespace SportDash.Components.Reservation
                 dataModel.Entity = dataModel.CurrentUser;
             }
             var requests = _repository.GetRequests(userId);
-            var todayReservations = _repository.GetReservationsByDay(userId, DateTime.Now.Day,DateTime.Now.Month,DateTime.Now.Year);
+            var todayReservations = _repository.GetReservationsByDay(userId, DateTime.Now.Day,DateTime.Now.Month,DateTime.Now.Year).OrderBy(c=>c.StartTime);
             var allReservations = _repository.GetAll(userId);
             dataModel.Reservations = todayReservations;
             dataModel.Requests = requests;
