@@ -1,4 +1,6 @@
-﻿@model SportDash.ViewModels.DataViewModel
+﻿
+
+@model SportDash.ViewModels.DataViewModel
 
 @{
     string price = "";
@@ -20,11 +22,30 @@
     {
         subType = "Per Year";
     }
-    
+
     price = Model.GymPrice.Subscribtion_Price.ToString();
 }
 
 
+<div class="col-md-6 col-lg-3 mb-5 mt-1" data-aos="fade" data-aos-delay="200">
+    <div class="unit-2  bg-standared-color mb-5">
+        <img class="card-img-top gallery-image" src="@("/images/site/gym1.jpg")" asp-append-version="true">
+        <div class="card-body">
+            <div>
+                <p class="gym-prices-plan" id="price_@Model.GymPrice.Subscribtion_Type">@price<span class="gym-span"> L.E.</span></p>
+            </div>
+            @*<h3 class="gym-prices-plan" id="price_@Model.GymPrice.Subscribtion_Type">@price<span class="sss"> L.E.</span></h3>*@
+            <h4 class="card-subtitle mb-1 text-gray-800 pb-3 font-weight-bold">@subType</h4>
+            @if (Model.IsAdmin)
+            {
+                <a id="btn_@Model.GymPrice.Subscribtion_Type" class="btn btn-primary rounded-pill col-10">Edit Price</a>
+            }
+        </div>
+    </div>
+</div>
+
+
+<!--Modal-->
 <div class="modal fade" tabindex="-1" role="dialog" id="Price_Modal" aria-modal="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -38,38 +59,13 @@
                 <p id="Price_Modal_Body"></p>
             </div>
             <div class="modal-footer">
-                <button id="Ok" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>                
+                <button id="Ok" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
             </div>
         </div>
     </div>
 </div>
 
-
-
-<div class="col-12 col-md-6 col-lg-3 mx-0 py-3 ">
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8 text-center py-3 prices rounded">
-            <div class="greenColor large-size-3 bold">
-                @* No Subscrition Type will be duplicated in the parent view because it call this component
-                    once for every subscription type*@
-                <p id="price_@Model.GymPrice.Subscribtion_Type">@price</p>
-            </div>
-            <div class="prices medium bold">
-                <p>@subType</p>
-            </div>
-            @if (Model.IsAdmin)
-            {
-                <div>
-                    <button id="btn_@Model.GymPrice.Subscribtion_Type" class="Time rounded op_button">Edit Price</button>
-                </div>
-            }
-        </div>
-        <div class="col-2"></div>
-    </div>
-</div>
-
-
+<!--Modal-->
 <div class="modal fade" id="confirm-price" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -93,24 +89,28 @@
 <script>
     var tempPrice = $("#price_@Model.GymPrice.Subscribtion_Type")[0].innerText;
     $(document).ready(() => {
+        console.log(tempPrice);
+
         const Subscribtion_type_Enum = Object.freeze({ "Day": 0, "Week": 1, "Month": 2, "Year": 3 });
         $("#btn_@Model.GymPrice.Subscribtion_Type").click((e) => {
             if (e.target.innerText === "Edit Price") {
                 tempPrice = $("#price_@Model.GymPrice.Subscribtion_Type")[0].innerText;
-                togglePriceElement(`<input type="number" id="price_@Model.GymPrice.Subscribtion_Type" class="price-size" size="4" min="1" max="99" value = ${$("#price_@Model.GymPrice.Subscribtion_Type")[0].innerText}>`, "Save");
+                //togglePriceElement(`<input type="number" id="price_@Model.GymPrice.Subscribtion_Type" class="price-size" size="4" min="1" max="99" value = ${$("#price_@Model.GymPrice.Subscribtion_Type")[0].innerText}>`, "Save");
+                togglePriceElement(`<input type="number" id="price_@Model.GymPrice.Subscribtion_Type" class="form-control mb-4" size="4" min="1" max="99" value = ${$("#price_@Model.GymPrice.Subscribtion_Type")[0].innerText}>`, "Save");
+                console.log(tempPrice);
+
             }
             else if (e.target.innerText === "Save") {
                 EditPrice();
             }
         });
-
         function EditPrice() {
             $.ajax({
                 method: "POST",
                 url:`/Gym/EditPricePerPeriod/`,
                 success: (Resposnse) => {
-                    togglePriceElement(`<p id="price_@Model.GymPrice.Subscribtion_Type" >${$("#price_@Model.GymPrice.Subscribtion_Type")[0].value}</p>`, "Edit Price");
-                    raiseModal("Edited Successfully", "the price has been edited Successfully");
+                    togglePriceElement(`<p class="gym-prices-plan" id="price_@Model.GymPrice.Subscribtion_Type" >${$("#price_@Model.GymPrice.Subscribtion_Type")[0].value} <span class="gym-span"> L.E.</span></p>`, "Edit Price");
+                    //raiseModal("Edited Successfully", "the price has been edited Successfully");
                 },
                 data: {
                     "gymPrice": {
@@ -125,12 +125,11 @@
                 },
                 error: (error) => {
                     console.log(error);
-                    togglePriceElement(`<p id="price_@Model.GymPrice.Subscribtion_Type" >${tempPrice}</p>`, "Edit Price");
+                    togglePriceElement(`<p class="gym-prices-plan" id="price_@Model.GymPrice.Subscribtion_Type" >${tempPrice} <span class="gym-span"> L.E.</span></p>`, "Edit Price");
                     raiseModal("Editing Failed", "the price editing failed");
                 }
             });
         }
-
         function togglePriceElement(parentHTML, buttontext) {
             let element = $("#price_@Model.GymPrice.Subscribtion_Type")[0];
             let parent = $("#price_@Model.GymPrice.Subscribtion_Type").parent()[0];
@@ -138,7 +137,6 @@
             $("#btn_@Model.GymPrice.Subscribtion_Type")[0].innerText = buttontext;
         }
     });
-
     function raiseModal(modalHeader, modalBody) {
         $("#Price_Modal_header_Message").text(modalHeader);
         $("#Price_Modal_Body").text(modalBody);

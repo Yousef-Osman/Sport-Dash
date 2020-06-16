@@ -29,7 +29,7 @@
                                     <div class="form-group row col-md-3 col-sm-6">
                                         <label class="col-sm-4 col-form-label">Category</label>
                                         <div class="col-sm-8">
-                                            <select id="cat" class="custom-select my-1 mr-sm-2" asp-for="CategoryString" asp-items="Model.Category">
+                                            <select id="cat" onchange="changeCategory()" class="custom-select my-1 mr-sm-2" asp-for="CategoryString" asp-items="Model.Category">
                                                 <option value="">All</option>
                                             </select>
                                         </div>
@@ -238,6 +238,7 @@
                 dataType: "json",
                 data: { searchstring: $('#txtSearch').val() },
                 success: function (result) {
+                    changeCategory();
                     response($.map(result, function (item) {
                         return { label: item, value: item };
                     }));
@@ -253,9 +254,10 @@
             event.preventDefault();
             document.getElementById("search-btn").click();
         }
+        changeCategory();
     });
 
-    $('#cat').change(function () {
+    function changeCategory() {
         var category = $("#cat option:selected").text();
         if (category == "Playground") {
             $('#trainers').hide();
@@ -277,7 +279,7 @@
             $('#gyms').show();
             $('#trainers').show();
         }
-    });
+    }
 
     $('#search-price').change(function () {
         var location = $("#search-location option:selected").text();
@@ -294,6 +296,7 @@
             },
             success: function (result) {
                 $('#search-container').html(result);
+                changeCategory();
             }
         });
     });
@@ -313,6 +316,7 @@
             },
             success: function (result) {
                 $('#search-container').html(result);
+                changeCategory();
             }
         });
     });
@@ -328,6 +332,7 @@
                 dataType: "text",
                 success: function (result) {
                     $('#search-container').html(result);
+                    changeCategory();
                 }
             });
         }
@@ -348,6 +353,7 @@
             },
             success: function (result) {
                 $('#search-container').html(result);
+                changeCategory();
             }
         });
     });
