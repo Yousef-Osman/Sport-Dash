@@ -46,8 +46,6 @@ namespace SportDash.Components
             dataModel.Reviews = _reviewRepository.GetReviewsOfReviewee(userId);
             dataModel.Review = newReview;
             dataModel.ProfileImage = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == true).SingleOrDefault();
-            //dataModel.ControllerName = controllerName;
-            //dataModel.CurrentUser = user_Id;
             return View("/Components/DisplayReview/DisplayReview.cshtml", dataModel);
         }
     }

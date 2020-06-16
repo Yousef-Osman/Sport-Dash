@@ -79,7 +79,6 @@
 </div>
 
 
-
 <script>
     let Edit = document.getElementById("Edit");
     let Save = document.getElementById("Save");
@@ -93,29 +92,20 @@
             //let attribute = document.createAttribute("type");
             //element.appendChild(txtElement);
             //element.setAttribute("type", "textfiled");
-            let frag = document.createRange().createContextualFragment(`<textarea class="form-control" rows="4" id="Question_Body" placeholder="What's in your mind ...">${Text}</textarea><span id="Question_Validation" class="text-danger"></span>`);
+            let frag = document.createRange().createContextualFragment(`<textarea class="form-control" rows="4" id="Question_Body" placeholder="What's in your mind ...">${Text}</textarea>`);
             parent.insertBefore(frag, element);
             element.parentElement.removeChild(element);
-            //parent.appendChild(element);
             Save.classList.remove("d-none");
             Edit.classList.add("d-none");
-
         });
     }
     if (Save != null) {
         Save.addEventListener("click", () => {
-            let postLength = document.getElementById("Question_Body").value.trim().length;
-            let RequiredLength = 20;
-            if (postLength > RequiredLength) {
-                document.getElementById("Question_Validation").innerText = "";
-                SendEdit();
-            }
-            else {
-                document.getElementById("Question_Validation").innerText = `*At least ${RequiredLength - postLength} more Characters are needed for posting`
-            }
+            SendEdit();
 
         });
     }
+
     function SendEdit() {
         var dateTime = getDateString();
         $.ajax({
@@ -149,6 +139,7 @@
             }
         });
     }
+
     function raiseModal(modalHeader, modalBody) {
         $("#Question_Modal_header_Message").text(modalHeader);
         $("#Question_Modal_Body").text(modalBody);

@@ -159,8 +159,6 @@ namespace SportDash.Controllers
         public IActionResult AddReview(Review R)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            //R.ReviewerId = _userManager.GetUserId(HttpContext.User);
-            //R.TargetId = "b6bf071e-32fe-4b3f-b8ec-57ddc6737e8";
             var review = _reviewRepository.PostReview(R);
             return Ok(new OkObjectResult(review));
         }

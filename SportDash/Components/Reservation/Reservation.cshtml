@@ -11,8 +11,7 @@
                 </div>
             </div>
 
-
-            <ul class="nav nav-tabs" role="tablist">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
 
                 <li class="nav-item">
                     <a class="nav-link active bg-Geyser text-elephant" onclick="loadReservations()" data-toggle="tab" href="#todayReservations">Today's Reservations</a>
@@ -82,6 +81,7 @@
     </div>
 </section>
 
+
 <div class="modal" tabindex="-1" role="dialog" data-target="#myModal" id="myModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -100,6 +100,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Delete reservation Modal -->
 <div class="modal fade" id="delete-res-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -122,6 +123,7 @@
     </div>
 </div>
 
+
 <!-- Delete requests Modal -->
 <div class="modal fade" id="delete-req-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -143,6 +145,7 @@
     </div>
 </div>
 
+
 <script type="text/javascript" on-content-loaded="true">
     function loadReservations() {
         $.ajax({
@@ -153,7 +156,6 @@
             }
         })
     }
-
 
     function deleteReservation(ReservationId) {
         var deleteBtn = document.getElementById('delete-res-btn');

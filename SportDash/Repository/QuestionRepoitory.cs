@@ -45,12 +45,7 @@ namespace SportDash.Repository
         }
         public void Delete(int id)
         {
-            //var question = _context.Questions.Find(id).FirstOrDefault();
-            //if (question != null)
-            //{
-            //    _context.Questions.Remove(question);
-            //    _context.SaveChanges();
-            //}
+            
         }
         public Question Ask(Question question)
         {

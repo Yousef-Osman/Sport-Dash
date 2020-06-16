@@ -1,30 +1,26 @@
-﻿@model SportDash.ViewModels.DataViewModel
+﻿@model DataViewModel
 
 <div>
     @foreach (var item in Model.Reviews)
     {
-        <div class="card mb-3 custom-shadow">
-
+        <div class="card mb-4 custom-shadow">
             <div class="card-body">
-
                 <div class="row mb-3">
-
-                    <div class="col-md-1">
+                    <div class="col-lg-1 col-md-2 mb-3">
                         @{
                             var UserProfileImage = item.Reviewer.Images.Where(a => a.IsProfileImg).Select(a => a.Title).FirstOrDefault();
                         }
                         @if (UserProfileImage == null)
                         {
-                            <img class="profile-image-small" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                            <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
                         }
                         else
                         {
-                            <img class="profile-image-small" src="@("/images/" + UserProfileImage)" asp-append-version="true">
+                            <img class="profile-image" style="width:64px;height:64px;" src="@("/images/" + UserProfileImage)" asp-append-version="true">
                         }
                     </div>
-
-                    <div class="col-md-11 text-left">
-                        <h3>@item.Reviewer.FullName</h3>
+                    <div class="col-lg-9 col-md-7 text-left">
+                        <h4 class="pb-0 mb-0">@item.Reviewer.FullName</h4>
                         @if (item.Rating.ToString() == "Bad")
                         {
                             <span class="fa fa-star checked"></span>
@@ -74,19 +70,18 @@
                                 }
                             }
                         }
-                        <p>@item.Rating</p>
-                        <p>@item.Review_Date</p>
-                        <p class="h5">@item.Comment</p>
+                        <span class=" pb-0 mb-0 text-gray-600 ml-3">@item.Rating</span>
+                        <p class=" pb-0 mb-2 text-gray-500">@item.Review_Date</p>
+                        <p id="Question_Body" class="h5 mb-0">@item.Comment</p>
+                    </div>
+                    <div class="col-lg-2 col-md-3 d-flex justify-content-end">
                         @if (User.IsInRole("User"))
                         {
                             @if (item.Reviewer.FullName == Model.CurrentUser.FullName)
                             {
-                                <div class="text-right">
-                                    <Button value="@item.Id" id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger">Delete</Button>
-                                </div>
+                                <Button value="@item.Id" id="review" data-toggle="modal" data-target="#exampleModal" class="btn btn-danger col-md-8 align-self-start mt-1">Delete</Button>
                             }
                         }
-
                     </div>
                 </div>
             </div>

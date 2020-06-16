@@ -8,7 +8,7 @@
 <section class="container my-3">
     <div class="d-flex justify-content-center">
         <div class="col-6 bg-white p-5 my-5 rounded custom-shadow">
-            <h2 class="text-center mb-4 text-elephant">@ViewData["Title"]</h2>
+            <h2 class="text-center mb-4 text-gray-700">@ViewData["Title"]</h2>
             <div class="d-flex justify-content-center py-2">
                 <div class="col-md-12">
                     <form id="account" method="post">
@@ -28,18 +28,11 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Log in</button>
+                        <div class="form-inline row justify-content-center">
+                            <button type="submit" class="btn btn-primary col-5 mr-1">Log in</button>
+                            <a class="btn btn-outline-primary col-5 ml-1" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register</a>
                         </div>
                         <div asp-validation-summary="All" class="text-danger"></div>
-                        <div class="form-group">
-                            <p>
-                                <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                            </p>
-                            <p>
-                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                            </p>
-                        </div>
                     </form>
                 </div>
             </div>

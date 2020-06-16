@@ -1,11 +1,9 @@
-﻿@model SportDash.ViewModels.SearchViewModel
+﻿@model SearchViewModel
 @{
     ViewData["Title"] = "Search";
 }
 
 <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.4/themes/redmond/jquery-ui.css" />
-
-
 
 <section>
     <div class="site-blocks-cover2 overlay" style="background-image: url(/images/site/bg-global2.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
@@ -31,7 +29,7 @@
                                     <div class="form-group row col-md-3 col-sm-6">
                                         <label class="col-sm-4 col-form-label">Category</label>
                                         <div class="col-sm-8">
-                                            <select id="cat" class="custom-select my-1 mr-sm-2" asp-for="CategoryString" asp-items="Model.Category">
+                                            <select id="cat" onchange="changeCategory()" class="custom-select my-1 mr-sm-2" asp-for="CategoryString" asp-items="Model.Category">
                                                 <option value="">All</option>
                                             </select>
                                         </div>
@@ -232,9 +230,6 @@
 </section>
 
 
-
-
-
 <script>
     $('#txtSearch').autocomplete({
         source: function (request, response) {
@@ -243,6 +238,7 @@
                 dataType: "json",
                 data: { searchstring: $('#txtSearch').val() },
                 success: function (result) {
+                    changeCategory();
                     response($.map(result, function (item) {
                         return { label: item, value: item };
                     }));
@@ -258,15 +254,15 @@
             event.preventDefault();
             document.getElementById("search-btn").click();
         }
+        changeCategory();
     });
 
-    $('#cat').change(function () {
+    function changeCategory() {
         var category = $("#cat option:selected").text();
         if (category == "Playground") {
             $('#trainers').hide();
             $('#gyms').hide();
             $('#playgrounds').show();
-
         }
         else if (category == "Coach") {
             $('#playgrounds').hide();
@@ -283,14 +279,12 @@
             $('#gyms').show();
             $('#trainers').show();
         }
-    });
-
+    }
 
     $('#search-price').change(function () {
         var location = $("#search-location option:selected").text();
         var sportType = $("#search-sportType option:selected").text();
         var price = $("#search-price option:selected").text();
-        console.log(price);
         $.ajax({
             url: '/Search/AllSearches',
             type: 'GET',
@@ -302,16 +296,15 @@
             },
             success: function (result) {
                 $('#search-container').html(result);
+                changeCategory();
             }
         });
     });
-
 
     $('#search-sportType').change(function () {
         var location = $("#search-location option:selected").text();
         var price = $("#search-price option:selected").text();
         var sportType = $("#search-sportType option:selected").text();
-        console.log(sportType);
         $.ajax({
             url: '/Search/AllSearches',
             type: 'GET',
@@ -323,10 +316,10 @@
             },
             success: function (result) {
                 $('#search-container').html(result);
+                changeCategory();
             }
         });
     });
-
 
     $('#search-btn').click(function (e) {
         e.preventDefault();
@@ -339,11 +332,11 @@
                 dataType: "text",
                 success: function (result) {
                     $('#search-container').html(result);
+                    changeCategory();
                 }
             });
         }
     });
-
 
     $('#search-location').change(function () {
         var price = $("#search-price option:selected").text();
@@ -360,6 +353,7 @@
             },
             success: function (result) {
                 $('#search-container').html(result);
+                changeCategory();
             }
         });
     });
