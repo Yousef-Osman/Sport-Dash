@@ -51,7 +51,6 @@ namespace SportDash.Controllers
         {
             var dataModel = new DataViewModel();
             var user = await _userManager.GetUserAsync(User);
-            //Console.WriteLine(User.IsInRole(""));
             dataModel.ControllerName = "Question";
             dataModel.IsAdmin = false;
 
@@ -115,20 +114,13 @@ namespace SportDash.Controllers
                         }
 
                         List<Comment> comments = _commentRepository.GetAllCommentsForQuestion(Id);
-                        //List<UserCommentViewModel> userCommentViewModel = new List<UserCommentViewModel>();
                         foreach (var comment in comments)
                         {
-                            //userCommentViewModel.Add(new UserCommentViewModel() { Comment = comment, User = _userRepository.GetApplicationUser(comment.UserId) });
                             comment.User = _userRepository.GetApplicationUser(comment.UserId);
                         }
                         question.Comments = comments;
                         dataModel.Question = question;
 
-                        //QuestionAndCommentsViewModel questionAndCommentsViewModel = new QuestionAndCommentsViewModel();
-                        //questionAndCommentsViewModel.DataViewModel = dataModel;
-                        //questionAndCommentsViewModel.Question = question;
-                        //questionAndCommentsViewModel.Question.User = _userRepository.GetApplicationUser(question.UserId);
-                        //questionAndCommentsViewModel.UserComment = userCommentViewModel;
                         return View(dataModel);
                     }
                     else
@@ -164,11 +156,7 @@ namespace SportDash.Controllers
                 dataModel.CurrentUser = user;
                 dataModel.IsAdmin = true;
                 dataModel.QuestionList = questions;
-                //MyQuestionsViewModel myQuestionsViewModel = new MyQuestionsViewModel()
-                //{
-                //    DataViewModel = dataModel,
-                //    Questions = questions
-                //};
+                
                 return View(dataModel);
             }
             else
@@ -183,13 +171,8 @@ namespace SportDash.Controllers
         {
             var dataModel = new DataViewModel();
             var user = await _userManager.GetUserAsync(User);
-            //List<Question> questions = _questionRepository.GetQuestionByCategory(QuestionAbout.Club);
             dataModel.ControllerName = "Question";
-            //CategoryQuestionsViewModel categoryQuestionsViewModel = new CategoryQuestionsViewModel()
-            //{
-            //    DataViewModel = dataModel,
-            //    Questions = questions
-            //};
+          
             return View(dataModel);
 
         }
@@ -203,8 +186,14 @@ namespace SportDash.Controllers
             {
                 question.User = _userRepository.GetApplicationUser(question.UserId);
             }
+            QuestionVComponent questionVComponent = new QuestionVComponent(_imageRepository);
+            List<string> imagesPaths = new List<string>();
+            foreach (var question in questions)
+            {
+                imagesPaths.Add(questionVComponent.GetImagePath(question.User.Id));
+            }
             //status code 200
-            return Ok(new JsonResult(questions));
+            return Ok(new JsonResult(new { questions, imagesPaths }));
         }
         [HttpPost]
         public IActionResult Ask(Question question)

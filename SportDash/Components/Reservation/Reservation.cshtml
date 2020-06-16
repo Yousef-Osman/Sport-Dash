@@ -1,9 +1,9 @@
 ﻿@model SportDash.ViewModels.DataViewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<section class="bg-light">
+<section class="bg-white">
 
-    <div class="site-section bg-light">
+    <div class="site-section">
         <div class="container">
             <div class="row justify-content-center text-center mb-4">
                 <div class="col-md-6" data-aos="fade">
@@ -11,11 +11,10 @@
                 </div>
             </div>
 
-
             <ul class="nav nav-tabs" role="tablist">
 
                 <li class="nav-item">
-                    <a class="nav-link active bg-Geyser text-elephant" data-toggle="tab" href="#todayReservations">Today's Reservations</a>
+                    <a class="nav-link active bg-Geyser text-elephant" onclick="loadReservations()" data-toggle="tab" href="#todayReservations">Today's Reservations</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link bg-Geyser text-elephant" data-toggle="tab" href="#search">Search</a>
@@ -37,33 +36,7 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <div id="todayReservations" class="container tab-pane active">
-                    <br>
-                    <div class="row hosting mt-4">
-                        @if (Model.Reservations.Count() == 0)
-                        {
-                            <div class="container">
-                                <h5 style="color: #4d4d4d;">There are no reservations today...</h5>
-                                <p>Reserve now..</p>
-                            </div>
-                        }
-                        else
-                        {
-                            @foreach (var res in Model.Reservations)
-                            {
-                                var newdate = res.Date.ToShortDateString();
-                                <div class="col-md-4 col-lg-3 col-sm-6 mb-4 mt-1" data-aos="fade" data-aos-delay="100">
-                                    <div class="unit-2 text-center border pt-4 pb-3 h-100 bg-white">
-                                        <h3 class="h4 mb-3 pt-2 text-gray-700">@res.Name</h3>
-                                        <h5 class="h6 mb-3 text-gray-700">@newdate</h5>
-                                        <p class="mb-2 text-gray-600">Hours: @(res.EndTime - res.StartTime)</p>
-                                        <p class="mb-2 text-gray-600">From: @res.StartTime</p>
-                                        <p class="mb-4 text-gray-600">To:  @res.EndTime</p>
-                                        <p><a class="btn btn-danger text-light py-2 px-4 rounded-0" onclick="deleteReservation(@res.Id)">Cancel</a></p>
-                                    </div>
-                                </div>
-                            }
-                        }
-                    </div>
+                    <partial name="_Reservation" />
                 </div>
 
                 <div id="search" class="container tab-pane">
@@ -80,35 +53,7 @@
                     </div>
                 </div>
                 <div id="requests" class="container tab-pane fade">
-                    <br>
-
-                    <div class="row hosting mt-4">
-                        @if (Model.Requests.Count() == 0)
-                        {
-                            <div class="container">
-                                <h5 style="color: #4d4d4d;">There are no requests...</h5>
-                            </div>
-                        }
-                        else
-                        {
-                            @foreach (var res in Model.Requests)
-                            {
-                                <div class="col-md-4 col-lg-3 col-sm-6 mb-4 mt-1" data-aos="fade" data-aos-delay="100">
-                                    <div class="unit-2 text-center border pt-4 pb-3 h-100 bg-white">
-                                        <h3 class="h4 mb-3 pt-2 text-gray-700">@res.Name</h3>
-                                        <h5 class="h6 mb-3 text-gray-700">@res.Date</h5>
-                                        <p class="mb-2 text-gray-600">Hours: @(res.EndTime - res.StartTime)</p>
-                                        <p class="mb-2 text-gray-600">From: @res.StartTime)</p>
-                                        <p class="mb-4 text-gray-600">To:  @res.EndTime</p>
-                                        <div class="row justify-content-center">
-                                            <p><a class="btn btn-primary text-light py-2 px-3 mx-1 rounded-0" onclick="acceptReservation(@res.Id)">Accept</a></p>
-                                            <p><a class="btn btn-danger text-light py-2 px3 mx-1 rounded-0" onclick="deleteReservation(@res.Id)">Cancel</a></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        }
-                    </div>
+                    <partial name="_Request" />
                 </div>
 
                 <div id="add" class="container tab-pane fade">
@@ -136,6 +81,7 @@
     </div>
 </section>
 
+
 <div class="modal" tabindex="-1" role="dialog" data-target="#myModal" id="myModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -155,16 +101,88 @@
     </div>
 </div>
 
+
+<!-- Delete reservation Modal -->
+<div class="modal fade" id="delete-res-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Reservation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you want to delete this reservation!?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="delete-res-btn">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete requests Modal -->
+<div class="modal fade" id="delete-req-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cancel Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you want to cancel this request!?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="delete-req-btn">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script type="text/javascript" on-content-loaded="true">
-    function deleteReservation (ReservationId){
+    function loadReservations() {
         $.ajax({
-            url: '/@Model.ControllerName/DeleteReservation?id=' + ReservationId,
-            type: 'POST',
-            datatype: 'text',
-            success: function () {
-                location.reload(true);
+            url: '/@Model.ControllerName/LoadReservations?id=@Model.Entity.Id',
+            type: 'GET',
+            success: function (result) {
+                document.getElementById('todayReservations').innerHTML = result;
             }
-        });
+        })
+    }
+
+    function deleteReservation(ReservationId) {
+        var deleteBtn = document.getElementById('delete-res-btn');
+        deleteBtn.onclick = function remove() {
+            $.ajax({
+                url: '/@Model.ControllerName/DeleteReservation?id=' + ReservationId,
+                type: 'POST',
+                datatype: 'text',
+                success: function (result) {
+                    document.getElementById('todayReservations').innerHTML = result;
+                }
+            });
+        }
+    }
+
+    function deleteRequest(RequestId) {
+        var deleteBtn = document.getElementById('delete-req-btn');
+        deleteBtn.onclick = function remove() {
+            $.ajax({
+                url: '/@Model.ControllerName/DeleteReservation?id=' + RequestId,
+                type: 'POST',
+                datatype: 'text',
+                success: function (result) {
+                    document.getElementById('requests').innerHTML = result;
+                }
+            });
+        }
     }
 
     function acceptReservation(ReservationId) {
@@ -172,8 +190,8 @@
             url: '/@Model.ControllerName/AcceptReservation?id=' + ReservationId,
             type: 'POST',
             dataType: 'text',
-            success: function () {
-                location.reload(true);
+            success: function (result) {
+                document.getElementById('requests').innerHTML = result;
             }
         });
     }
@@ -187,14 +205,19 @@
             EndTime: document.getElementById('end-at').value,
             PlaygroundId: "@Model.Entity.Id"
         };
-        console.log("new object: " + newobj);
         $.ajax({
             url: '/@Model.ControllerName/AddReservation',
             type: 'POST',
             datatype: 'text',
             data: { reservation: newobj },
-            success: function () {
-                location.reload(true);
+            success: function (result) {
+                $('#todayReservations').html(result);
+                if (newobj.Name != null)
+                    document.getElementById('reservation-user').value = "";
+                document.getElementById('reservation-date').value = "";
+                document.getElementById('start-at').value = "";
+                document.getElementById('end-at').value = "";
+                $('.nav-tabs a[href="#todayReservations"]').tab('show');                
             },
             error: function (e) {
                 $("#myModal").modal("show");

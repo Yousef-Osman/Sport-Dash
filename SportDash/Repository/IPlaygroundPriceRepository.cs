@@ -8,9 +8,6 @@ namespace SportDash.Repository
 {
     public interface IPlaygroundPriceRepository
     {
-        //public PlaygroundPrice GetOne(string playgroundId, TimeSpan start, TimeSpan end);
-        //public PlaygroundPrice GetOne(string Id);
-
         public List<PlaygroundPrice> GetAPlaygroundPrices(string playgroundId);
         public List<PlaygroundPrice> GetByPlayground(string playgroundId);
         public List<PlaygroundPrice> GetAll();

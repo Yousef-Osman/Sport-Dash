@@ -12,7 +12,6 @@ namespace SportDash.Models
     public class PlaygroundPrice
     {
         
-        //[Key, Column(Order = 0)]
         [Key]
         public int Id { get; set; }
         [ForeignKey(nameof(Playground))]
@@ -20,10 +19,8 @@ namespace SportDash.Models
 
         public Double Price { get; set; }
 
-        //[Key, Column(Order = 1)]
         public TimeSpan Start { get; set; }
         
-        //[Key, Column(Order = 2)]
         public TimeSpan End { get; set; }
         [JsonIgnore]
         public ApplicationUser Playground { get; set; }

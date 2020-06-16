@@ -1,4 +1,4 @@
-﻿@model SportDash.ViewModels.MessagingViewModel
+﻿@model MessagingViewModel
 @inject UserManager<ApplicationUser> userManager
 @{
     ViewData["Title"] = "Recent Messages";
@@ -107,16 +107,11 @@
         let idOfSender = '';
         function miniChat(senderId) {
             idOfSender = senderId;
-            //const loader = document.querySelector("#loader");
-            //loader.style.left = window.innerWidth / 2 + "px";
-            //loader.style.top = window.innerHeight / 2 + "px";
-            //loader.style.display = 'block';
             $.ajax({
                 url: '/Messages/MiniChat?senderId=' + senderId,
                 method: 'GET',
                 success: function (data) {
                     const chatContainer = document.querySelector('#mini-chat');
-                    //loader.style.display = 'none';
                     chatContainer.innerHTML = data;
                     document.getElementById("last-element").scrollIntoView();
                     window.scrollBy(0, -50000);

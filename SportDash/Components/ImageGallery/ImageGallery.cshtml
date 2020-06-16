@@ -25,16 +25,13 @@
             </div>
             @if (Model.IsAdmin == true)
             {
-                <div class="row justify-content-center text-center mt-5">
+                <div class="row justify-content-center text-center mt-5" data-aos="fade" data-aos-delay="100">
                     <a class="btn btn-primary rounded-pill text-white py-3 px-5" data-toggle="modal" data-target="#add-image-modal">Add Image</a>
                 </div>
             }
         </div>
     </div>
 </section>
-
-
-
 
 
 <!-- Delete Modal -->
@@ -58,6 +55,7 @@
     </div>
 </div>
 
+
 <!-- Add Modal -->
 <div class="modal fade" id="add-image-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -75,12 +73,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" id="add-img-btn">Confirm</button>
+                <button type="button" class="btn btn-success text-light" data-dismiss="modal" id="add-img-btn">Confirm</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-btn">Close</button>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- View Image Modal -->
 <div id="image-modal" class="img-modal">
@@ -110,8 +109,8 @@
     });
 
     function deleteImage(imageId) {
-
         var deleteBtn = document.getElementById('delete-img-btn');
+
         deleteBtn.onclick = function remove() {
             $.ajax({
                 url: '/@Model.ControllerName/DeleteImage',
