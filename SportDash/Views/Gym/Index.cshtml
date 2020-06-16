@@ -1,4 +1,4 @@
-﻿@model SportDash.ViewModels.DataViewModel
+﻿@model DataViewModel
 @{
     ViewData["Title"] = "Index";
 }
@@ -24,7 +24,6 @@
 @await Component.InvokeAsync("TitleBar", new { dataModel = Model })
 @await Component.InvokeAsync("ImageGallery", new { dataModel = Model })
 @await Component.InvokeAsync("InfoBar", new { dataModel = Model })
-@*@await Component.InvokeAsync("GymPricesSection", new { dataViewModel = Model })*@
 @await Component.InvokeAsync("DisplayReview", new { dataModel = Model })
 
 <script src="~/lib/homePage/js/jquery-3.3.1.min.js"></script>

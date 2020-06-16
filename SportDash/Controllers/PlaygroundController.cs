@@ -55,7 +55,6 @@ namespace SportDash.Controllers
             _hubContext = hubContext;
         }
 
-        //[HttpPost]
         public async Task<IActionResult> Index(string id)
         {
             var dataModel = new DataViewModel();
@@ -185,7 +184,6 @@ namespace SportDash.Controllers
             return PartialView("_Images", dataModel);
         }
 
-
         [HttpPost]
         [Authorize(Policy = "PlaygroundPolicy")]
         public async Task<IActionResult> DeleteReservation(int id)
@@ -313,11 +311,9 @@ namespace SportDash.Controllers
                 return NotFound(new NotFoundObjectResult("There is no reservations"));
         }
 
-        //[ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult PutPlaygroundPrice(int Id, PlaygroundPrice NewPlaygroundPrice)
         {
-            //bool result = playgroundPriceRepository.UpdatePlaygroundPrice(oldAndNewplaygroundPrice.NewPlaygroundPrice, oldAndNewplaygroundPrice.OldPlaygroundPrice);
             List<PlaygroundPrice> ConflictedPrices = _playgroundPriceRepository.GetConflictedList(NewPlaygroundPrice);
             if (ConflictedPrices.Count > 0)
             {
@@ -344,7 +340,6 @@ namespace SportDash.Controllers
         [HttpPost]
         public IActionResult AddPlaygroundPrice(int Id, PlaygroundPrice NewPlaygroundPrice)
         {
-            //bool result = playgroundPriceRepository.UpdatePlaygroundPrice(oldAndNewplaygroundPrice.NewPlaygroundPrice, oldAndNewplaygroundPrice.OldPlaygroundPrice);
             List<PlaygroundPrice> ConflictedPrices = _playgroundPriceRepository.GetConflictedList(NewPlaygroundPrice);
             if (ConflictedPrices.Count > 0)
             {
@@ -364,7 +359,6 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Policy = "PlaygroundPolicy")]
         public async Task<IActionResult> AddReview(Review R)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

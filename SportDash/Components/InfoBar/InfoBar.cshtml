@@ -173,6 +173,7 @@
     </div>
 </div>
 
+
 <script type="text/javascript" on-content-loaded="true">
     $('#edit-info-btn').click(function (e) {
         e.preventDefault();
@@ -193,7 +194,6 @@
             type: 'POST',
             data: info,
             success: function (result) {
-                console.log(result)
                 document.getElementById('entity-info').innerHTML = result;
             }
         });
