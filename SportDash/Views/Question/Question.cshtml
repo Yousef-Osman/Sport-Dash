@@ -1,8 +1,16 @@
 ﻿@model DataViewModel
+@using SportDash.Components.Question;
+@inject SportDash.Repository.IImageRepository _imageRepository
 
 @{
     ViewData["Title"] = "Question";
 }
+
+
+@{
+    QuestionVComponent questionVComponent = new QuestionVComponent(_imageRepository);
+}
+
 
 <div class="container py-4">
     <div class="my-5 bg-white">
@@ -49,7 +57,7 @@
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-lg-1 col-md-2 mb-2">
-                            <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                            <img class="profile-image" style="width:64px;height:64px;" src="@questionVComponent.GetImagePath(item.UserId)" asp-append-version="true">
                         </div>
                         <div class="col-lg-9 col-md-7 text-left">
                             <h5 class="pb-0 mb-0">@item.User.UserName</h5>
@@ -66,7 +74,7 @@
                 <div class="card-body mt-3 mb-1">
                     <div class="row justify-content-between px-2">
                         <div class="col-lg-1 col-md-2 mb-3">
-                            <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                            <img class="profile-image" style="width:64px;height:64px;" src="@questionVComponent.GetImagePath(Model.CurrentUser.Id)" asp-append-version="true">
                         </div>
                         <div class="col-lg-11 px-0 col-md-10 text-left">
                             <div class="form-group col-12">
@@ -77,7 +85,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         }

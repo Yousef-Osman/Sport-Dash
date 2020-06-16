@@ -4,7 +4,7 @@
     <div class="card-body">
         <div class="row mb-3">
             <div class="col-lg-1 col-md-2 mb-3">
-                <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                <img class="profile-image" style="width:64px;height:64px;" src="@Model.ImagePath" asp-append-version="true">
             </div>
             @{
                 string GetDate(DateTime dateTime)
