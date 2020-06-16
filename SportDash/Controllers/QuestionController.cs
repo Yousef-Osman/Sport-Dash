@@ -210,7 +210,7 @@ namespace SportDash.Controllers
                 imagesPaths.Add(questionVComponent.GetImagePath(question.User.Id));
             }
             //status code 200
-            return Ok(new JsonResult(new { questions,imagesPaths }));
+            return Ok(new JsonResult(new { questions, imagesPaths }));
         }
         [HttpPost]
         public IActionResult Ask(Question question)

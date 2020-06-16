@@ -22,13 +22,13 @@ namespace SportDash.Components.Question
             dataViewModel.ImagePath = GetImagePath(dataViewModel.Question.UserId);
             return View("/Components/Question/QuestionViewComponent.cshtml", dataViewModel);
         }
-        
+
         public string GetImagePath(string id)
         {
             Image image = _imageRepository.GetImages(id).Where(img => img.IsProfileImg).FirstOrDefault();
             if (image == null)
             {
-                return "/images/site/user-icon.jpg";                
+                return "/images/site/user-icon.jpg";
             }
             else
             {

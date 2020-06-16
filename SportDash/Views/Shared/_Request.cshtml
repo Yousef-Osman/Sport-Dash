@@ -1,0 +1,32 @@
+﻿@model SportDash.ViewModels.DataViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<br>
+<div class="row hosting mt-4">
+    @if (Model.Requests.Count() == 0)
+    {
+        <div class="container">
+            <h5 style="color: #4d4d4d;">There are no requests...</h5>
+        </div>
+    }
+    else
+    {
+        @foreach (var res in Model.Requests)
+        {
+            var newdate = res.Date.ToShortDateString();
+            <div class="col-md-4 col-lg-3 col-sm-6 mb-4 mt-1" data-aos="fade" data-aos-delay="100">
+                <div class="unit-2 text-center border pt-4 pb-3 h-100 bg-white">
+                    <h3 class="h4 mb-3 pt-2 text-gray-700">@res.Name</h3>
+                    <h5 class="h6 mb-3 text-gray-700">@newdate</h5>
+                    <p class="mb-2 text-gray-600">Hours: @(res.EndTime - res.StartTime)</p>
+                    <p class="mb-2 text-gray-600">From: @res.StartTime</p>
+                    <p class="mb-4 text-gray-600">To:  @res.EndTime</p>
+                    <div class="row justify-content-center">
+                        <p><a class="btn btn-primary text-light py-2 px-3 mx-1 rounded-0" onclick="acceptReservation(@res.Id)">Accept</a></p>
+                        <p><a class="btn btn-danger text-light py-2 px3 mx-1 rounded-0" data-toggle="modal" data-target="#delete-req-Modal" onclick="deleteRequest(@res.Id)">Cancel</a></p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

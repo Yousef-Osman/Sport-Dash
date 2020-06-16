@@ -173,12 +173,12 @@ background-color: rgb(28, 200, 160);//green degree */
         }
 
     .rating > input:checked ~ label {
-        color: dodgerblue;
+        color: #7cbd1e;
     }
 
     .rating:not(:checked) > label:hover,
     .rating:not(:checked) > label:hover ~ label {
-        color: dodgerblue;
+        color: #7cbd1e;
     }
 
     .rating > input:checked + label:hover,
@@ -186,7 +186,7 @@ background-color: rgb(28, 200, 160);//green degree */
     .rating > input:checked ~ label:hover,
     .rating > input:checked ~ label:hover ~ label,
     .rating > label:hover ~ input:checked ~ label {
-        color: dodgerblue;
+        color: #7cbd1e;
     }
 
     .rating > label:active {
