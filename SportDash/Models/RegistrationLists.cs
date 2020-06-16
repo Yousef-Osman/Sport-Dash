@@ -32,7 +32,6 @@ namespace SportDash.Models
             locations = new List<SelectListItem>
             {
                 new SelectListItem {Text = "Abo Kier", Value= "Abo Kier"},
-                new SelectListItem {Text = "Alexandria", Value= "Alexandria"},
                 new SelectListItem {Text = "Anfoshy", Value= "Anfoshy"},
                 new SelectListItem {Text = "Azarita", Value= "Azarita"},
                 new SelectListItem {Text = "Bahary ", Value= "Bahary"},
@@ -57,7 +56,10 @@ namespace SportDash.Models
                 new SelectListItem {Text = "El-Wardiaan", Value= "El-Wardiaan"},
                 new SelectListItem {Text = "Gleam", Value= "Gleam"},
                 new SelectListItem {Text = "Janklies", Value= "Janklies"},
-                new SelectListItem {Text = "Miami", Value= "Miami"}
+                new SelectListItem {Text = "Loran", Value= "Loran"},
+                new SelectListItem {Text = "Miami", Value= "Miami"},
+                new SelectListItem {Text = "Moharam Bek", Value= "Moharam Bek"},
+                new SelectListItem {Text = "Sidi Bisher", Value= "Sidi Bisher"}
             };
 
             availability = new List<SelectListItem>
