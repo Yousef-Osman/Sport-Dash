@@ -56,7 +56,7 @@ namespace SportDash.Controllers
             searchVM.Location = new List<SelectListItem>
             {
                 new SelectListItem {Text = "Abo Kier", Value= "1"},
-                new SelectListItem {Text = "Alexandria", Value= "2"},
+                new SelectListItem {Text = "Sidi Bishr", Value= "2"},
                 new SelectListItem {Text = "Anfoshy", Value= "3"},
                 new SelectListItem {Text = "Azarita", Value= "4"},
                 new SelectListItem {Text = "Bahary ", Value= "5"},
@@ -81,17 +81,25 @@ namespace SportDash.Controllers
                 new SelectListItem {Text = "El-Wardiaan", Value= "24"},
                 new SelectListItem {Text = "Gleam", Value= "25"},
                 new SelectListItem {Text = "Janklies", Value= "26"},
-                new SelectListItem {Text = "Miami", Value= "27"}
+                new SelectListItem {Text = "Miami", Value= "27"},
+                new SelectListItem {Text = "Moharam Bek", Value= "28"}
                 
             };
 
             searchVM.SportType = new List<SelectListItem>
             {
-              new SelectListItem { Text = GamesCategory.BasketBall.ToString() , Value =((int)GamesCategory.BasketBall).ToString()},
+              new SelectListItem { Text = GamesCategory.BasketBall.ToString() , Value =((int)GamesCategory.FootBall).ToString()},
               new SelectListItem { Text = GamesCategory.FootBall.ToString() , Value = ((int)GamesCategory.BasketBall).ToString() },
-              new SelectListItem { Text = GamesCategory.Tennis.ToString() , Value = ((int)GamesCategory.BasketBall).ToString() },
-              new SelectListItem { Text = GamesCategory.VolleyBall.ToString() , Value = ((int)GamesCategory.BasketBall).ToString() },
-              new SelectListItem { Text = GamesCategory.Others.ToString() , Value = ((int)GamesCategory.BasketBall).ToString() }
+              new SelectListItem { Text = GamesCategory.Tennis.ToString() , Value = ((int)GamesCategory.VolleyBall).ToString() },
+              new SelectListItem { Text = GamesCategory.VolleyBall.ToString() , Value = ((int)GamesCategory.Tennis).ToString() },
+              new SelectListItem { Text = GamesCategory.Boxing.ToString() , Value = ((int)GamesCategory.Boxing).ToString() },
+              new SelectListItem { Text = GamesCategory.Judo.ToString() , Value = ((int)GamesCategory.Judo).ToString() },
+              new SelectListItem { Text = GamesCategory.Karate.ToString() , Value = ((int)GamesCategory.Karate).ToString() },
+              new SelectListItem { Text = GamesCategory.KungFu.ToString() , Value = ((int)GamesCategory.KungFu).ToString() },
+              new SelectListItem { Text = GamesCategory.Wrestling.ToString() , Value = ((int)GamesCategory.Wrestling).ToString() },
+              new SelectListItem { Text = GamesCategory.HandBall.ToString() , Value = ((int)GamesCategory.HandBall).ToString() },
+              new SelectListItem { Text = GamesCategory.TennisTable.ToString() , Value = ((int)GamesCategory.TennisTable).ToString() },
+              new SelectListItem { Text = GamesCategory.Others.ToString() , Value = ((int)GamesCategory.Others).ToString() }
             };
 
             searchVM.Playgrounds = playgrounds;
