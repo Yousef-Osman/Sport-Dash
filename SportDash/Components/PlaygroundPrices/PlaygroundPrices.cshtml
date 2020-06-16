@@ -22,10 +22,8 @@
 </div>
 
 
-
 <div id="Prices_Section" class="container lightSection div-min-height mb-5">
     <h1 class="text-elephant pb-3">Prices</h1>
-
     @{
         string GetTime(TimeSpan time)
         {
@@ -108,8 +106,6 @@
 @if (Model.IsAdmin)
 {
     <script>
-
-
         let last_id = @i;
         let allow = true;
         let from_id;
@@ -120,20 +116,12 @@
         let temp_to_value;
         let temp_price_value;
         let sourcearray = JSON.parse('@Html.Raw(Json.Serialize(Model.PlaygroundPrices.ToArray()))');
-        for (let x of sourcearray) {
-            console.log(x.playgroundId);
-            console.log(x.start);
-            console.log(x.end);
-            console.log(x.price);
-        }
-
 
         $(document).ready(() => {
             document.getElementById("Confirm").addEventListener("click", () => {
                 Manager.DeletePrice();
                 HideDeleteConfirmDialogue();
             });
-
 
             document.getElementById("Cancel").addEventListener("click", () => {
                 HideDeleteConfirmDialogue();
@@ -152,26 +140,29 @@
                 raiseModal("Delete Confirmation", "Would you like to delete the selected price?");
             }
 
-
             function addListeners() {
                 let updateButtons = $('button[id^="Update_"]');
                 let deleteButtons = $('button[id^="Delete_"]');
                 let saveButtons = $('button[id^="Save_"]');
                 let cancelButtons = $('button[id^="Cancel_"]');
+
                 for (let item of updateButtons) {
                     item.addEventListener("click", updateCallback);
                 }
+
                 for (let item of cancelButtons) {
                     item.addEventListener("click", cancelCallback);
                 }
+
                 for (let item of deleteButtons) {
                     item.addEventListener("click", deleteCallback);
                 }
+
                 for (let item of saveButtons) {
                     item.addEventListener("click", saveCallback);
                 }
+
                 document.getElementById("Add").addEventListener("click", () => {
-                    //debugger;
                     if (allow === true) {
                         let NewRow = `<div class="row separator" >
                 <div id="row_${last_id}" class="row col-12 col-lg-9 mx-0 px-0">
@@ -220,18 +211,17 @@
                 });
             }
             addListeners();
+
             function deleteCallback() {
-                //debugger;
                 if (allow === true) {
                     currId = getIds(this);
                     showDeleteConfirmDialogue();
-
                 }
                 else {
                     raiseModal("Notification", "Finish Other Operations First");
                 }
-
             }
+
             function cancelCallback() {
                 currId = getIds(this);
                 if (currId == last_id) {
@@ -243,18 +233,16 @@
 
                     revertEditUI(currId, temp_from_value, temp_to_value, temp_price_value);
                 }
-
             }
+
             function removeRow(Target_id) {
                 let rowParent = document.getElementById(`row_${Target_id}`).parentElement;
                 rowParent.parentElement.removeChild(rowParent);
             }
 
-
             function updateCallback() {
                 if (allow === true) {
                     currId = getIds(this);
-                    console.log(document.getElementById(`${from_id}`).innerText);
                     temp_from_value = document.getElementById(`${from_id}`).innerText;
                     temp_to_value = document.getElementById(`${to_id}`).innerText;
                     temp_price_value = document.getElementById(`${price_id}`).innerText.slice(0, -4);
@@ -266,14 +254,7 @@
                 }
             }
 
-
-
-
             function saveCallback() {
-                console.log(sourcearray[currId].playgroundId);
-                //console.log(`${sourcearray[currId].start.hours}:${sourcearray[currId].start.minutes}`);
-                //console.log(`${sourcearray[currId].end.hours}:${sourcearray[currId].end.minutes}`);
-                //console.log(sourcearray[currId].price);
                 Manager.PutPrice();
             }
 
@@ -324,39 +305,42 @@
                 document.getElementById(`Cancel_${target_id}`).classList.add("d-none");
                 allow = true;
             }
+
             function raiseModal(modalHeader, modalBody) {
                 $("#Price_Modal_header_Message").text(modalHeader);
                 $("#Price_Modal_Body").text(modalBody);
                 $("#Price_Modal").modal();
             }
+
             var Manager = {
                 PutPrice: function () {
                     let obj = "";
-                    let serviceURL = "/Playground/PutPlaygroundPrice/" /*+ sourcearray[currId].playgroundId*/;
+                    let serviceURL = "/Playground/PutPlaygroundPrice/";
                     let Data = {
-                    "Id": `${sourcearray[currId].id}`,
-                    "NewPlaygroundPrice": {
+                        "Id": `${sourcearray[currId].id}`,
+                        "NewPlaygroundPrice": {
                         "Id": `${sourcearray[currId].id}`,
                         "playgroundId": `${sourcearray[currId].playgroundId}`,
                         "Start": `${document.getElementById(from_id).value}`,
                         "End": `${document.getElementById(to_id).value}`,
                         "Price": `${document.getElementById(price_id).value}`
-                    }
-                };
+                        }
+                    };
+
                     Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
+
                     function onSuccess(jsonData) {
                         raiseModal("Updated Successfullly","The price has been successfully updated");
                         obj = jsonData;
-                        console.log(jsonData);
                         revertEditUI(currId, document.getElementById(`${from_id}`).value, document.getElementById(`${to_id}`).value, document.getElementById(`${price_id}`).value);
                     }
+
                     function onFailed(error) {
                         if (error.status == 409) {
                             raiseModal("Update Failed", "The price can't be updated due to a conflication with a previously added Period");
                         } else {
                             raiseModal("Update Failed", "The price can't be updated for some reason");
                         }
-                        console.log(error);
                     }
                     return obj;
                 },
@@ -364,7 +348,6 @@
                 PostPrice: function () {
                 let obj = "";
                 let serviceURL = "/Playground/AddPlaygroundPrice/";
-                console.log(document.getElementById("from_"+currId).value);
                 let Data = {
                     "NewPlaygroundPrice": {
                         "playgroundId": `@Model.Entity.Id`,
@@ -373,19 +356,14 @@
                         "Price": `${document.getElementById("price_"+currId).value}`
                     }
                 };
-                //debugger;
                 Manager.PostAPI(serviceURL, addsuccess, onFailed, Data);
 
                 function addsuccess(jsonData) {
                     obj = jsonData;
-                    console.log(jsonData);
                     raiseModal("Successful Addition","the price has been added successfully");
                     let from_value = document.getElementById(`from_${last_id}`).value;
                     let to_value = document.getElementById(`to_${last_id}`).value;
                     let price_value = document.getElementById(`price_${last_id}`).value;
-                    console.log(from_value);
-                    console.log(to_value);
-                    console.log(price_value);
                     revertEditUI(last_id, from_value, to_value, price_value);
                     sourcearray.push({ id: jsonData.id, playgroundId: `@Model.Entity.Id`, start: from_value, end: to_value, price: price_value });
                     let rowParent = document.getElementById(`row_${last_id}`).parentElement;
@@ -398,38 +376,31 @@
                     allow = true;
                 }
 
-
                 function onFailed(error) {
                     if (error.status==409) {
                         raiseModal("Addition Failed", "the price can't be added due to a conflication with a previously added Period");
                     } else {
                         raiseModal("Addition Failed", "the price can't be added for some reason");
                     }
-                    //removeRow(last_id);
-                    //addListeners();
-                    //allow = true;
-                    console.log(error);
                 }
-
                 return obj;
             },
+
                 DeletePrice: function () {
                 let obj = "";
                 let serviceURL = "/Playground/DeletePlaygroundPrice/";
-                console.log(sourcearray[currId].id);
                 let Data = {
                     "Id": `${sourcearray[currId].id}`
                 };
-
                 Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
 
                 function onSuccess(jsonData) {
                     raiseModal("Successful Deletion","the price has been deleted successfully");
-                    console.log(jsonData);
                     removeRow(currId);
                     allow = true;
                 }
-                function onFailed(error) {
+
+                    function onFailed(error) {
                     raiseModal("Deletion Failed", "the price can't be deleted");
                     allow = true;
                     console.log(error);
@@ -441,7 +412,6 @@
                 $.ajax({
                     method: "POST",
                     url: serviceURL,
-                    //dataType: 'json',
                     success: successCallback,
                     data: requestData,
                     error: errorCallback
@@ -487,7 +457,6 @@
                     hours = 0;
                 }
                 return padZero(hours) + ":" + padZero(minutes);
-
             }
 
             function isNumber(str) {
@@ -498,7 +467,6 @@
                 }
                 return true;
             }
-
         });
     </script>
 }

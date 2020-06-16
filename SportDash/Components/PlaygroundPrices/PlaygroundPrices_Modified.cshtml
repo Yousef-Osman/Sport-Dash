@@ -131,16 +131,6 @@
                                 <p class="mb-0 text-white text-center col-md-3 col-sm-6" id="price_@i">@item.Price L.E</p>
                             </div>
                         </div>
-                        @if (Model.IsAdmin)
-                        {
-                            @*<div class="d-flex">
-                        <button id="Update_@i" class="align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Update</button>
-                        <button id="Delete_@i" class="align-self-center btn btn-info text-Geyser  mr-2 bg-elephant">Delete</button>
-                        <button id="Save_@i" class="d-none align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Save</button>
-                        <button id="Cancel_@i" class="d-none align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Cancel</button>
-                    </div>*@
-                        }
-
                         i++;
                     }
                 </div>
@@ -153,103 +143,9 @@
                 }
                 @* Increment id after adding *@
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            @*<div id="Prices_Section">
-                    @{
-                        string GetTime(TimeSpan time)
-                        {
-                            string meridiem;
-                            int Hour;
-                            if (time.Hours >= 12)
-                            {
-                                meridiem = "PM";
-                                if (time.Hours == 12)
-                                {
-                                    Hour = time.Hours;
-                                }
-                                else
-                                {
-                                    Hour = time.Hours - 12;
-                                }
-                            }
-                            else
-                            {
-                                meridiem = "AM";
-                                if (time.Hours == 0)
-                                {
-                                    Hour = 12;
-                                }
-                                else
-                                {
-                                    Hour = time.Hours;
-                                }
-                            }
-                            return $"{Hour:00}:{time.Minutes:00} {meridiem}";
-                        }
-                    }
-
-                    @{int i = 0;}
-                    @foreach (var item in Model.PlaygroundPrices)
-                    {
-                        <div class="d-flex justify-content-center flex-wrap">
-                            <div id="row_@i" class="col-lg-6 mb-3 mt-3">
-                                <div id="@(item.PlaygroundId)" class="col-12 p-1 bg-elephant rounded row justify-content-around align-items-center py-4">
-                                    <p class="mb-0 text-white text-center col-md-2 col-sm-6">From</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="from_@i">@GetTime(item.Start)</p>
-                                    <p class="mb-0 text-white text-center col-md-1 col-sm-6">To</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="to_@i">@GetTime(item.End)</p>
-                                    <p class="mb-0 text-white text-center col-md-3 col-sm-6" id="price_@i">@item.Price L.E</p>
-                                </div>
-                            </div>
-                            <div id="row_@i" class="col-lg-6 mb-3 mt-3">
-                                <div id="@(item.PlaygroundId)" class="col-12 p-1 bg-elephant rounded row justify-content-around align-items-center py-4">
-                                    <p class="mb-0 text-white text-center col-md-2 col-sm-6">From</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="from_@i">@GetTime(item.Start)</p>
-                                    <p class="mb-0 text-white text-center col-md-1 col-sm-6">To</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="to_@i">@GetTime(item.End)</p>
-                                    <p class="mb-0 text-white text-center col-md-3 col-sm-6" id="price_@i">@item.Price L.E</p>
-                                </div>
-                            </div>
-                            <div id="row_@i" class="col-lg-6 mb-3 mt-3">
-                                <div id="@(item.PlaygroundId)" class="col-12 p-1 bg-elephant rounded row justify-content-around align-items-center py-4">
-                                    <p class="mb-0 text-white text-center col-md-2 col-sm-6">From</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="from_@i">@GetTime(item.Start)</p>
-                                    <p class="mb-0 text-white text-center col-md-1 col-sm-6">To</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="to_@i">@GetTime(item.End)</p>
-                                    <p class="mb-0 text-white text-center col-md-3 col-sm-6" id="price_@i">@item.Price L.E</p>
-                                </div>
-                            </div>
-
-                        </div>
-                    }
-                </div>*@
-
         </div>
     </div>
 </section>
-
-
-
-
 
 
 @if (Model.IsAdmin)
@@ -265,20 +161,12 @@
         let temp_to_value;
         let temp_price_value;
         let sourcearray = JSON.parse('@Html.Raw(Json.Serialize(Model.PlaygroundPrices.ToArray()))');
-        for (let x of sourcearray) {
-            console.log(x.playgroundId);
-            console.log(x.start);
-            console.log(x.end);
-            console.log(x.price);
-        }
-
 
         $(document).ready(() => {
             document.getElementById("Confirm").addEventListener("click", () => {
                 Manager.DeletePrice();
                 HideDeleteConfirmDialogue();
             });
-
 
             document.getElementById("Cancel").addEventListener("click", () => {
                 HideDeleteConfirmDialogue();
@@ -296,7 +184,6 @@
                 document.getElementById("Ok").classList.add("d-none");
                 raiseModal("Delete Confirmation", "Would you like to delete the selected price?");
             }
-
 
             function addListeners() {
                 let updateButtons = $('button[id^="Update_"]');
@@ -386,32 +273,25 @@
                 currId = getIds(this);
                 if (currId == last_id) {
                     removeLastRow();
-                    //allow = true;
                 }
                 else {
-
                     revertEditUI(currId, temp_from_value, temp_to_value, temp_price_value);
                 }
-
             }
             function removeRow(Target_id) {
                 let rowParent = document.getElementById(`row_${Target_id}`).parentElement;
                 rowParent.parentElement.removeChild(rowParent);
             }
 
-
             function updateCallback() {
                 if (allow === true) {
                     currId = getIds(this);
-                    console.log(document.getElementById(`${from_id}`).innerText);
                     temp_from_value = document.getElementById(`${from_id}`).innerText;
                     temp_to_value = document.getElementById(`${to_id}`).innerText;
                     temp_price_value = document.getElementById(`${price_id}`).innerText.slice(0, -4);
-                    //toEditUI(currId, temp_from_value, temp_to_value, temp_price_value);
                     document.getElementById(`edit_footer`).classList.remove("d-none");
                     document.getElementById(`add_footer`).classList.add("d-none");
                     raiseEditModal(currId, temp_from_value, temp_to_value, temp_price_value);
-                    //allow = false;
                 }
                 else {
                     raiseModal("Notification", "Finish Other Operations First");
@@ -423,23 +303,14 @@
                 $("#from_input").val(getTime24(from_value));
                 $("#to_input").val(getTime24(to_value));
                 $("#price_input").val(price_value);
-                //$("#Price_Modal_Body").text(modalBody);
                 $("#Edit_Price_Modal").modal();
             }
 
             $("#confirm_price_edit").click(saveCallback);
-            //$("#close_Edit").click(removeLastRow);
-
             $("#confirm_price_add").click(addCallback);
             $("#close_add").click(removeLastRow);
 
-
-
             function saveCallback() {
-                console.log(sourcearray[currId].playgroundId);
-                //console.log(`${sourcearray[currId].start.hours}:${sourcearray[currId].start.minutes}`);
-                //console.log(`${sourcearray[currId].end.hours}:${sourcearray[currId].end.minutes}`);
-                //console.log(sourcearray[currId].price);
                 Manager.PutPrice();
             }
 
@@ -476,10 +347,7 @@
                 document.getElementById(`Delete_${target_id}`).classList.add("d-none");
                 document.getElementById(`Save_${target_id}`).classList.remove("d-none");
                 document.getElementById(`Cancel_${target_id}`).classList.remove("d-none");
-                //allow = false;
             }
-
-
 
             function reflectChangesBack(target_id, from_value = "", to_value = "", price_value = "") {
                 //debugger;
@@ -526,8 +394,6 @@
                     function onSuccess(jsonData) {
                         raiseModal("Updated Successfullly","The price has been successfully updated");
                         obj = jsonData;
-                        console.log(jsonData);
-                        //revertEditUI(currId, document.getElementById(`${from_id}`).value, document.getElementById(`${to_id}`).value, document.getElementById(`${price_id}`).value);
                         reflectChangesBack(currId, document.getElementById("from_input").value, document.getElementById("to_input").value, document.getElementById("price_input").value);
                     }
                     function onFailed(error) {
@@ -536,7 +402,6 @@
                         } else {
                             raiseModal("Update Failed", "The price can't be updated for some reason");
                         }
-                        console.log(error);
                     }
                     return obj;
                 },
@@ -544,7 +409,6 @@
                 PostPrice: function () {
                 let obj = "";
                 let serviceURL = "/Playground/AddPlaygroundPrice/";
-                console.log(document.getElementById("from_"+currId).value);
                 let Data = {
                     "NewPlaygroundPrice": {
                         "playgroundId": `@Model.Entity.Id`,
@@ -558,14 +422,10 @@
 
                 function addsuccess(jsonData) {
                     obj = jsonData;
-                    console.log(jsonData);
                     raiseModal("Successful Addition","the price has been added successfully");
                     let from_value = document.getElementById(`from_input`).value;
                     let to_value = document.getElementById(`to_input`).value;
                     let price_value = document.getElementById(`price_input`).value;
-                    console.log(from_value);
-                    console.log(to_value);
-                    console.log(price_value);
                     revertEditUI(last_id, from_value, to_value, price_value);
                     sourcearray.push({ id: jsonData.id, playgroundId: `@Model.Entity.Id`, start: from_value, end: to_value, price: price_value });
                     document.getElementById(`row_${last_id}`);
@@ -578,9 +438,7 @@
                     rowParent = rowParent.parentElement.insertBefore(rowParent, document.getElementById("Add"));
                     last_id++;
                     addListeners();
-                    //allow = true;
                 }
-
 
                 function onFailed(error) {
                     if (error.status==409) {
@@ -589,10 +447,6 @@
                         raiseModal("Addition Failed", "the price can't be added for some reason");
                     }
                     removeLastRow();
-                    //removeRow(last_id);
-                    //addListeners();
-                    //allow = true;
-                    console.log(error);
                 }
 
                 return obj;
@@ -600,7 +454,6 @@
                 DeletePrice: function () {
                 let obj = "";
                 let serviceURL = "/Playground/DeletePlaygroundPrice/";
-                console.log(sourcearray[currId].id);
                 let Data = {
                     "Id": `${sourcearray[currId].id}`
                 };
@@ -609,14 +462,10 @@
 
                 function onSuccess(jsonData) {
                     raiseModal("Successful Deletion","the price has been deleted successfully");
-                    console.log(jsonData);
                     removeRow(currId);
-                    //allow = true;
                 }
                 function onFailed(error) {
                     raiseModal("Deletion Failed", "the price can't be deleted");
-                    //allow = true;
-                    console.log(error);
                 }
 
                 return obj;
@@ -625,13 +474,11 @@
                 $.ajax({
                     method: "POST",
                     url: serviceURL,
-                    //dataType: 'json',
                     success: successCallback,
                     data: requestData,
                     error: errorCallback
                 });
             }
-
             };
 
             function getTimeMeridiem(myTime = "") {
@@ -672,7 +519,6 @@
                     hours = 0;
                 }
                 return padZero(hours) + ":" + padZero(minutes);
-
             }
 
             function isNumber(str) {
@@ -683,7 +529,6 @@
                 }
                 return true;
             }
-
         });
     </script>
 }

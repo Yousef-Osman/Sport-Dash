@@ -25,31 +25,15 @@ namespace SportDash.Repository
         }
         public Comment GetComment(int id)
         {
-            //var comment = _context.Comments.Find(id).FirstOrDefault();
-            //if (comment != null)
-            //{
-            //      return comment;
-            //}
             return new Comment();
         }
         public void Update(int id,Comment com)
         {
-            //var comment = _context.Comments.Find(id).FirstOrDefault();
-            //if (comment != null)
-            //{
-            //    comment.Body = com.Body;
-            //    comment.DateTime = DateTime.Now;
-            //    _context.SaveChanges();
-            //}
+            
         }
         public void Delete(int id)
         {
-            //var comment = _context.Comments.Find(id).FirstOrDefault();
-            //if (comment != null)
-            //{
-            //    _context.Comments.Remove(comment);
-            //    _context.SaveChanges();
-            //}
+            
         }
         public Comment AddComment(Comment comment)
         {

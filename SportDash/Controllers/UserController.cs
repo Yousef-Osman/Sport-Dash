@@ -35,7 +35,6 @@ namespace SportDash.Controllers
             _messageRepository = messageRepository;
         }
 
-        //[HttpPost]
         public async Task<IActionResult> Index(string id)
         {
             var dataModel = new DataViewModel();

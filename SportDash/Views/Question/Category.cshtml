@@ -1,8 +1,4 @@
-﻿
-@using SportDash.ViewModels
-@model DataViewModel
-@using Microsoft.AspNetCore.Identity
-@using SportDash.Data
+﻿@model DataViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
 <section>
@@ -117,9 +113,6 @@
             fragment.appendChild(document.createRange().createContextualFragment(questionElementHTML));
         }
         questionsContainer.insertBefore(fragment, questionsContainer.firstChild);
-
-        //questionsContainer.insertAdjacentElement('afterbegin', fragment);
-
     }
     let category;
     let navItems = document.getElementsByClassName("nav-item");
@@ -129,18 +122,10 @@
             document.querySelector(".active").classList.remove("active");
             item.classList.add("active");
             category = item.innerText;
-            //console.log(category);
             getQuestion();
         });
-        //item.classList.remove("active");
     }
-    //$(".nav li").on("click", () => {
-    //    $(".nav li").removeClass("active");
-    //    $(this).addClass("active");
-    //    Category = $(this).first().text();
-    //    getQuestion();
-    //});
-
+   
     function getQuestion(cat) {
         let About
         if (cat != null) {
@@ -162,16 +147,16 @@
                 }
             });
         }
-
     }
+
     function raiseModal(modalHeader, modalBody) {
         $("#Question_Modal_header_Message").text(modalHeader);
         $("#Question_Modal_Body").text(modalBody);
         $("#Question_Modal").modal();
     }
+
     function onGettingSuccess(data) {
         response = data.value;
-        console.log(data);
         FillQuestions(response);
     }
 

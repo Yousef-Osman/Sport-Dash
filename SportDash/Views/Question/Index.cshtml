@@ -1,8 +1,6 @@
-﻿@model SportDash.ViewModels.DataViewModel
-
+﻿@model DataViewModel
 
 <section class="bg-white">
-
     <div class="site-section">
         <div class="container">
             <div class="row justify-content-center text-center mb-4">
@@ -87,6 +85,7 @@
             }
         })
     });
+
     function raiseModal(modalHeader, modalBody) {
         $("#Question_Modal_header_Message").text(modalHeader);
         $("#Question_Modal_Body").text(modalBody);
