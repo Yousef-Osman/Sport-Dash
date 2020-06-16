@@ -1,4 +1,6 @@
 ﻿@model SportDash.ViewModels.DataViewModel
+
+
 <!-- Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="Price_Modal" aria-modal="true">
     <div class="modal-dialog" role="document">
@@ -20,7 +22,6 @@
         </div>
     </div>
 </div>
-
 
 
 <!--Edit and Add Modal -->
@@ -153,103 +154,9 @@
                 }
                 @* Increment id after adding *@
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            @*<div id="Prices_Section">
-                    @{
-                        string GetTime(TimeSpan time)
-                        {
-                            string meridiem;
-                            int Hour;
-                            if (time.Hours >= 12)
-                            {
-                                meridiem = "PM";
-                                if (time.Hours == 12)
-                                {
-                                    Hour = time.Hours;
-                                }
-                                else
-                                {
-                                    Hour = time.Hours - 12;
-                                }
-                            }
-                            else
-                            {
-                                meridiem = "AM";
-                                if (time.Hours == 0)
-                                {
-                                    Hour = 12;
-                                }
-                                else
-                                {
-                                    Hour = time.Hours;
-                                }
-                            }
-                            return $"{Hour:00}:{time.Minutes:00} {meridiem}";
-                        }
-                    }
-
-                    @{int i = 0;}
-                    @foreach (var item in Model.PlaygroundPrices)
-                    {
-                        <div class="d-flex justify-content-center flex-wrap">
-                            <div id="row_@i" class="col-lg-6 mb-3 mt-3">
-                                <div id="@(item.PlaygroundId)" class="col-12 p-1 bg-elephant rounded row justify-content-around align-items-center py-4">
-                                    <p class="mb-0 text-white text-center col-md-2 col-sm-6">From</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="from_@i">@GetTime(item.Start)</p>
-                                    <p class="mb-0 text-white text-center col-md-1 col-sm-6">To</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="to_@i">@GetTime(item.End)</p>
-                                    <p class="mb-0 text-white text-center col-md-3 col-sm-6" id="price_@i">@item.Price L.E</p>
-                                </div>
-                            </div>
-                            <div id="row_@i" class="col-lg-6 mb-3 mt-3">
-                                <div id="@(item.PlaygroundId)" class="col-12 p-1 bg-elephant rounded row justify-content-around align-items-center py-4">
-                                    <p class="mb-0 text-white text-center col-md-2 col-sm-6">From</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="from_@i">@GetTime(item.Start)</p>
-                                    <p class="mb-0 text-white text-center col-md-1 col-sm-6">To</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="to_@i">@GetTime(item.End)</p>
-                                    <p class="mb-0 text-white text-center col-md-3 col-sm-6" id="price_@i">@item.Price L.E</p>
-                                </div>
-                            </div>
-                            <div id="row_@i" class="col-lg-6 mb-3 mt-3">
-                                <div id="@(item.PlaygroundId)" class="col-12 p-1 bg-elephant rounded row justify-content-around align-items-center py-4">
-                                    <p class="mb-0 text-white text-center col-md-2 col-sm-6">From</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="from_@i">@GetTime(item.Start)</p>
-                                    <p class="mb-0 text-white text-center col-md-1 col-sm-6">To</p>
-                                    <p class="mb-0 text-black col-md-3 col-sm-6 text-center rounded bg-Mountain p-1" id="to_@i">@GetTime(item.End)</p>
-                                    <p class="mb-0 text-white text-center col-md-3 col-sm-6" id="price_@i">@item.Price L.E</p>
-                                </div>
-                            </div>
-
-                        </div>
-                    }
-                </div>*@
-
         </div>
     </div>
 </section>
-
-
-
-
 
 
 @if (Model.IsAdmin)
@@ -265,14 +172,7 @@
         let temp_to_value;
         let temp_price_value;
         let sourcearray = JSON.parse('@Html.Raw(Json.Serialize(Model.PlaygroundPrices.ToArray()))');
-        for (let x of sourcearray) {
-            console.log(x.playgroundId);
-            console.log(x.start);
-            console.log(x.end);
-            console.log(x.price);
-        }
-
-
+     
         $(document).ready(() => {
             //confirm delete
             document.getElementById("Confirm").addEventListener("click", () => {
@@ -280,13 +180,11 @@
                 HideDeleteConfirmDialogue();
             });
 
-
             document.getElementById("Cancel").addEventListener("click", () => {
                 HideDeleteConfirmDialogue();
             });
 
             document.getElementById("delete_price").addEventListener("click", deleteCallback);
-
 
             function HideDeleteConfirmDialogue() {
                 document.getElementById("Cancel").classList.add("d-none");
@@ -301,40 +199,20 @@
                 raiseModal("Delete Confirmation", "Would you like to delete the selected price?");
             }
 
-
             function addListeners() {
-                //let updateButtons = $('button[id^="Update_"]');
                 let rows = $('div[id^="row_"]');
-                //let deleteButtons = $('button[id^="Delete_"]');
                 let saveButtons = $('button[id^="Save_"]');
-                //let cancelButtons = $('button[id^="Cancel_"]');
                 for (let item of rows) {
                     item.addEventListener("click", updateCallback);
                 }
-                //for (let item of cancelButtons) {
-                //    item.addEventListener("click", cancelCallback);
-                //}
-
-                //for (let item of deleteButtons) {
-                //    item.addEventListener("click", deleteCallback);
-                //}
-                //for (let item of saveButtons) {
-                //    item.addEventListener("click", saveCallback);
-                //}
-
 
                 document.getElementById("Add").addEventListener("click", () => {
                     //debugger;
                     if (allow === true) {
-
                         currId = last_id;
                         document.getElementById(`edit_footer`).classList.add("d-none");
                         document.getElementById(`add_footer`).classList.remove("d-none");
                         raiseEditModal(currId,"","","","Add Price");
-                        //document.getElementById(`Update_${currId}`).addEventListener("click", updateCallback);
-                        //document.getElementById(`Delete_${currId}`).addEventListener("click", deleteCallback);
-                        //document.getElementById(`Save_${currId}`).addEventListener("click", addCallback);
-                        //document.getElementById(`Cancel_${currId}`).addEventListener("click", cancelCallback);
                     }
                     else {
                         raiseModal("Notification", "Finish Other Operations First");
@@ -345,9 +223,7 @@
             function deleteCallback() {
                 //debugger;
                 if (allow === true) {
-                    //currId = getIds(this);
                     showDeleteConfirmDialogue();
-
                 }
                 else {
                     raiseModal("Notification", "Finish Other Operations First");
@@ -361,55 +237,36 @@
                 currId = getIds(this);
                 if (currId == last_id) {
                     removeLastRow();
-                    //allow = true;
                 }
                 else {
-
                     revertEditUI(currId, temp_from_value, temp_to_value, temp_price_value);
                 }
-
             }
-
-
             function updateCallback() {
                 if (allow === true) {
                     currId = getIds(this);
                     temp_from_value = document.getElementById(`${from_id}`).innerText;
                     temp_to_value = document.getElementById(`${to_id}`).innerText;
                     temp_price_value = document.getElementById(`${price_id}`).innerText.slice(0, -4);
-                    //toEditUI(currId, temp_from_value, temp_to_value, temp_price_value);
                     document.getElementById(`edit_footer`).classList.remove("d-none");
                     document.getElementById(`add_footer`).classList.add("d-none");
                     raiseEditModal(currId, temp_from_value, temp_to_value, temp_price_value);
-                    //allow = false;
                 }
                 else {
                     raiseModal("Notification", "Finish Other Operations First");
                 }
             }
-
             function raiseEditModal(target_id, from_value = "", to_value = "", price_value = "", modalHeader = "Edit Price") {
                 $("#Edit_Price_ModalLabel").text(modalHeader);
                 $("#from_input").val(getTime24(from_value));
                 $("#to_input").val(getTime24(to_value));
                 $("#price_input").val(price_value);
-                //$("#Price_Modal_Body").text(modalBody);
                 $("#Edit_Price_Modal").modal();
             }
-
             $("#confirm_price_edit").click(saveCallback);
-            //$("#close_Edit").click(removeLastRow);
-
             $("#confirm_price_add").click(addCallback);
-            //$("#close_add").click(removeLastRow);
-
-
 
             function saveCallback() {
-                //console.log(sourcearray[currId].playgroundId);
-                //console.log(`${sourcearray[currId].start.hours}:${sourcearray[currId].start.minutes}`);
-                //console.log(`${sourcearray[currId].end.hours}:${sourcearray[currId].end.minutes}`);
-                //console.log(sourcearray[currId].price);
                 Manager.PutPrice();
             }
 
@@ -438,18 +295,13 @@
                 document.getElementById(`${from_id}`).parentElement.innerHTML = `<input type='time' id = "${from_id}" value="${getTime24(from_value)}">`;
                 document.getElementById(`${to_id}`).parentElement.innerHTML = `<input type='time' id = "${to_id}" value="${getTime24(to_value)}">`;
                 document.getElementById(`${price_id}`).parentElement.innerHTML = `<input type='number' min='1' max='9999' size="4" id = "${price_id}" value="${price_value}">`;//size doesn't work for chrome
-
                 document.getElementById(`row_${target_id}`).classList.remove("col-lg-6");
                 document.getElementById(`row_${target_id}`).classList.add("col-lg-9");
-
                 document.getElementById(`Update_${target_id}`).classList.add("d-none");
                 document.getElementById(`Delete_${target_id}`).classList.add("d-none");
                 document.getElementById(`Save_${target_id}`).classList.remove("d-none");
                 document.getElementById(`Cancel_${target_id}`).classList.remove("d-none");
-                //allow = false;
             }
-
-
 
             function reflectChangesBack(target_id, from_value = "", to_value = "", price_value = "") {
                 //debugger;
@@ -457,44 +309,38 @@
                 document.getElementById(`to_${target_id}`).innerText = getTimeMeridiem(to_value);
                 document.getElementById(`price_${target_id}`).innerText = price_value + ` L.E`;
             }
-
-
-
-
         var Manager = {
-                PutPrice: function () {
-                    let obj = "";
-                    let serviceURL = "/Playground/PutPlaygroundPrice/";
-                    let Data = {
+            PutPrice: function () {
+                let obj = "";
+                let serviceURL = "/Playground/PutPlaygroundPrice/";
+                let Data = {
+                "Id": `${sourcearray[currId].id}`,
+                "NewPlaygroundPrice": {
                     "Id": `${sourcearray[currId].id}`,
-                    "NewPlaygroundPrice": {
-                        "Id": `${sourcearray[currId].id}`,
-                        "playgroundId": `${sourcearray[currId].playgroundId}`,
-                        "Start": `${document.getElementById("from_input").value}`,
-                        "End": `${document.getElementById("to_input").value}`,
-                        "Price": `${document.getElementById("price_input").value}`
-                    }
+                    "playgroundId": `${sourcearray[currId].playgroundId}`,
+                    "Start": `${document.getElementById("from_input").value}`,
+                    "End": `${document.getElementById("to_input").value}`,
+                    "Price": `${document.getElementById("price_input").value}`
+                }
                 };
-                    Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
-                    function onSuccess(jsonData) {
+                Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
+
+                function onSuccess(jsonData) {
                         raiseModal("Updated Successfullly","The price has been successfully updated");
                         obj = jsonData;
-                        //console.log(jsonData);
-                        //revertEditUI(currId, document.getElementById(`${from_id}`).value, document.getElementById(`${to_id}`).value, document.getElementById(`${price_id}`).value);
                         reflectChangesBack(currId, document.getElementById("from_input").value, document.getElementById("to_input").value, document.getElementById("price_input").value);
-                    }
-                    function onFailed(error) {
-                        if (error.status == 409) {
-                            raiseModal("Update Failed", "The price can't be updated due to a conflication with a previously added Period");
-                        } else {
-                            raiseModal("Update Failed", "The price can't be updated for some reason");
-                        }
-                        console.log(error);
-                    }
-                    return obj;
-                },
+                }
 
-                PostPrice: function () {
+                function onFailed(error) {
+                    if (error.status == 409) {
+                        raiseModal("Update Failed", "The price can't be updated due to a conflication with a previously added Period");
+                    } else {
+                        raiseModal("Update Failed", "The price can't be updated for some reason");
+                    }
+                }
+                return obj;
+            },
+            PostPrice: function () {
                 let obj = "";
                 let serviceURL = "/Playground/AddPlaygroundPrice/";
                 let Data = {
@@ -510,7 +356,6 @@
 
                 function addsuccess(jsonData) {
                     obj = jsonData;
-                    console.log(jsonData);
                     raiseModal("Successful Addition", "the price has been added successfully");
                     let from_value = document.getElementById(`from_input`).value;
                     from_value = getTimeMeridiem(from_value);
@@ -526,16 +371,13 @@
                                 <p class="mb-0 text-white text-center col-md-3 col-sm-6" id="price_${last_id}">${price_value} L.E</p>
                             </div>
                         </div>`;
-
                     sourcearray.push({ id: jsonData.id, playgroundId: `@Model.Entity.Id`, start: from_value, end: to_value, price: price_value });
                     let frag = document.createRange().createContextualFragment(NewRow);
                     rowParent = document.getElementById("rowparent");
                     rowParent.appendChild(frag);
                     last_id++;
                     addListeners();
-                    //allow = true;
                 }
-
 
                 function onFailed(error) {
                     if (error.status==409) {
@@ -544,67 +386,57 @@
                         raiseModal("Addition Failed", "the price can't be added for some reason");
                     }
                     removeLastRow();
-                    //removeRow(last_id);
-                    //addListeners();
-                    //allow = true;
-                    console.log(error);
                 }
-
                 return obj;
             },
-                DeletePrice: function () {
+            DeletePrice: function () {
                 let obj = "";
                 let serviceURL = "/Playground/DeletePlaygroundPrice/";
-                console.log(sourcearray[currId].id);
                 let Data = {
                     "Id": `${sourcearray[currId].id}`
                 };
-
                 Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
 
                 function onSuccess(jsonData) {
                     raiseModal("Successful Deletion","the price has been deleted successfully");
-                    console.log(jsonData);
                     removeRow(currId);
-                    //allow = true;
-                }
-                function onFailed(error) {
-                    raiseModal("Deletion Failed", "the price can't be deleted");
-                    //allow = true;
-                    console.log(error);
                 }
 
+                function onFailed(error) {
+                    raiseModal("Deletion Failed", "the price can't be deleted");
+                }
                 return obj;
             },
-                PostAPI: function (serviceURL, successCallback, errorCallback, requestData) {
+            PostAPI: function (serviceURL, successCallback, errorCallback, requestData) {
                 $.ajax({
                     method: "POST",
                     url: serviceURL,
-                    //dataType: 'json',
                     success: successCallback,
                     data: requestData,
                     error: errorCallback
                 });
             }
-
         };
+
         function raiseModal(modalHeader, modalBody) {
             $("#Price_Modal_header_Message").text(modalHeader);
             $("#Price_Modal_Body").text(modalBody);
             $("#Price_Modal").modal();
         }
+
         function removeRow(Target_id) {
             row = document.getElementById(`row_${Target_id}`);
             let rowParent = document.getElementById(`row_${Target_id}`).parentElement;
             rowParent.removeChild(row);
         }
+
         function revertEditUI(target_id, from_value = "", to_value = "", price_value = "") {
             document.getElementById(`from_${target_id}`).parentElement.innerHTML = `<p id="from_${target_id}">${getTimeMeridiem(from_value)}</p>`;
             document.getElementById(`to_${target_id}`).parentElement.innerHTML = `<p id="to_${target_id}">${getTimeMeridiem(to_value)}</p>`;
             document.getElementById(`price_${target_id}`).parentElement.innerHTML = `<p id="price_${target_id}">${price_value} L.E</p>`;
-
-         //keep row as it is then onsuccess revert changes with last id as target id before incrementing it
+            //keep row as it is then onsuccess revert changes with last id as target id before incrementing it
         }
+
         function getTimeMeridiem(myTime = "") {
             let time = myTime;
             let hours = time.slice(0, 2);
@@ -645,7 +477,6 @@
                 hours = 0;
             }
             return padZero(hours) + ":" + padZero(minutes);
-
         }
 
         function isNumber(str) {
