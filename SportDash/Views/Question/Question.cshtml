@@ -79,6 +79,7 @@
                         <div class="col-lg-11 px-0 col-md-10 text-left">
                             <div class="form-group col-12">
                                 <textarea id="Comment_Text" class="form-control" rows="3" placeholder="Leave a comment ..."></textarea>
+                                <span id="Comment_Validation"></span>
                             </div>
                             <div class="d-flex justify-content-start col-lg-8 col-12">
                                 <a id="Comment" class="btn btn-primary text-light col-md-2 col-sm-12">Submit</a>
@@ -149,25 +150,34 @@
     let Comment = document.getElementById("Comment");
     if (Comment != null) {
         Comment.addEventListener("click", () => {
-            var dateTime = getDateString();
-            $.ajax({
-                method: "POST",
-                url: '/@Model.ControllerName/Comment',
-                data: {
-                    "Body": `${document.getElementById("Comment_Text").value}`,
-                    "DateTime": `${dateTime}`,
-                    "UserId": `@Model.CurrentUser?.Id`,
-                    "QuestionId": `@Model.Question.Id`
-                },
-                success: () => {
-                    raiseModal("Comment Posted", "The comment is successfully posted");
-                    document.getElementById("Comment_Text").value = "";
-                },
-                error: () => {
-                    raiseModal("Error", "The comment can't be posted");
-                    document.getElementById("Comment_Text").value = "";
-                }
-            });
+            let postLength = document.getElementById("Comment_Text").value.trim().length;
+            let RequiredLength = 20;
+            if (postLength > RequiredLength) {
+                document.getElementById("Comment_Validation").innerText = "";
+                var dateTime = getDateString();
+                $.ajax({
+                    method: "POST",
+                    url: '/@Model.ControllerName/Comment',
+                    data: {
+                        "Body": `${document.getElementById("Comment_Text").value}`,
+                        "DateTime": `${dateTime}`,
+                        "UserId": `@Model.CurrentUser?.Id`,
+                        "QuestionId": `@Model.Question.Id`
+                    },
+                    success: () => {
+                        raiseModal("Comment Posted", "The comment is successfully posted");
+                        document.getElementById("Comment_Text").value = "";
+                    },
+                    error: () => {
+                        raiseModal("Error", "The comment can't be posted");
+                        document.getElementById("Comment_Text").value = "";
+                    }
+                });
+            }
+            else {
+                document.getElementById("Comment_Validation").innerText = `*At least ${RequiredLength - postLength} more Characters are needed for posting`
+            }
+
         });
     }
 

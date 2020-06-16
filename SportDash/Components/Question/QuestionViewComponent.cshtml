@@ -93,7 +93,7 @@
             //let attribute = document.createAttribute("type");
             //element.appendChild(txtElement);
             //element.setAttribute("type", "textfiled");
-            let frag = document.createRange().createContextualFragment(`<textarea class="form-control" rows="4" id="Question_Body" placeholder="What's in your mind ...">${Text}</textarea>`);
+            let frag = document.createRange().createContextualFragment(`<textarea class="form-control" rows="4" id="Question_Body" placeholder="What's in your mind ...">${Text}</textarea><span id="Question_Validation" class="text-danger"></span>`);
             parent.insertBefore(frag, element);
             element.parentElement.removeChild(element);
             //parent.appendChild(element);
@@ -104,7 +104,15 @@
     }
     if (Save != null) {
         Save.addEventListener("click", () => {
-            SendEdit();
+            let postLength = document.getElementById("Question_Body").value.trim().length;
+            let RequiredLength = 20;
+            if (postLength > RequiredLength) {
+                document.getElementById("Question_Validation").innerText = "";
+                SendEdit();
+            }
+            else {
+                document.getElementById("Question_Validation").innerText = `*At least ${RequiredLength - postLength} more Characters are needed for posting`
+            }
 
         });
     }
@@ -124,7 +132,7 @@
                 }
             },
             success: () => {
-                raiseModal("Successful Posting","The question is successfully posted");
+                //raiseModal("Successful Posting","The question is successfully posted");
                 let element = document.getElementById("Question_Body");
                 let parent = element.parentElement;
                 let Text = element.value;

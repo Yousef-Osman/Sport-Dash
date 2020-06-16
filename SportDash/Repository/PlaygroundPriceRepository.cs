@@ -24,16 +24,16 @@ namespace SportDash.Repository
             //{
             //try
             //{
-                _applicationDbContext.playgroundPrices.Add(NewPlaygroundPrice);
-                _applicationDbContext.SaveChanges();
-                return NewPlaygroundPrice.Id;
+            _applicationDbContext.playgroundPrices.Add(NewPlaygroundPrice);
+            _applicationDbContext.SaveChanges();
+            return NewPlaygroundPrice.Id;
 
             //}
             //catch (Exception)
             //{
             //    return false;
             //}
-            
+
 
             //}
             //else
@@ -80,7 +80,7 @@ namespace SportDash.Repository
             return false;
         }
 
-        public bool UpdatePlaygroundPrice(int Id,PlaygroundPrice newPlaygroundPrice)
+        public bool UpdatePlaygroundPrice(int Id, PlaygroundPrice newPlaygroundPrice)
         {
             PlaygroundPrice FoundplaygroundPrice = SearchPlaygroundPrice(Id);
             if (FoundplaygroundPrice != null)
@@ -106,10 +106,11 @@ namespace SportDash.Repository
 
         public List<PlaygroundPrice> GetConflictedList(PlaygroundPrice newPlaygroundPrice)
         {
-           List<PlaygroundPrice> prices = _applicationDbContext.playgroundPrices.Where(playgroundPrice=>
-            ((playgroundPrice.Start<newPlaygroundPrice.Start)&&(playgroundPrice.End > newPlaygroundPrice.Start)) ||
-            ((playgroundPrice.Start<newPlaygroundPrice.End) &&(playgroundPrice.End > newPlaygroundPrice.End)) ||
-            ((playgroundPrice.Start >= newPlaygroundPrice.Start) && (playgroundPrice.End <= newPlaygroundPrice.End))).ToList();
+            List<PlaygroundPrice> prices = _applicationDbContext.playgroundPrices.Where(playgroundPrice =>
+            ((((playgroundPrice.Start < newPlaygroundPrice.Start) && (playgroundPrice.End > newPlaygroundPrice.Start)) ||
+             ((playgroundPrice.Start < newPlaygroundPrice.End) && (playgroundPrice.End > newPlaygroundPrice.End)) ||
+             ((playgroundPrice.Start >= newPlaygroundPrice.Start) && (playgroundPrice.End <= newPlaygroundPrice.End))
+            ) && (playgroundPrice.PlaygroundId == newPlaygroundPrice.PlaygroundId))).ToList();
             return prices;
             //if(price == null)
             //{

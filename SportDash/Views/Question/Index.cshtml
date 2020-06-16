@@ -33,7 +33,8 @@
                                         new { @class = "form-control" })
                             </div>
                             <div class="form-group col-12">
-                                <textarea class="form-control" rows="4" id="Question" placeholder="What's in your mind ..."></textarea>
+                                <textarea class="form-control" rows="4" id="Question_Body" placeholder="What's in your mind ..."></textarea>
+                                <span id="Question_Validation" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -71,19 +72,27 @@
 
     let Ask = document.getElementById("Ask");
     Ask.addEventListener("click", () => {
-        var today = new Date();
-        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date + ' ' + time;
-        $.ajax({
+        let postLength = document.getElementById("Question_Body").value.trim().length;
+        let RequiredLength = 20;
+        if (postLength > RequiredLength) {
+            document.getElementById("Question_Validation").innerText = "";
+            var today = new Date();
+            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date + ' ' + time;
+            let selectedIndex = document.getElementById("Question_Category").selectedIndex;
+            if (selectedIndex === 0) {
+                selectedIndex = 4;
+            }
+            $.ajax({
             method: "POST",
             url:'/@Model.ControllerName/Ask',
             data: {
-                "Body": `${document.getElementById("Question").value}`,
+                "Body": `${document.getElementById("Question_Body").value}`,
                 "CreationTime": `${dateTime}`,
                 "LastUpdateTime": `${dateTime}`,
                 "UserId": `@Model.CurrentUser.Id`,
-                "Category": `${document.getElementById("Question_Category").selectedIndex-1}`
+                "Category": `${selectedIndex-1}`
             },
             success: () => {
                 raiseModal("Successful Posting", "The question is successfully posted");
@@ -92,6 +101,11 @@
                 raiseModal("Error", "The question can't be posted");
             }
         })
+        }
+        else {
+            document.getElementById("Question_Validation").innerText = `*At least ${RequiredLength - postLength} more Characters are needed for posting`
+        }
+
     });
     function raiseModal(modalHeader, modalBody) {
         $("#Question_Modal_header_Message").text(modalHeader);
