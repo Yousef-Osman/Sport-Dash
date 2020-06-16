@@ -1,6 +1,4 @@
 ﻿@model SportDash.ViewModels.DataViewModel
-
-
 <!-- Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="Price_Modal" aria-modal="true">
     <div class="modal-dialog" role="document">
@@ -16,7 +14,7 @@
             </div>
             <div class="modal-footer">
                 <button id="Ok" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-                <button id="Confirm" type="button" class="btn btn-primary d-none" data-dismiss="modal">Confirm</button>
+                <button id="Confirm" type="button" class="btn btn-danger d-none" data-dismiss="modal">Confirm</button>
                 <button id="Cancel" type="button" class="btn btn-secondary d-none" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -28,45 +26,29 @@
 <div class="modal fade" id="Edit_Price_Modal" tabindex="-1" role="dialog" aria-labelledby="priceModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-Mountain">
-                <h5 class="modal-title text-elephant" id="Edit_Price_ModalLabel">Edit Price</h5>
+            <div class="modal-header">
+                <h5 class="modal-title" id="Edit_Price_ModalLabel">Edit Price</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-row mb-2">
-                    <div class="col">
-                        <p>Start</p>
-                    </div>
-                    <div class="col">
-                        <input type='time' id="from_input">
-                    </div>
-                </div>
-                <div class="form-row mb-2">
-                    <div class="col">
-                        <p>End</p>
-                    </div>
-                    <div class="col">
-                        <input type='time' id="to_input">
-                    </div>
-                </div>
-                <div class="form-row mb-2">
-                    <div class="col">
-                        <p>Price</p>
-                    </div>
-                    <div class="col">
-                        <input type='number' min='1' max='9999' size="4" id="price_input">
-                    </div>
+                <div class="p-4">
+                    <label class="text-gray-700">Start Time</label>
+                    <input type="time" id="from_input" name="EventFrom" class="form-control mb-2" />
+                    <label class="text-gray-700">End Time</label>
+                    <input type="time" id="to_input" name="EventTo" class="form-control mb-2" />
+                    <label class="text-gray-700">Price</label>
+                    <input type="text" id="price_input" name="EventTo" class="form-control mb-2" />
                 </div>
             </div>
             <div id="edit_footer" class="modal-footer">
-                <button type="button" class="btn btn-info bg-Mountain text-elephant" data-dismiss="modal" id="confirm_price_edit">Edit</button>
-                <button type="button" class="btn btn-danger text-elephant" data-dismiss="modal" id="delete_price">Delete</button>
+                <button type="button" class="btn btn-success text-light" data-dismiss="modal" id="confirm_price_edit">Edit</button>
+                <button type="button" class="btn btn-danger text-light" data-dismiss="modal" id="delete_price">Delete</button>
                 <button type="button" class="btn btn-secondary" id="close_Edit" data-dismiss="modal">Close</button>
             </div>
             <div id="add_footer" class="modal-footer d-none">
-                <button type="button" class="btn btn-info bg-Mountain text-elephant" data-dismiss="modal" id="confirm_price_add">Add</button>
+                <button type="button" class="btn btn-success text-light" data-dismiss="modal" id="confirm_price_add">Add</button>
                 <button type="button" class="btn btn-secondary" id="close_add" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -132,16 +114,6 @@
                                 <p class="mb-0 text-white text-center col-md-3 col-sm-6" id="price_@i">@item.Price L.E</p>
                             </div>
                         </div>
-                        @if (Model.IsAdmin)
-                        {
-                            @*<div class="d-flex">
-                                    <button id="Update_@i" class="align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Update</button>
-                                    <button id="Delete_@i" class="align-self-center btn btn-info text-Geyser  mr-2 bg-elephant">Delete</button>
-                                    <button id="Save_@i" class="d-none align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Save</button>
-                                    <button id="Cancel_@i" class="d-none align-self-center btn btn-info text-Geyser mr-2 bg-elephant">Cancel</button>
-                                </div>*@
-                        }
-
                         i++;
                     }
                 </div>
@@ -149,7 +121,7 @@
                 @if (Model.IsAdmin)
                 {
                     <div class="row justify-content-center text-center mt-5" data-aos="fade" data-aos-delay="100">
-                        <a id="Add" class="btn btn-primary rounded-pill text-white py-3 px-5 bg-Mountain">Add Price</a>
+                        <a id="Add" class="btn btn-primary rounded-pill text-white py-3 px-5">Add Price</a>
                     </div>
                 }
                 @* Increment id after adding *@
@@ -172,7 +144,7 @@
         let temp_to_value;
         let temp_price_value;
         let sourcearray = JSON.parse('@Html.Raw(Json.Serialize(Model.PlaygroundPrices.ToArray()))');
-     
+
         $(document).ready(() => {
             //confirm delete
             document.getElementById("Confirm").addEventListener("click", () => {
