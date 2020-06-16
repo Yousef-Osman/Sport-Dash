@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -82,6 +83,15 @@ namespace SportDash.Controllers
             }
 
             return View(dataModel);
+        }
+
+        public IActionResult LoadReservations(string id)
+        {
+            var dataModel = new DataViewModel();
+            dataModel.Reservations = _reservationRepository.GetReservationsByDay(id, DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year);
+            if (id == _userManager.GetUserId(HttpContext.User))
+                dataModel.IsAdmin = true;
+            return PartialView("_Reservation", dataModel);
         }
 
         [HttpPost]
@@ -185,7 +195,14 @@ namespace SportDash.Controllers
             if (acceptedReservation.UserId != null)
                 await NotifyUser(playgroundId, acceptedReservation, $"Sorry, your reservation request has been rejected  for {acceptedReservation.Date} day from {acceptedReservation.StartTime} to {acceptedReservation.EndTime}");
             _reservationRepository.Delete(id);
-            return RedirectToAction(nameof(Index));
+            var dataModel = new DataViewModel();
+            dataModel.Reservations = _reservationRepository.GetReservationsByDay(playgroundId, DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year);
+            dataModel.Requests = _reservationRepository.GetRequests(playgroundId);
+            dataModel.IsAdmin = true;
+            if (acceptedReservation.Status == "Accepted")
+                return PartialView("_Reservation", dataModel);
+            else
+                return PartialView("_Request", dataModel);
         }
 
         private async Task NotifyUser(string playgroundId, PlaygroundReservation acceptedReservation, string msg)
@@ -220,6 +237,7 @@ namespace SportDash.Controllers
         [Authorize(Policy = "PlaygroundPolicy")]
         public async Task<IActionResult> AcceptReservation(int id)
         {
+            var dataModel = new DataViewModel();
             _reservationRepository.AcceptReservation(id);
             var playgroundId = _userManager.GetUserId(User);
             var acceptedReservation = _reservationRepository.GetAll(playgroundId).FirstOrDefault(r => r.Id == id);
@@ -238,17 +256,21 @@ namespace SportDash.Controllers
                     _reservationRepository.Delete(r.Id);
                 }
             }
-            return RedirectToAction(nameof(Index));
+            dataModel.Requests = _reservationRepository.GetRequests(playgroundId);
+            dataModel.IsAdmin = true;
+            return PartialView("_Request", dataModel);
         }
 
         [HttpPost]
         public IActionResult AddReservation(PlaygroundReservation reservation)
         {
             bool res = true;
+            DataViewModel dataModel = new DataViewModel();
             if (User.IsInRole("Playground"))
             {
                 reservation.Status = "Accepted";
                 reservation.PlaygroundId = _userManager.GetUserId(HttpContext.User);
+                dataModel.IsAdmin = true;
             }
             else
             {
@@ -261,7 +283,10 @@ namespace SportDash.Controllers
                 res = _reservationRepository.Add(reservation);
             }
             if (res)
-                return RedirectToAction(nameof(Index));
+            {
+                dataModel.Reservations = _reservationRepository.GetReservationsByDay(reservation.PlaygroundId, DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year);
+                return PartialView("_Reservation",dataModel);
+            }
             else
                 return BadRequest(new BadRequestObjectResult("There is another reservation at the same time, Please change your reservation time."));
         }
@@ -343,10 +368,6 @@ namespace SportDash.Controllers
         public async Task<IActionResult> AddReview(Review R)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            //R.ReviewerId = _userManager.GetUserId(HttpContext.User);
-            //R.TargetId = "b6bf071e-32fe-4b3f-b8ec-57ddc6737e8";
-            // var review = _reviewRepository.PostReview(R);
-            //return Ok(new OkObjectResult(review));
             DataViewModel reviewVM = new DataViewModel();
             var userId = R.ReviewerId;
             var TargetId = R.TargetId; 
@@ -355,15 +376,19 @@ namespace SportDash.Controllers
             reviewVM.CurrentUser =  await _userManager.GetUserAsync(User);
             reviewVM.Reviews = _reviewRepository.GetReviewsOfReviewee(TargetId);
             reviewVM.Review = review;
-            return PartialView("_DisplayAddedReview", reviewVM);
+            return PartialView("_ShowReviews", reviewVM);
         }
 
         [HttpPost]
-        public IActionResult DeleteReview(int id)
+        public async Task<IActionResult> DeleteReview(int id ,string TargetId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            DataViewModel reviewVM = new DataViewModel();
+            reviewVM.CurrentUser = await _userManager.GetUserAsync(User);
             _reviewRepository.DeleteReview(id);
-            return Ok();
+            reviewVM.Reviews = _reviewRepository.GetReviewsOfReviewee(TargetId);
+
+            return PartialView("_ShowReviews", reviewVM);
         }
     }
 }

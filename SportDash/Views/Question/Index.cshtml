@@ -1,25 +1,51 @@
-﻿
-@model SportDash.ViewModels.DataViewModel
+﻿@model SportDash.ViewModels.DataViewModel
+@using SportDash.Components.Question;
+@inject SportDash.Repository.IImageRepository _imageRepository
 
-<div class="ml-0 justify-content-center row prices bg-elephant py-4">
-    <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
-    <div class="ml-3">
-        @*<div><p>Name</p></div>*@
-        @*<div><p>Date</p></div>*@
-        <div>
-            @Html.DropDownList("Question_Category",
-                                new SelectList(Enum.GetValues(typeof(QuestionAbout))),
-                                "Select Category",
-                                new { @class = "form-control" })
 
-            <textarea class="form-control animated" cols="50" id="Question" placeholder="Ask us..." rows="5"></textarea>
-            <button id="Ask" class="btn btn-primary">Ask</button>
+@{
+    QuestionVComponent questionVComponent = new QuestionVComponent(_imageRepository);
+}
 
+<section class="bg-white">
+
+    <div class="site-section">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-4">
+                <div class="col-md-6" data-aos="fade">
+                    <h1>Post a Question</h1>
+                    <p>Select a category and ask your question</p>
+                </div>
+            </div>
+
+            <div class="card mb-4 custom-shadow">
+                <div class="card-body mt-3 mb-1">
+                    <div class="row justify-content-between px-2">
+                        <div class="col-lg-1 col-md-2 mb-3">
+                            <img class="profile-image" style="width:64px;height:64px;" src="@questionVComponent.GetImagePath(Model.CurrentUser.Id)" asp-append-version="true">
+                        </div>
+
+                        <div class="col-lg-11 px-0 col-md-10 text-left">
+                            <div class="form-group col-12">
+                                @Html.DropDownList("Question_Category",
+                                        new SelectList(Enum.GetValues(typeof(QuestionAbout))),
+                                        "Select Category",
+                                        new { @class = "form-control" })
+                            </div>
+                            <div class="form-group col-12">
+                                <textarea class="form-control" rows="4" id="Question" placeholder="What's in your mind ..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end px-2">
+                        <a id="Ask" class="btn btn-primary text-light">Submit</a>
+                        <a id="Ask" class="btn btn-dark ml-1" asp-controller="Question" asp-action="Category">Cancel</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-
+</section>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="Question_Modal" aria-modal="true">
     <div class="modal-dialog" role="document">
@@ -34,7 +60,7 @@
                 <p id="Question_Modal_Body"></p>
             </div>
             <div class="modal-footer">
-                <button id="Ok" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                <a id="Ok" type="button" class="btn btn-primary" asp-controller="Question" asp-action="myQuestions">OK</a>
             </div>
         </div>
     </div>

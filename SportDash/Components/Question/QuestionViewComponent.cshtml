@@ -1,52 +1,59 @@
-﻿
-@model SportDash.ViewModels.DataViewModel
+﻿@model SportDash.ViewModels.DataViewModel
 
-<div class="row m-3">
-    <div class="row p-3 text-dark bg-white rounded">
-        <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
-        <div class="ml-3">
-                @{
-                    string GetDate(DateTime dateTime)
+<div class="card mb-4 custom-shadow">
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-lg-1 col-md-2 mb-3">
+                <img class="profile-image" style="width:64px;height:64px;" src="@Model.ImagePath" asp-append-version="true">
+            </div>
+            @{
+                string GetDate(DateTime dateTime)
+                {
+                    string meridiem;
+                    string Hour;
+                    if (dateTime.Hour >= 12)
                     {
-                        string meridiem;
-                        string Hour;
-                        if (dateTime.Hour >= 12)
+                        meridiem = "PM";
+                        if (dateTime.Hour == 12)
                         {
-                            meridiem = "PM";
-                            if (dateTime.Hour == 12)
-                            {
-                                Hour = $"{dateTime.Hour}";
-                            }
-                            else
-                            {
-                                Hour = $"{dateTime.Hour - 12}";
-                            }
+                            Hour = $"{dateTime.Hour}";
                         }
                         else
                         {
-                            meridiem = "AM";
-                            if (dateTime.Hour == 0)
-                            {
-                                Hour = "12";
-                            }
-                            else
-                            {
-                                Hour = $"{dateTime.Hour}";
-                            }
+                            Hour = $"{dateTime.Hour - 12}";
                         }
-                        return $"{dateTime.Year}-{dateTime.Month}-{dateTime.Day} " +
-                            $"{Hour}:{dateTime.Minute}:{dateTime.Second} {meridiem}";
                     }
+                    else
+                    {
+                        meridiem = "AM";
+                        if (dateTime.Hour == 0)
+                        {
+                            Hour = "12";
+                        }
+                        else
+                        {
+                            Hour = $"{dateTime.Hour}";
+                        }
+                    }
+                    return $"{dateTime.Year}-{dateTime.Month}-{dateTime.Day} " +
+                        $"{Hour}:{dateTime.Minute}:{dateTime.Second} {meridiem}";
                 }
-                <p>@Model.Question.User.UserName</p>
-                <p>@GetDate(Model.Question.CreationTime)</p>
-                <p id="Question_Body">@Model.Question.Body</p>
-                <i id="Last_Update" style="display:block">Last Updated: @GetDate(Model.Question.LastUpdateTime)</i>
+            }
+            <div class="col-lg-9 col-md-7 text-left">
+                <h4 class="pb-0 mb-0">@Model.Question.User.UserName</h4>
+                <p class=" pb-0 mb-2 text-gray-700">
+                    @GetDate(Model.Question.CreationTime)
+                    <span id="Last_Update" class="ml-2 text-gray-500"><i>Last updated: @GetDate(Model.Question.LastUpdateTime)</i></span>
+                </p>
+                <p id="Question_Body" class="h5 mb-0">@Model.Question.Body</p>
+            </div>
+            <div class="col-lg-2 col-md-3 d-flex justify-content-end">
                 @if (Model.IsAdmin)
                 {
-                    <button id="Edit" class="btn btn-primary">Edit</button>
+                    <button id="Edit" class="btn btn-primary col-md-8 align-self-start mt-1">Edit</button>
                 }
-                <button id="Save" class="btn btn-primary d-none">Save</button>
+                <button id="Save" class="btn btn-primary col-md-8 align-self-start mt-1 d-none">Save</button>
+            </div>
         </div>
     </div>
 </div>
@@ -81,14 +88,14 @@
             let element = document.getElementById("Question_Body");
             let parent = element.parentElement;
             let Text = element.innerText;
-            element.parentElement.removeChild(element);
             //let txtElement = document.createTextNode(Text);
             //element = document.createElement("input");
             //let attribute = document.createAttribute("type");
             //element.appendChild(txtElement);
             //element.setAttribute("type", "textfiled");
-            let frag = document.createRange().createContextualFragment(`<textarea class="form-control animated" cols = "50" id = "Question_Body" placeholder = "Ask us..." rows = "5">${Text}</textarea >`);
-            parent.insertBefore(frag, Edit);
+            let frag = document.createRange().createContextualFragment(`<textarea class="form-control" rows="4" id="Question_Body" placeholder="What's in your mind ...">${Text}</textarea>`);
+            parent.insertBefore(frag, element);
+            element.parentElement.removeChild(element);
             //parent.appendChild(element);
             Save.classList.remove("d-none");
             Edit.classList.add("d-none");
@@ -121,11 +128,11 @@
                 let element = document.getElementById("Question_Body");
                 let parent = element.parentElement;
                 let Text = element.value;
-                element.parentElement.removeChild(element);
-                let frag = document.createRange().createContextualFragment(`<p id="Question_Body">${Text}</p>`);
+                let frag = document.createRange().createContextualFragment(`<p id="Question_Body" class="h4 mb-0">${Text}</p>`);
                 let Last_Update = document.getElementById("Last_Update");
                 Last_Update.innerText = "Last Updated: " + dateTime;
-                parent.insertBefore(frag, Last_Update);
+                parent.insertBefore(frag, element);
+                element.parentElement.removeChild(element);
                 Save.classList.add("d-none");
                 Edit.classList.remove("d-none");
             },

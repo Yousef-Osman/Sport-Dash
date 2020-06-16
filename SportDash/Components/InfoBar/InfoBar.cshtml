@@ -129,39 +129,44 @@
                             <option value="">Select your location ...</option>
                         </select>
                     </div>
-                    <div class="col" id="ball-renting">
-                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.BallRentingOptions" id="info-ball">
-                            <option value="">Ball Renting ...</option>
-                        </select>
-                    </div>
+                    @if (User.IsInRole("Playground"))
+                    {
+                        <div class="col" id="ball-renting">
+                            <select class="custom-select my-1 mr-sm-2" asp-items="Model.BallRentingOptions" id="info-ball">
+                                <option value="">Ball Renting ...</option>
+                            </select>
+                        </div>
+                    }
                 </div>
-                <div class="form-row mb-2" id="common1">
-                    <div class="col">
-                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.LockerRoomOptions" id="info-locker">
-                            <option value="">Locker Room ...</option>
-                        </select>
+                @if(User.IsInRole("Playground") || User.IsInRole("Gym")) { 
+                    <div class="form-row mb-2" id="common1">
+                        <div class="col">
+                            <select class="custom-select my-1 mr-sm-2" asp-items="Model.LockerRoomOptions" id="info-locker">
+                                <option value="">Locker Room ...</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select class="custom-select my-1 mr-sm-2" asp-items="Model.SafeOptions" id="info-safe">
+                                <option value="">Safe for Belongings ...</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="col">
-                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.SafeOptions" id="info-safe">
-                            <option value="">Safe for Belongings ...</option>
-                        </select>
+                    <div class="form-row mb-2" id="common2">
+                        <div class="col">
+                            <select class="custom-select my-1 mr-sm-2" asp-items="Model.ToiletOptions" id="info-toilet">
+                                <option value="">Toilet ...</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select class="custom-select my-1 mr-sm-2" asp-items="Model.ForLadiesOptions" id="info-for-ladies">
+                                <option value="">For Ladies ...</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="form-row mb-2" id="common2">
-                    <div class="col">
-                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.ToiletOptions" id="info-toilet">
-                            <option value="">Toilet ...</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="custom-select my-1 mr-sm-2" asp-items="Model.ForLadiesOptions" id="info-for-ladies">
-                            <option value="">For Ladies ...</option>
-                        </select>
-                    </div>
-                </div>
+                }
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal" id="edit-info-btn">Confirm</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="edit-info-btn">Confirm</button>
                 <button type="button" class="btn btn-secondary" id="edit-name-btn" data-dismiss="modal">Close</button>
             </div>
         </div>
