@@ -1,5 +1,11 @@
 ﻿@model SportDash.ViewModels.DataViewModel
+@using SportDash.Components.Question;
+@inject SportDash.Repository.IImageRepository _imageRepository
 
+
+@{
+    QuestionVComponent questionVComponent = new QuestionVComponent(_imageRepository);
+}
 
 <section class="bg-white">
 
@@ -16,7 +22,7 @@
                 <div class="card-body mt-3 mb-1">
                     <div class="row justify-content-between px-2">
                         <div class="col-lg-1 col-md-2 mb-3">
-                            <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                            <img class="profile-image" style="width:64px;height:64px;" src="@questionVComponent.GetImagePath(Model.CurrentUser.Id)" asp-append-version="true">
                         </div>
 
                         <div class="col-lg-11 px-0 col-md-10 text-left">
