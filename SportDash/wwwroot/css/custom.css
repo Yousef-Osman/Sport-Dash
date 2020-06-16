@@ -2,6 +2,10 @@
     background-color: #F8F9FA !important;
 }
 
+.bg-standared-color {
+    background-color: #F8F9FA;
+}
+
 .bg-elephant {
     background-color: #102B3E;
 }
@@ -467,7 +471,7 @@
 
 .sender {
     float: right;
-    width: auto !important;    
+    width: auto !important;
     background: #dcf8c6;
     border-radius: 10px 10px 0 10px;
     padding: 4px 10px 7px !important;
@@ -504,40 +508,40 @@
     padding: 5px !important;
 }
 
-.reply-recording i {
-    text-align: center;
-    padding: 5px !important;
-    color: #93918f;
-    cursor: pointer;
-}
+    .reply-recording i {
+        text-align: center;
+        padding: 5px !important;
+        color: #93918f;
+        cursor: pointer;
+    }
 
 .reply-send {
-    padding: 5px !important;    
+    padding: 5px !important;
 }
 
-.reply-send i {
-    text-align: center;
-    padding: 5px !important;
-    color: #93918f;
-    cursor: pointer;
-}
+    .reply-send i {
+        text-align: center;
+        padding: 5px !important;
+        color: #93918f;
+        cursor: pointer;
+    }
 
 .reply-main {
     padding: 2px 5px !important;
 }
 
-.reply-main textarea {
-    width: 100%;
-    resize: none;
-    overflow: hidden;
-    padding: 5px !important;
-    outline: none;
-    border: none;
-    text-indent: 5px;
-    box-shadow: none;
-    height: 100%;
-    font-size: 16px;
-}
+    .reply-main textarea {
+        width: 100%;
+        resize: none;
+        overflow: hidden;
+        padding: 5px !important;
+        outline: none;
+        border: none;
+        text-indent: 5px;
+        box-shadow: none;
+        height: 100%;
+        font-size: 16px;
+    }
 
         .reply-main textarea:focus {
             outline: none;
@@ -857,3 +861,48 @@
     font-size: 16px;
     line-height: 1.5;
 }
+
+
+
+
+
+
+
+.site-blocks-cover3 {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    min-height: 700px;
+}
+
+    .site-blocks-cover3.overlay {
+        position: relative;
+    }
+
+        .site-blocks-cover3.overlay:before {
+            position: absolute;
+            content: "";
+            left: 0;
+            bottom: 0;
+            right: 0;
+            top: 0;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+
+
+
+.gym-prices-plan {
+    width: 100px;
+    height: 100px;
+    background-color: #333333;
+    color: #F8F9FA;
+    border-radius: 50px;
+    line-height: 100px;
+    margin: 10px auto 20px;
+    font-weight: 900;
+}
+
+    .gym-span {
+        font-size: 16px;
+    }
