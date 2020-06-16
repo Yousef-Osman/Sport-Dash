@@ -1,22 +1,17 @@
-﻿
+﻿@model SportDash.ViewModels.DataViewModel
+
 @{
     ViewData["Title"] = "Question";
 }
 
-@model SportDash.ViewModels.DataViewModel
-<div class="container prices bg-elephant py-4">
-    <h1>Question</h1>
-    @{
-        //SportDash.ViewModels.QuestionViewModel questionViewModel = new SportDash.ViewModels.QuestionViewModel()
-        //{
-        //    DataViewModel = Model.DataViewModel,
-        //    Question = Model.Question
-        //};
-
-        @await Component.InvokeAsync("QuestionVComponent", Model);
-    }
-    <div class="ml-5">
-        <h2>Answers</h2>
+<div class="container py-4">
+    <div class="my-5 bg-white">
+        @{
+            @await Component.InvokeAsync("QuestionVComponent", Model);
+        }
+    </div>
+    <div class="ml-5 pb-5">
+        <h3 class="mb-3">Answers</h3>
         @foreach (var item in Model.Question.Comments)
         {
             string GetDate(DateTime dateTime)
@@ -50,14 +45,16 @@
                 return $"{dateTime.Year}-{dateTime.Month}-{dateTime.Day} " +
                     $"{Hour}:{dateTime.Minute}:{dateTime.Second} {meridiem}";
             }
-            <div class="row m-3">
-                <div class="row p-3 text-dark bg-white rounded">
-                    <img class="profile-image profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
-                    <div class="ml-3">
-                        <div>
-                            <p>@item.User.UserName</p>
-                            <p>@GetDate(item.DateTime)</p>
-                            <p>@item.Body</p>
+            <div class="card mb-4 custom-shadow">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-lg-1 col-md-2 mb-2">
+                            <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                        </div>
+                        <div class="col-lg-9 col-md-7 text-left">
+                            <h5 class="pb-0 mb-0">@item.User.UserName</h5>
+                            <p class="mb-2">@GetDate(item.DateTime)</p>
+                            <p class="h6 mb-0">@item.Body</p>
                         </div>
                     </div>
                 </div>
@@ -65,11 +62,22 @@
         }
         @if (Model.IsSigned)
         {
-            <div class="row">
-                <img class="profile-image profile-image-small" style="width:64px;height:64px;" src="@("/images/user-icon.jpg")" asp-append-version="true">
-                <div class="ml-2">
-                    <textarea class="form-control animated" cols="50" id="Comment_Text" placeholder="Ask us..." rows="5"></textarea>
-                    <button id="Comment" class="btn btn-primary">Comment</button>
+            <div class="card mb-4 custom-shadow">
+                <div class="card-body mt-3 mb-1">
+                    <div class="row justify-content-between px-2">
+                        <div class="col-lg-1 col-md-2 mb-3">
+                            <img class="profile-image" style="width:64px;height:64px;" src="@("/images/site/user-icon.jpg")" asp-append-version="true">
+                        </div>
+                        <div class="col-lg-11 px-0 col-md-10 text-left">
+                            <div class="form-group col-12">
+                                <textarea id="Comment_Text" class="form-control" rows="3" placeholder="Leave a comment ..."></textarea>
+                            </div>
+                            <div class="d-flex justify-content-start col-lg-8 col-12">
+                                <a id="Comment" class="btn btn-primary text-light col-md-2 col-sm-12">Submit</a>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         }
@@ -95,6 +103,12 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
 
 <script>
 
