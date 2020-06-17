@@ -1,4 +1,5 @@
-﻿@model SportDash.ViewModels.DataViewModel
+﻿
+@model SportDash.ViewModels.DataViewModel
 <!-- Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="Price_Modal" aria-modal="true">
     <div class="modal-dialog" role="document">
@@ -36,14 +37,21 @@
                 <div class="p-4">
                     <label class="text-gray-700">Start Time</label>
                     <input type="time" id="from_input" name="EventFrom" class="form-control mb-2" />
+                    <span id="from_validation_span" class="text-danger"></span>
+
                     <label class="text-gray-700">End Time</label>
                     <input type="time" id="to_input" name="EventTo" class="form-control mb-2" />
+                    <span id="to_validation_span" class="text-danger"></span>
+
+
                     <label class="text-gray-700">Price</label>
                     <input type="text" id="price_input" name="EventTo" class="form-control mb-2" />
+                    <span id="price_validation_span" class="text-danger"></span>
+
                 </div>
             </div>
             <div id="edit_footer" class="modal-footer">
-                <button type="button" class="btn btn-success text-light" data-dismiss="modal" id="confirm_price_edit">Edit</button>
+                <button type="button" class="btn btn-success text-light" id="confirm_price_edit">Edit</button>
                 <button type="button" class="btn btn-danger text-light" data-dismiss="modal" id="delete_price">Delete</button>
                 <button type="button" class="btn btn-secondary" id="close_Edit" data-dismiss="modal">Close</button>
             </div>
@@ -239,18 +247,88 @@
             $("#confirm_price_add").click(addCallback);
 
             function saveCallback() {
-                Manager.PutPrice();
+                //console.log(sourcearray[currId].playgroundId);
+                //console.log(`${sourcearray[currId].start.hours}:${sourcearray[currId].start.minutes}`);
+                //console.log(`${sourcearray[currId].end.hours}:${sourcearray[currId].end.minutes}`);
+                //console.log(sourcearray[currId].price);
+                let check = validatePriceFields();
+                if (check) {
+                    Manager.PutPrice();
+                    $("#Edit_Price_Modal").modal('hide');
+                }
+                else {
+
+                }
+            }
+
+            function validatePriceFields() {
+                let priceCheck = false;
+                console.log(isNumber(document.getElementById("price_input").value));
+
+                if (isNumber(document.getElementById("price_input").value)) {
+                    priceCheck = true;
+                    document.getElementById("price_validation_span").innerText = "";
+                }
+                else {
+                    document.getElementById("price_validation_span").innerText = "*Invalid Number";
+                    //addListeners();
+                }
+                let fromCheck = false;
+                console.log(checkTime(document.getElementById("from_input").value));
+                if (checkTime(document.getElementById("from_input").value)) {
+                    document.getElementById("from_validation_span").innerText = "";
+                    fromCheck = true;
+                } else {
+                    document.getElementById("from_validation_span").innerText = "*Invalid Date";
+                }
+                let toCheck = false;
+                console.log(checkTime(document.getElementById("to_input").value));
+                if (checkTime(document.getElementById("to_input").value)) {
+                    document.getElementById("to_validation_span").innerText = "";
+                    toCheck = true;
+                } else {
+                    document.getElementById("to_validation_span").innerText = "*Invalid Date";
+                }
+                if (priceCheck && fromCheck && toCheck) {
+                    return true;
+                }
+                else {
+                    return flase;
+                }
             }
 
             function addCallback() {
-                if (isNumber(document.getElementById("price_input").value)) {
+                let check = validatePriceFields();
+                if (check) {
                     Manager.PostPrice();
+                    $("#Edit_Price_Modal").modal('hide');
+
                 }
                 else {
-                    addListeners();
+
                 }
             }
 
+            function checkTime(mytime) {
+                let time = mytime;
+                let hours = time.slice(0, 2);
+                if (!isNumber(hours)) {
+                    return false;
+                }
+                if (time[2] !== ':') {
+                    return false;
+                }
+                let minutes = time.slice(3, 5);
+                if (!isNumber(minutes)) {
+                    return false;
+                }
+                return true;
+
+            }
+            function isNormalInteger(str) {
+                var n = Math.floor(Number(str));
+                return n !== Infinity && String(n) === str && n >= 0;
+            }
             function getIds(item) {
                 id = getElementIdFrom(item.id, 4);
                 from_id = "from_" + id;
@@ -295,10 +373,9 @@
                     "Price": `${document.getElementById("price_input").value}`
                 }
                 };
-                Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
-
-                function onSuccess(jsonData) {
-                        raiseModal("Updated Successfullly","The price has been successfully updated");
+                    Manager.PostAPI(serviceURL, onSuccess, onFailed, Data);
+                    function onSuccess(jsonData) {
+                        //raiseModal("Updated Successfullly","The price has been successfully updated");
                         obj = jsonData;
                         reflectChangesBack(currId, document.getElementById("from_input").value, document.getElementById("to_input").value, document.getElementById("price_input").value);
                 }
@@ -328,7 +405,8 @@
 
                 function addsuccess(jsonData) {
                     obj = jsonData;
-                    raiseModal("Successful Addition", "the price has been added successfully");
+                    console.log(jsonData);
+                    //raiseModal("Successful Addition", "the price has been added successfully");
                     let from_value = document.getElementById(`from_input`).value;
                     from_value = getTimeMeridiem(from_value);
                     let to_value = document.getElementById(`to_input`).value;
@@ -454,7 +532,7 @@
         function isNumber(str) {
             var regex = /^[0-9]+$/;
             if (!str.match(regex)) {
-                raiseModal("Unvalid Number", "you must add a valid number");
+                //raiseModal("Unvalid Number", "you must add a valid number");
                 return false;
             }
             return true;
