@@ -116,6 +116,18 @@ namespace SportDash.Controllers
             return PartialView("_Images", dataModel);
         }
 
+        [HttpGet]
+        [Authorize(Policy = "UserPolicy")]
+        public IActionResult ShowImageControl()
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var dataModel = new DataViewModel();
+            dataModel.Images = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == false);
+            dataModel.IsAdmin = true;
+
+            return PartialView("_Images", dataModel);
+        }
+
         public async Task<IActionResult> Message(string id)
         {
             var playgroundReciver = await _userManager.FindByIdAsync(id);

@@ -140,6 +140,18 @@ namespace SportDash.Controllers
             return PartialView("_Images", dataModel);
         }
 
+        [HttpGet]
+        [Authorize(Policy = "CoachPolicy")]
+        public IActionResult ShowImageControl()
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var dataModel = new DataViewModel();
+            dataModel.Images = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == false);
+            dataModel.IsAdmin = true;
+
+            return PartialView("_Images", dataModel);
+        }
+
         [HttpPost]
         [Authorize(Policy = "CoachPolicy")]
         public async Task<IActionResult> EditInfoData(ApplicationUser infoData)
