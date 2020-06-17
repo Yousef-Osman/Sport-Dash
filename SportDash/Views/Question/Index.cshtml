@@ -72,7 +72,7 @@
     let Ask = document.getElementById("Ask");
     Ask.addEventListener("click", () => {
         let postLength = document.getElementById("Question_Body").value.trim().length;
-        let RequiredLength = 20;
+        let RequiredLength = 5;
         if (postLength > RequiredLength) {
             document.getElementById("Question_Validation").innerText = "";
             var today = new Date();

@@ -18,7 +18,7 @@
             @await Component.InvokeAsync("QuestionVComponent", Model);
         }
     </div>
-    <div class="ml-5 pb-5">
+    <div id="Answer-container"class="ml-5 pb-5">
         <h3 class="mb-3">Answers</h3>
         @foreach (var item in Model.Question.Comments)
         {
@@ -70,7 +70,7 @@
         }
         @if (Model.IsSigned)
         {
-            <div class="card mb-4 custom-shadow">
+            <div id="newcommentcontainer"class="card mb-4 custom-shadow">
                 <div class="card-body mt-3 mb-1">
                     <div class="row justify-content-between px-2">
                         <div class="col-lg-1 col-md-2 mb-3">
@@ -143,7 +143,7 @@
     if (Comment != null) {
         Comment.addEventListener("click", () => {
             let postLength = document.getElementById("Comment_Text").value.trim().length;
-            let RequiredLength = 20;
+            let RequiredLength = 5;
             if (postLength > RequiredLength) {
                 document.getElementById("Comment_Validation").innerText = "";
                 var dateTime = getDateString();
@@ -157,7 +157,28 @@
                         "QuestionId": `@Model.Question.Id`
                     },
                     success: () => {
-                        raiseModal("Comment Posted", "The comment is successfully posted");
+                        let date = getDateString();
+                        let NewComment = `<div class="card mb-4 custom-shadow">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-lg-1 col-md-2 mb-2">
+                            <img class="profile-image" style="width:64px;height:64px;" src="@questionVComponent.GetImagePath(Model.CurrentUser.Id)" asp-append-version="true">
+                        </div>
+                        <div class="col-lg-9 col-md-7 text-left">
+                            <h5 class="pb-0 mb-0">@Model.CurrentUser.UserName</h5>
+                            <p class="mb-2">${date}</p>
+                            <p class="h6 mb-0">${document.getElementById("Comment_Text").value.trim()}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+                        let fragment = document.createRange().createContextualFragment("");
+                        fragment.appendChild(document.createRange().createContextualFragment(NewComment));
+                        //questionsContainer.insertBefore(fragment, questionsContainer.firstChild);
+                        let newcommentcontainer = document.getElementById("newcommentcontainer");
+                        document.getElementById("Answer-container").insertBefore(fragment, newcommentcontainer);
+
+                        //raiseModal("Comment Posted", "The comment is successfully posted");
                         document.getElementById("Comment_Text").value = "";
                     },
                     error: () => {
@@ -177,5 +198,30 @@
         $("#Comment_Modal_header_Message").text(modalHeader);
         $("#Comment_Modal_Body").text(modalBody);
         $("#Comment_Modal").modal();
+    }
+    function getDateString(myDate) {
+        var today;
+        if (myDate == null) {
+            today = new Date();
+        }
+        else {
+            today = myDate;
+        }
+        let hours = today.getHours();
+        if (hours >= 12) {
+            meridiem = " PM";
+            if (hours != 12) {
+                hours -= 12;
+            }
+        }
+        else {
+            meridiem = " AM";
+            if (hours == 0) {
+                hours = 12;
+            }
+        }
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var time = hours + ":" + today.getMinutes() + ":" + today.getSeconds() + meridiem;
+        return date + ' ' + time;
     }
 </script>
