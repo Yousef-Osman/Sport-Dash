@@ -56,7 +56,6 @@ namespace SportDash.Controllers
             searchVM.Location = new List<SelectListItem>
             {
                 new SelectListItem {Text = "Abo Kier", Value= "1"},
-                new SelectListItem {Text = "Sidi Bishr", Value= "2"},
                 new SelectListItem {Text = "Anfoshy", Value= "3"},
                 new SelectListItem {Text = "Azarita", Value= "4"},
                 new SelectListItem {Text = "Bahary ", Value= "5"},
@@ -81,9 +80,10 @@ namespace SportDash.Controllers
                 new SelectListItem {Text = "El-Wardiaan", Value= "24"},
                 new SelectListItem {Text = "Gleam", Value= "25"},
                 new SelectListItem {Text = "Janklies", Value= "26"},
-                new SelectListItem {Text = "Miami", Value= "27"},
-                new SelectListItem {Text = "Moharam Bek", Value= "28"}
-                
+                new SelectListItem {Text = "Loran", Value= "27"},
+                new SelectListItem {Text = "Miami", Value= "28"},
+                new SelectListItem {Text = "Moharam Bek", Value= "29"},
+                new SelectListItem {Text = "Sidi Bishr", Value= "30"}
             };
 
             searchVM.SportType = new List<SelectListItem>
