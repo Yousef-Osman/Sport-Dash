@@ -13,14 +13,21 @@
                 {
                     <p>@Model.Entity.biography</p>
                 }
-                <a class="btn btn-primary py-3 px-5 rounded-0 text-light"><b>Location: Alexandria, @Model.Entity.Location</b></a>
+
+                @if (User.IsInRole("Playground") || User.IsInRole("Gym") || User.IsInRole("Coach"))
+                {
+                    <a class="btn btn-primary py-3 px-5 rounded-0 text-light"><b>Location: Alexandria, @Model.Entity.Location</b></a>
+                }
             </div>
         </div>
-        <div class="row justify-content-center text-center mt-4 mb-5">
-            <div class="col-md-6" data-aos="fade">
-                <h3>Avalible Services</h3>
+        @if (User.IsInRole("Playground") || User.IsInRole("Gym") || User.IsInRole("Coach"))
+        {
+            <div class="row justify-content-center text-center mt-4 mb-5">
+                <div class="col-md-6" data-aos="fade">
+                    <h3>Available Services</h3>
+                </div>
             </div>
-        </div>
+        }
         <div class="row justify-content-center">
             <div class="row hosting col-lg-10 d-flex justify-content-center">
                 @if (Model.Entity.BallRenting == true)
@@ -95,7 +102,7 @@
         </div>
         @if (Model.IsAdmin)
         {
-            <div class="row justify-content-center text-center mt-5" data-aos="fade" data-aos-delay="100">
+            <div class="row justify-content-center text-center mt-5">
                 <a class="btn btn-primary rounded-pill text-white py-3 px-5" data-toggle="modal" data-target="#editInfoModal">Edit Information</a>
             </div>
         }
