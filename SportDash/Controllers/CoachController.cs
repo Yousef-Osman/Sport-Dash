@@ -165,19 +165,30 @@ namespace SportDash.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddReview(Review R)
+        public async Task<IActionResult> AddReview(Review R)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            DataViewModel reviewVM = new DataViewModel();
+            var userId = R.ReviewerId;
+            var TargetId = R.TargetId;
             var review = _reviewRepository.PostReview(R);
-            return Ok(new OkObjectResult(review));
+            reviewVM.ProfileImage = _imageRepository.GetImages(userId).Where(a => a.IsProfileImg == true).SingleOrDefault();
+            reviewVM.CurrentUser = await _userManager.GetUserAsync(User);
+            reviewVM.Reviews = _reviewRepository.GetReviewsOfReviewee(TargetId);
+            reviewVM.Review = review;
+            return PartialView("_ShowReviews", reviewVM);
         }
 
         [HttpPost]
-        public IActionResult DeleteReview(int id)
+        public async Task<IActionResult> DeleteReview(int id, string TargetId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            DataViewModel reviewVM = new DataViewModel();
+            reviewVM.CurrentUser = await _userManager.GetUserAsync(User);
             _reviewRepository.DeleteReview(id);
-            return Ok();
+            reviewVM.Reviews = _reviewRepository.GetReviewsOfReviewee(TargetId);
+
+            return PartialView("_ShowReviews", reviewVM);
         }
     }
 }
