@@ -81,7 +81,7 @@
                     <div class="row hosting">
                         @foreach (var item in Model.Playgrounds)
                         {
-                            <div class="col-md-4 col-lg-3 mb-4 mt-1" data-aos="fade" data-aos-delay="200">
+                            <div class="col-md-4 col-lg-3 mb-4 mt-4" data-aos="fade" data-aos-delay="200">
                                 <div class="unit-2  bg-white">
                                     @{
                                         var PlaygroungProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
@@ -138,7 +138,7 @@
                     <div class="row hosting">
                         @foreach (var item in Model.Gyms)
                         {
-                            <div class="col-md-4 col-lg-3 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
+                            <div class="col-md-4 col-lg-3 mb-5 mb-lg-0 mt-4" data-aos="fade" data-aos-delay="200">
                                 <div class="unit-2  bg-white">
                                     @{
                                         var GymProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
@@ -195,7 +195,7 @@
                     <div class="row hosting">
                         @foreach (var item in Model.Trainers)
                         {
-                            <div class="col-md-4 col-lg-3 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
+                            <div class="col-md-4 col-lg-3 mb-5 mb-lg-0 mt-4" data-aos="fade" data-aos-delay="200">
                                 <div class="unit-2  bg-white">
                                     @{
                                         var CoachProfileImage = item.Images.Where(a => a.IsProfileImg == true).Select(a => a.Title).FirstOrDefault();
